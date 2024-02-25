@@ -1,0 +1,36 @@
+/* AddComplaint.css */
+
+.root {
+    -fx-background-color: linear-gradient(to bottom,  #1e7145,#1b663e,#185a37, #154f30, #124429, #0f3923); /* Green gradient background */
+}
+
+.label {
+    -fx-font-family: "Arial"; /* Change font family */
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #EDC967; /* Less yellow gold color */
+}
+
+.text-field, .text-area {
+    -fx-font-family: "Arial"; /* Change font family */
+    -fx-font-size: 14px;
+    -fx-background-color: white;
+}
+
+.button {
+    -fx-font-family: "Arial"; /* Change font family */
+    -fx-font-size: 16px;
+    -fx-background-color: #006400; /* Very dark green */
+    -fx-text-fill: white;
+}
+
+.button:hover {
+    -fx-background-color: #004d00; /* Darker shade of green on hover */
+}
+
+/* Add some black borders and padding */
+.text-field, .text-area, .button {
+    -fx-border-color: black;
+    -fx-border-width: 1px;
+    -fx-padding: 5px;
+}
