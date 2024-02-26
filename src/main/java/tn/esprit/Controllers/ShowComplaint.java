@@ -92,20 +92,6 @@ public class ShowComplaint {
     private void showAlert(String s) {
     }
 
-    @FXML
-    public void updateAction(ActionEvent actionEvent) {
-        Complaint selectedComplaint = tableView.getSelectionModel().getSelectedItem();
-        if (selectedComplaint == null) {
-            showAlert("Please select a complaint to update.");
-            return;
-        }
-
-        try {
-            openUpdateWindow(selectedComplaint); // Call the method to open the update window
-        } catch (Exception e) {
-            showAlert("Error opening update complaint window: " + e.getMessage());
-        }
-    }
 
     // Method to open the update interface with the selected complaint
     private void openUpdateWindow(Complaint complaint) {
@@ -130,6 +116,7 @@ public class ShowComplaint {
     }
 
 
+    @FXML
     public void updateSelectedComplaint(ActionEvent actionEvent) {
         Complaint selectedComplaint = tableView.getSelectionModel().getSelectedItem();
         if (selectedComplaint == null) {
@@ -137,11 +124,7 @@ public class ShowComplaint {
             return;
         }
 
-        try {
-            // Open the UpdateComplaint window
-            openUpdateWindow(selectedComplaint);
-        } catch (Exception e) {
-            showAlert("Error opening update complaint window: " + e.getMessage());
-        }
+        // Call the method to open the update window
+        openUpdateWindow(selectedComplaint);
     }
 }
