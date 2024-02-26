@@ -2,9 +2,11 @@ package tn.esprit.Controllers;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
 import javafx.scene.control.TextArea;
 import tn.esprit.entities.Complaint;
+import tn.esprit.services.ComplaintService;
+
+import java.sql.SQLException;
 
 public class UpdateComplaint {
     @FXML
@@ -27,8 +29,13 @@ public class UpdateComplaint {
 
     @FXML
     private Button updateButton;
-    private Complaint selectedComplaint;
 
+    private Complaint selectedComplaint;
+    private ComplaintService complaintService;
+
+    public UpdateComplaint() {
+        complaintService = new ComplaintService();
+    }
 
     @FXML
     private void handleUpdateButtonAction() {
@@ -40,17 +47,27 @@ public class UpdateComplaint {
         String status = statusTextArea.getText();
         String user = userTextArea.getText();
 
-
         // Check if any of the fields are empty
         if (title.isEmpty() || description.isEmpty() || category.isEmpty() || location.isEmpty()) {
             System.out.println("Please fill in all fields.");
         } else {
             // Perform update action
-            System.out.println("Update button clicked");
-            System.out.println("Title: " + title);
-            System.out.println("Description: " + description);
-            System.out.println("Category: " + category);
-            System.out.println("Location: " + location);
+            try {
+                selectedComplaint.setTitle(title);
+                selectedComplaint.setDescription(description);
+                selectedComplaint.setCategory(category);
+                selectedComplaint.setLocation(location);
+                selectedComplaint.setStatus(status);
+                selectedComplaint.setUser(user);
+
+                // Update the complaint in the database
+                complaintService.update(selectedComplaint);
+
+                // Close the update window after successful update
+                updateButton.getScene().getWindow().hide();
+            } catch (SQLException e) {
+                System.out.println("Error updating complaint: " + e.getMessage());
+            }
         }
     }
 
@@ -60,10 +77,11 @@ public class UpdateComplaint {
         if (selectedComplaint != null) {
             titleTextArea.setText(selectedComplaint.getTitle());
             descriptionTextArea.setText(selectedComplaint.getDescription());
-            categoryTextArea.setText(selectedComplaint.getCategory()); // Set text to TextField
+            categoryTextArea.setText(selectedComplaint.getCategory());
             locationTextArea.setText(selectedComplaint.getLocation());
-            statusTextArea.setText(selectedComplaint.getLocation());
-            userTextArea.setText(selectedComplaint.getLocation());
+            statusTextArea.setText(selectedComplaint.getStatus());
+            userTextArea.setText(selectedComplaint.getUser());
         }
     }
 }
+
