@@ -1,0 +1,47 @@
+/* AddCateg.css */
+
+/* Styles for the root AnchorPane */
+.root {
+    -fx-background-color: #b8d9b8; /* Light green background */
+}
+
+/* Styles for the labels */
+.label {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #333333; /* Dark gray text color */
+}
+
+/* Styles for the ComboBox */
+.combo-box {
+    -fx-font-size: 14px;
+}
+
+/* Styles for the TextField */
+.text-field {
+    -fx-font-size: 14px;
+}
+
+/* Styles for the ComboBox arrow button */
+.combo-box .arrow-button {
+    -fx-background-color: transparent; /* Transparent background */
+    -fx-background-insets: 0; /* Remove background insets */
+    -fx-padding: 0; /* Remove padding */
+}
+
+/* Styles for the ComboBox list */
+.combo-box-popup .list-view {
+    -fx-background-color: white; /* White background for the list */
+    -fx-border-color: #cccccc; /* Light gray border color */
+    -fx-border-width: 1px; /* 1px border width */
+}
+
+/* Styles for the ComboBox list items */
+.combo-box-popup .list-view .list-cell {
+    -fx-padding: 5px 10px; /* Padding for the list items */
+}
+
+/* Styles for the ComboBox list item when hovered */
+.combo-box-popup .list-view .list-cell:hover {
+    -fx-background-color: #e0e0e0; /* Light gray background when hovered */
+}

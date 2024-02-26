@@ -1,84 +1,68 @@
 package tn.esprit.test;
+
+import tn.esprit.entities.CategoryComplaint;
 import tn.esprit.entities.Complaint;
+import tn.esprit.services.CategoryComplaintService;
 import tn.esprit.services.ComplaintService;
-import tn.esprit.utils.MyDatabase;
-import java.util.Date;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
+        // Initialize services
         ComplaintService complaintService = new ComplaintService();
-        Complaint c1 = new Complaint(
-                1,
-                "complaint!!",
-                "hello",
-                "pollution",
-                "esprit",
-                "not repaired",
-                "User of the complaint"
-        );
+        CategoryComplaintService categoryComplaintService = new CategoryComplaintService();
 
+        // Add category complaint
+        CategoryComplaint cc1 = new CategoryComplaint(1, "Category 1", 101);
         try {
-            // Add a new complaint
-            complaintService.add(c1);
-            System.out.println("Complaint added successfully!");
+            categoryComplaintService.add(cc1);
+            System.out.println("Category complaint added successfully!");
         } catch (SQLException e) {
-            System.out.println("Error adding complaint: " + e.getMessage());
+            System.out.println("Error adding category complaint: " + e.getMessage());
         }
 
+        // Display list of category complaints
         try {
-            // Display list of complaints after adding
-            List<Complaint> complaints = complaintService.displayList();
-            System.out.println("List of complaints:");
-            for (Complaint complaint : complaints) {
-                System.out.println(complaint);
+            System.out.println("List of category complaints:");
+            List<CategoryComplaint> categoryComplaints = categoryComplaintService.displayList();
+            for (CategoryComplaint categoryComplaint : categoryComplaints) {
+                System.out.println(categoryComplaint);
             }
         } catch (SQLException e) {
-            System.out.println("Error displaying complaints: " + e.getMessage());
+            System.out.println("Error displaying category complaints: " + e.getMessage());
         }
 
+        // Update a category complaint
+        CategoryComplaint ccToUpdate = new CategoryComplaint(1, "Updated Category 1", 101);
+        try {
+            categoryComplaintService.update(ccToUpdate);
+            System.out.println("Category complaint updated successfully!");
+        } catch (SQLException e) {
+            System.out.println("Error updating category complaint: " + e.getMessage());
+        }
 
+        // Delete a category complaint
+        try {
+            categoryComplaintService.delete(cc1);
+            System.out.println("Category complaint deleted successfully!");
+        } catch (SQLException e) {
+            System.out.println("Error deleting category complaint: " + e.getMessage());
+        }
+
+        // User input for complaint management (as in the original code)
         Scanner scanner = new Scanner(System.in);
 
-        // Update a complaint
-        System.out.print("Enter the ID of the complaint to update: ");
-        int updateId = scanner.nextInt();
-        scanner.nextLine(); // consume newline
-        try {
-            Complaint complaintToUpdate = complaintService.getById(updateId);
-            if (complaintToUpdate != null) {
-                System.out.print("Enter the updated title: ");
-                String updatedTitle = scanner.nextLine();
-                complaintToUpdate.setTitle(updatedTitle);
-                complaintService.update(complaintToUpdate);
-                System.out.println("Complaint updated successfully!");
-            } else {
-                System.out.println("Complaint not found with ID: " + updateId);
-            }
-        } catch (SQLException e) {
-            System.out.println("Error updating complaint: " + e.getMessage());
-        }
-
-        // Delete a complaint
-        System.out.print("Enter the ID of the complaint to delete: ");
-        int deleteId = scanner.nextInt();
-        scanner.nextLine(); // consume newline
-        try {
-            Complaint complaintToDelete = complaintService.getById(deleteId);
-            if (complaintToDelete != null) {
-                complaintService.delete(complaintToDelete);
-                System.out.println("Complaint deleted successfully!");
-            } else {
-                System.out.println("Complaint not found with ID: " + deleteId);
-            }
-        } catch (SQLException e) {
-            System.out.println("Error deleting complaint: " + e.getMessage());
-        }
+        // Handling of complaints
+        // ...
 
         scanner.close();
     }
 }
+
+
+
+
 
 

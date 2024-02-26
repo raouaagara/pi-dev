@@ -58,9 +58,9 @@ public class ComplaintService implements IService<Complaint> {
         ps.setString(3, complaint.getCategory());
         ps.setString(4, complaint.getLocation());
         ps.setString(5, complaint.getStatus());
-        //ps.setDate(6, new java.sql.Date(complaint.getDatePosted().getTime()));
-        ps.setString(6, complaint.getUser());
-        ps.setInt(7, complaint.getComplaintId());
+    //    ps.setDate(6, new java.sql.Date(complaint.getDatePosted().getTime()));
+        ps.setString(7, complaint.getUser());
+        ps.setInt(8, complaint.getComplaintId());
         ps.executeUpdate();
         System.out.println("Complaint updated!");
     }

@@ -8,7 +8,6 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.TextArea;
 import tn.esprit.entities.Complaint;
 import tn.esprit.services.ComplaintService;
-
 import java.io.IOException;
 import java.sql.SQLException;
 
@@ -92,6 +91,16 @@ public class AddComplaint {
         statusTextArea.clear();
         userTextArea.clear();
     }
+
+   /* public void setCategoryId(String value) {
+        // Set the category ID received from AddCateg into the nameCategComboBox
+        nameCategComboBox.setValue(value);
+    }
+
+    public void setUserId(String text) {
+        // Set the user ID received from AddCateg into the userIdTextField
+        userIdTextField.setText(text);
+    }*/
 }
 
 

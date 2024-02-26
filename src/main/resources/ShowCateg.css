@@ -1,0 +1,32 @@
+/* ShowCateg.css */
+
+/* Styles for the TableView */
+.table-view {
+    -fx-background-color: white; /* White background for the table */
+    -fx-border-color: #cccccc; /* Light gray border color */
+    -fx-border-width: 1px; /* 1px border width */
+}
+
+/* Styles for the TableView columns */
+.table-view .column-header-background {
+    -fx-background-color: #b8d9b8; /* Light green background for column headers */
+    -fx-border-color: #cccccc; /* Light gray border color */
+    -fx-border-width: 1px; /* 1px border width */
+}
+
+.table-view .column-header {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #333333; /* Dark gray text color for column headers */
+    -fx-alignment: center-left; /* Align text to left */
+}
+
+/* Styles for the TableView rows */
+.table-view .table-row-cell {
+    -fx-padding: 5px 10px; /* Padding for table rows */
+}
+
+/* Styles for the TableView row when hovered */
+.table-view .table-row-cell:hover {
+    -fx-background-color: #e0e0e0; /* Light gray background when hovered */
+}

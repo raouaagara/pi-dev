@@ -1,31 +1,31 @@
 /* AddComplaint.css */
 
 .root {
-    -fx-background-color: linear-gradient(to bottom,  #1e7145,#1b663e,#185a37, #154f30, #124429, #0f3923); /* Green gradient background */
+    -fx-background-color: linear-gradient(to bottom, #2E7D32, #388E3C, #43A047, #4CAF50, #66BB6A, #81C784); /* Dark green gradient background */
 }
 
 .label {
     -fx-font-family: "Arial"; /* Change font family */
     -fx-font-size: 18px;
     -fx-font-weight: bold;
-    -fx-text-fill: #EDC967; /* Less yellow gold color */
+    -fx-text-fill: #FFECB3; /* Creamy gold color */
 }
 
 .text-field, .text-area {
     -fx-font-family: "Arial"; /* Change font family */
     -fx-font-size: 14px;
-    -fx-background-color: white;
+    -fx-background-color: #FFECB3; /* Creamy background */
 }
 
 .button {
     -fx-font-family: "Arial"; /* Change font family */
     -fx-font-size: 16px;
-    -fx-background-color: #006400; /* Very dark green */
+    -fx-background-color: #2E7D32; /* Dark green */
     -fx-text-fill: white;
 }
 
 .button:hover {
-    -fx-background-color: #004d00; /* Darker shade of green on hover */
+    -fx-background-color: #1B5E20; /* Darker shade of green on hover */
 }
 
 /* Add some black borders and padding */

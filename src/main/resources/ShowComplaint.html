@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Show Complaint</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #2E7D32; /* Dark green */
+            color: #fff; /* White */
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background-color: #FFECB3; /* Creamy */
+            color: #333; /* Dark grey */
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 400px;
+            max-width: 90%;
+            text-align: center;
+        }
+
+        h2 {
+            margin-top: 0;
+            color: #2E7D32; /* Dark green */
+        }
+
+        label {
+            color: #2E7D32; /* Dark green */
+        }
+
+        table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 10px;
+            border-bottom: 1px solid #333; /* Dark grey */
+        }
+
+        th {
+            background-color: #FFC107; /* Gold */
+            color: #333; /* Dark grey */
+        }
+
+        tr:nth-child(even) {
+            background-color: #FFECB3; /* Creamy */
+        }
+
+        tr:nth-child(odd) {
+            background-color: #FFF9C4; /* Light creamy */
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>Complaints List</h2>
+    <table>
+        <thead>
+        <tr>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Category</th>
+            <th>Location</th>
+            <th>Status</th>
+            <th>User</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!-- Rows of complaint data will be dynamically added here -->
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

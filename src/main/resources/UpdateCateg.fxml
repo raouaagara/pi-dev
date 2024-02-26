@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.collections.FXCollections?>
+<?import java.lang.String?>
+
+<AnchorPane prefHeight="200.0" prefWidth="300.0" stylesheets="@UpdateCateg.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.Controllers.UpdateCateg">
+    <children>
+        <Label layoutX="48.0" layoutY="10.0" text="Choose Category:" />
+        <ComboBox fx:id="nameCategComboBox" layoutX="104.0" layoutY="32.0" prefWidth="150.0">
+            <items>
+                <FXCollections fx:factory="observableArrayList">
+                    <String fx:value="pollution" />
+                    <String fx:value="pothole" />
+                    <String fx:value="other" />
+                </FXCollections>
+            </items>
+        </ComboBox>
+        <Label layoutX="38.0" layoutY="69.0" prefHeight="20.0" prefWidth="66.0" text="user id" />
+        <TextField fx:id="userIdTextField" layoutX="104.0" layoutY="64.0" prefWidth="150.0" />
+        <Button fx:id="updateButton" layoutX="200.0" layoutY="120.0" mnemonicParsing="false" onAction="#handleUpdateButtonAction" text="Update" />
+    </children>
+</AnchorPane>
+

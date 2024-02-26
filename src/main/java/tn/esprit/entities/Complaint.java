@@ -1,6 +1,7 @@
 package tn.esprit.entities;
 
 import java.io.InputStream;
+import java.sql.ResultSet;
 import java.util.Date;
 
 public class Complaint {
@@ -12,7 +13,7 @@ public class Complaint {
     private String location;
     private String status;
     //private final InputStream image;
-  //  private Date datePosted;
+  // private Date datePosted;
     private String user;
     //private int complaintCreatorScore;
 
@@ -153,4 +154,5 @@ public class Complaint {
               //  ", complaintCreatorScore=" + complaintCreatorScore +
                 '}';
     }
+
 }
