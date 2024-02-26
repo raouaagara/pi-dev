@@ -9,7 +9,6 @@
     <children>
         <!-- Buttons for delete and update -->
         <Button layoutX="50.0" layoutY="20.0" mnemonicParsing="false" onAction="#deleteAction" text="Delete" />
-        <Button layoutX="120.0" layoutY="20.0" mnemonicParsing="false" onAction="#updateAction" text="Update" />
 
         <!-- TableView -->
         <TableView fx:id="tableView" layoutX="50.0" layoutY="50.0" prefHeight="500.0" prefWidth="700.0">
@@ -23,8 +22,6 @@
                 <TableColumn fx:id="userColumn" prefWidth="100.0" text="User" />
             </columns>
         </TableView>
+        <Button layoutX="153.0" layoutY="14.0" onAction="#updateSelectedComplaint" text="Update" />
     </children>
 </AnchorPane>
-
-
-

@@ -1,11 +1,9 @@
 package tn.esprit.Controllers;
 
-import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextArea;
 import tn.esprit.entities.Complaint;
 
 public class UpdateComplaint {
@@ -17,7 +15,7 @@ public class UpdateComplaint {
     private TextArea descriptionTextArea;
 
     @FXML
-    private ComboBox<String> categoryComboBox;
+    private TextField categoryTextField;
 
     @FXML
     private TextField locationField;
@@ -26,23 +24,17 @@ public class UpdateComplaint {
     private Button updateButton;
     private Complaint selectedComplaint;
 
-    @FXML
-    public void initialize() {
-        // Initialize the combo box with categories
-        categoryComboBox.setItems(FXCollections.observableArrayList("pollution", "path hole", "other"));
-        categoryComboBox.setPromptText("Select category");
-    }
 
     @FXML
     private void handleUpdateButtonAction() {
         // Retrieve values from input fields
         String title = titleField.getText();
         String description = descriptionTextArea.getText();
-        String category = categoryComboBox.getSelectionModel().getSelectedItem(); // Retrieve selected item
+        String category = categoryTextField.getText(); // Retrieve text from TextField
         String location = locationField.getText();
 
         // Check if any of the fields are empty
-        if (title.isEmpty() || description.isEmpty() || category == null || location.isEmpty()) {
+        if (title.isEmpty() || description.isEmpty() || category.isEmpty() || location.isEmpty()) {
             System.out.println("Please fill in all fields.");
         } else {
             // Perform update action
@@ -60,7 +52,7 @@ public class UpdateComplaint {
         if (selectedComplaint != null) {
             titleField.setText(selectedComplaint.getTitle());
             descriptionTextArea.setText(selectedComplaint.getDescription());
-            categoryComboBox.setValue(selectedComplaint.getCategory());
+            categoryTextField.setText(selectedComplaint.getCategory()); // Set text to TextField
             locationField.setText(selectedComplaint.getLocation());
         }
     }

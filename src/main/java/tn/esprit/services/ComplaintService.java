@@ -50,7 +50,7 @@ public class ComplaintService implements IService<Complaint> {
 
 
     @Override
-    public void update(Complaint complaint) throws SQLException {
+    public  void update(Complaint complaint) throws SQLException {
         String query = "UPDATE `complaint` SET `title`=?, `description`=?, `category`=?, `location`=?, `status`=?, `datePosted`=?, `user`=? WHERE `complaintId`=?";
         PreparedStatement ps = con.prepareStatement(query);
         ps.setString(1, complaint.getTitle());

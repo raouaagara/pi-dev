@@ -1,21 +1,27 @@
 package tn.esprit.Controllers;
 
-import javafx.fxml.FXMLLoader;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
 import tn.esprit.entities.Complaint;
 import tn.esprit.services.ComplaintService;
-import javafx.stage.Modality;
+
+import java.io.IOException;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.List;
 
 public class ShowComplaint {
+
 
     @FXML
     private TableColumn<Complaint, String> titleColumn;
@@ -31,6 +37,9 @@ public class ShowComplaint {
 
     @FXML
     private TableColumn<Complaint, String> statusColumn;
+
+    @FXML
+    private TableColumn<Complaint, Date> datePostedColumn;
 
     @FXML
     private TableColumn<Complaint, String> userColumn;
@@ -60,6 +69,7 @@ public class ShowComplaint {
             alert.showAndWait();
         }
     }
+
     @FXML
     public void deleteAction(ActionEvent actionEvent) {
         Complaint selectedComplaint = tableView.getSelectionModel().getSelectedItem();
@@ -79,7 +89,8 @@ public class ShowComplaint {
         }
     }
 
-
+    private void showAlert(String s) {
+    }
 
     @FXML
     public void updateAction(ActionEvent actionEvent) {
@@ -90,18 +101,47 @@ public class ShowComplaint {
         }
 
         try {
-            // Open the UpdateComplaint window
-            UpdateComplaint updateComplaint = new UpdateComplaint();
-            updateComplaint.setComplaint(selectedComplaint);
-            // Call method to show the update window
+            openUpdateWindow(selectedComplaint); // Call the method to open the update window
         } catch (Exception e) {
             showAlert("Error opening update complaint window: " + e.getMessage());
         }
     }
-    private void showAlert(String message) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setContentText(message);
-        alert.showAndWait();
+
+    // Method to open the update interface with the selected complaint
+    private void openUpdateWindow(Complaint complaint) {
+        try {
+            // Load the update interface FXML file
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/UpdateComplaint.fxml"));
+            Parent root = loader.load();
+
+            // Pass the selected complaint to the update controller
+            UpdateComplaint updateController = loader.getController();
+            updateController.setComplaint(complaint);
+
+            // Display the update interface
+            Stage stage = new Stage();
+            stage.setTitle("Update Complaint");
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+            showAlert("Error opening update complaint window: " + e.getMessage());
+        }
     }
 
+
+    public void updateSelectedComplaint(ActionEvent actionEvent) {
+        Complaint selectedComplaint = tableView.getSelectionModel().getSelectedItem();
+        if (selectedComplaint == null) {
+            showAlert("Please select a complaint to update.");
+            return;
+        }
+
+        try {
+            // Open the UpdateComplaint window
+            openUpdateWindow(selectedComplaint);
+        } catch (Exception e) {
+            showAlert("Error opening update complaint window: " + e.getMessage());
+        }
+    }
 }
