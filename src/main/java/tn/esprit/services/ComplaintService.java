@@ -58,7 +58,7 @@ public class ComplaintService implements IService<Complaint> {
         ps.setString(3, complaint.getCategory());
         ps.setString(4, complaint.getLocation());
         ps.setString(5, complaint.getStatus());
-    //    ps.setDate(6, new java.sql.Date(complaint.getDatePosted().getTime()));
+        ps.setDate(6, new java.sql.Date(complaint.getDatePosted().getTime()));
         ps.setString(7, complaint.getUser());
         ps.setInt(8, complaint.getComplaintId());
         ps.executeUpdate();
@@ -88,7 +88,7 @@ public class ComplaintService implements IService<Complaint> {
                     res.getString("category"),
                     res.getString("location"),
                     res.getString("status"),
-                   // res.getDate("datePosted"),
+                    res.getDate("datePosted"),
                     res.getString("user")
             );
             complaints.add(c);
@@ -110,7 +110,7 @@ public class ComplaintService implements IService<Complaint> {
                     res.getString("category"),
                     res.getString("location"),
                     res.getString("status"),
-                   // res.getDate("datePosted"),
+                    res.getDate("datePosted"),
                     res.getString("user")
             );
         }

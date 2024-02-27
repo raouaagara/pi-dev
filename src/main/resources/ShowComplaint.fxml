@@ -7,8 +7,10 @@
 
 <AnchorPane prefHeight="450.0" prefWidth="600.0" stylesheets="@AddComplaint.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.Controllers.ShowComplaint">
     <children>
-        <!-- Buttons for delete and update -->
+        <!-- Buttons for delete, update, and previous page -->
         <Button layoutX="50.0" layoutY="20.0" mnemonicParsing="false" onAction="#deleteAction" text="Delete" />
+        <Button layoutX="153.0" layoutY="20.0" mnemonicParsing="false" onAction="#updateSelectedComplaint" text="Update" />
+        <Button layoutX="256.0" layoutY="20.0" mnemonicParsing="false" onAction="#previousPage" text="Previous Page" />
 
         <!-- TableView -->
         <TableView fx:id="tableView" layoutX="50.0" layoutY="50.0" prefHeight="500.0" prefWidth="700.0">
@@ -22,6 +24,5 @@
                 <TableColumn fx:id="userColumn" prefWidth="100.0" text="User" />
             </columns>
         </TableView>
-        <Button layoutX="153.0" layoutY="14.0" onAction="#updateSelectedComplaint" text="Update" />
     </children>
 </AnchorPane>

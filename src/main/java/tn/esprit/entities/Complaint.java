@@ -13,7 +13,7 @@ public class Complaint {
     private String location;
     private String status;
     //private final InputStream image;
-  // private Date datePosted;
+   private Date datePosted;
     private String user;
     //private int complaintCreatorScore;
 
@@ -41,14 +41,14 @@ public class Complaint {
         this.user = user;
         this.complaintCreatorScore = complaintCreatorScore;
     }*/
-  public Complaint(int complaintId,String title, String description, String category, String location, String status, String user) {
+  public Complaint(int complaintId,String title, String description, String category, String location, String status, Date datePosted, String user) {
       this.complaintId = complaintId;
       this.title = title;
       this.description = description;
       this.category = category;
       this.location = location;
       this.status = status;
-     // this.datePosted = datePosted;
+      this.datePosted = datePosted;
       this.user = user;
   }
 
@@ -115,14 +115,14 @@ public class Complaint {
         return image;
     }
 */
-   /* public Date getDatePosted() {
+    public Date getDatePosted() {
         return datePosted;
     }
 
     public void setDatePosted(Date datePosted) {
         this.datePosted = datePosted;
     }
-*/
+
     public String getUser() {
         return user;
     }
@@ -149,7 +149,7 @@ public class Complaint {
                 ", location='" + location + '\'' +
                 ", status='" + status + '\'' +
              //   ", image=" + image +
-             //   ", datePosted=" + datePosted +
+                ", datePosted=" + datePosted +
                 ", user='" + user + '\'' +
               //  ", complaintCreatorScore=" + complaintCreatorScore +
                 '}';

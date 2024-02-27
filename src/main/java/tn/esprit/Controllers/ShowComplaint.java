@@ -22,7 +22,6 @@ import java.util.List;
 
 public class ShowComplaint {
 
-
     @FXML
     private TableColumn<Complaint, String> titleColumn;
 
@@ -51,6 +50,11 @@ public class ShowComplaint {
 
     @FXML
     void initialize() {
+        loadComplaints();
+    }
+
+    // Method to load complaints into TableView
+    private void loadComplaints() {
         try {
             List<Complaint> complaints = complaintService.displayList();
             ObservableList<Complaint> observableList = FXCollections.observableList(complaints);
@@ -62,11 +66,9 @@ public class ShowComplaint {
             locationColumn.setCellValueFactory(new PropertyValueFactory<>("location"));
             statusColumn.setCellValueFactory(new PropertyValueFactory<>("status"));
             userColumn.setCellValueFactory(new PropertyValueFactory<>("user"));
+            datePostedColumn.setCellValueFactory(new PropertyValueFactory<>("datePosted"));
         } catch (SQLException e) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error");
-            alert.setContentText(e.getMessage());
-            alert.showAndWait();
+            showAlert("Error loading complaints: " + e.getMessage());
         }
     }
 
@@ -83,17 +85,33 @@ public class ShowComplaint {
             complaintService.delete(selectedComplaint);
 
             // Refresh the table view to reflect the changes
-            tableView.getItems().remove(selectedComplaint);
+            loadComplaints(); // Reload complaints after deletion
         } catch (SQLException e) {
             showAlert("Error deleting complaint: " + e.getMessage());
         }
     }
 
-    private void showAlert(String s) {
+    private void showAlert(String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Error");
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 
-
     // Method to open the update interface with the selected complaint
+    @FXML
+    public void updateSelectedComplaint(ActionEvent actionEvent) {
+        Complaint selectedComplaint = tableView.getSelectionModel().getSelectedItem();
+        if (selectedComplaint == null) {
+            showAlert("Please select a complaint to update.");
+            return;
+        }
+
+        // Call the method to open the update window
+        openUpdateWindow(selectedComplaint);
+    }
+
+    // Method to open the update window
     private void openUpdateWindow(Complaint complaint) {
         try {
             // Load the update interface FXML file
@@ -108,23 +126,21 @@ public class ShowComplaint {
             Stage stage = new Stage();
             stage.setTitle("Update Complaint");
             stage.setScene(new Scene(root));
-            stage.show();
+            stage.showAndWait();
+
+            // After the update window is closed, refresh the complaints list
+            loadComplaints();
         } catch (IOException e) {
-            e.printStackTrace();
             showAlert("Error opening update complaint window: " + e.getMessage());
         }
     }
 
-
+    // Method to navigate back to the previous page (AddComplaint.fxml)
     @FXML
-    public void updateSelectedComplaint(ActionEvent actionEvent) {
-        Complaint selectedComplaint = tableView.getSelectionModel().getSelectedItem();
-        if (selectedComplaint == null) {
-            showAlert("Please select a complaint to update.");
-            return;
-        }
-
-        // Call the method to open the update window
-        openUpdateWindow(selectedComplaint);
+    private void previousPage(ActionEvent event) throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("/AddComplaint.fxml"));
+        tableView.getScene().setRoot(root);
+        System.out.println("Returned to the previous page (AddComplaint.fxml)");
     }
 }
+

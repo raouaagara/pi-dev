@@ -15,7 +15,7 @@
         <items>
             <FXCollections fx:factory="observableArrayList">
                 <String fx:value="pollution" />
-                <String fx:value="pathole" />
+                <String fx:value="path hole" />
                 <String fx:value="other" />
             </FXCollections>
         </items>

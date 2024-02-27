@@ -5,11 +5,14 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextArea;
 import tn.esprit.entities.Complaint;
 import tn.esprit.services.ComplaintService;
+
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.regex.Pattern;
 
 public class AddComplaint {
 
@@ -22,13 +25,13 @@ public class AddComplaint {
     private TextArea descriptionTextArea;
 
     @FXML
-    private TextArea categoryTextArea;
+    private ComboBox<String> categoryComboBox;
 
     @FXML
     private TextArea locationTextArea;
 
     @FXML
-    private TextArea statusTextArea;
+    private ComboBox<String> statusComboBox;
 
     @FXML
     private TextArea userTextArea;
@@ -39,19 +42,26 @@ public class AddComplaint {
         // Retrieve values from input fields
         String title = titleTextArea.getText();
         String description = descriptionTextArea.getText();
-        String category = categoryTextArea.getText();
+        String category = categoryComboBox.getValue();
         String location = locationTextArea.getText();
-        String status = statusTextArea.getText();
+        String status = statusComboBox.getValue();
         String user = userTextArea.getText();
 
-        if (title.isEmpty() || description.isEmpty() || category.isEmpty() ||
-                location.isEmpty() || status.isEmpty() || user.isEmpty()) {
+        if (title.isEmpty() || description.isEmpty() || category == null ||
+                location.isEmpty() || status == null || user.isEmpty()) {
             showAlert("Please fill in all fields.");
+            return; // Stop further execution
+        }
+
+        // Validate title format
+        if (!isValidTitle(title)) {
+            showAlert("Please enter a valid title. It should contain only letters and numbers.");
             return; // Stop further execution
         }
 
         try {
             // Create and save the complaint using the provided data
+
             Complaint newComplaint = new Complaint(title, description, category, location, status, user);
             complaintService.add(newComplaint);
 
@@ -86,23 +96,14 @@ public class AddComplaint {
     private void clearFields() {
         titleTextArea.clear();
         descriptionTextArea.clear();
-        categoryTextArea.clear();
+        categoryComboBox.getSelectionModel().clearSelection();
         locationTextArea.clear();
-        statusTextArea.clear();
+        statusComboBox.getSelectionModel().clearSelection();
         userTextArea.clear();
     }
 
-   /* public void setCategoryId(String value) {
-        // Set the category ID received from AddCateg into the nameCategComboBox
-        nameCategComboBox.setValue(value);
+    // Method to validate title format (only letters and numbers)
+    private boolean isValidTitle(String title) {
+        return Pattern.matches("[a-zA-Z0-9\\s]+", title);
     }
-
-    public void setUserId(String text) {
-        // Set the user ID received from AddCateg into the userIdTextField
-        userIdTextField.setText(text);
-    }*/
 }
-
-
-
-
