@@ -3,6 +3,8 @@ import java.sql.ResultSet;
 import tn.esprit.entities.Complaint;
 import tn.esprit.utils.MyDatabase;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -18,6 +20,7 @@ public class ComplaintService implements IService<Complaint> {
     public ComplaintService() {
         con = MyDatabase.getInstance().getCon();
     }
+
     @Override
     public void add(Complaint complaint) throws SQLException {
         // Validate input fields
@@ -50,7 +53,7 @@ public class ComplaintService implements IService<Complaint> {
 
 
     @Override
-    public  void update(Complaint complaint) throws SQLException {
+    public void update(Complaint complaint) throws SQLException {
         String query = "UPDATE `complaint` SET `title`=?, `description`=?, `category`=?, `location`=?, `status`=?, `datePosted`=?, `user`=? WHERE `complaintId`=?";
         PreparedStatement ps = con.prepareStatement(query);
         ps.setString(1, complaint.getTitle());
@@ -117,4 +120,61 @@ public class ComplaintService implements IService<Complaint> {
         return null; // Return null if no complaint with the given ID is found
     }
 
+
+    public List<Complaint> search(String titleKeyword, String locationKeyword, String statusKeyword) throws SQLException {
+        List<Complaint> searchResults = new ArrayList<>();
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+
+        try {
+            String query = "SELECT * FROM complaint WHERE title LIKE ? AND location LIKE ? AND status LIKE ?";
+            statement = con.prepareStatement(query);
+            statement.setString(1, "%" + titleKeyword + "%");
+            statement.setString(2, "%" + locationKeyword + "%");
+            statement.setString(3, "%" + statusKeyword + "%");
+
+            resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                int complaintId = resultSet.getInt("complaint_id");
+                String title = resultSet.getString("title");
+                String description = resultSet.getString("description");
+                String category = resultSet.getString("category");
+                String location = resultSet.getString("location");
+                String status = resultSet.getString("status");
+                java.util.Date datePosted = resultSet.getDate("date_posted");
+                String user = resultSet.getString("user");
+
+                Complaint complaint = new Complaint(complaintId, title, description, category, location, status, datePosted, user);
+                searchResults.add(complaint);
+            }
+        } finally {
+            if (resultSet != null) {
+                resultSet.close();
+            }
+            if (statement != null) {
+                statement.close();
+            }
+        }
+
+        return searchResults;
+    }
+    public void sort(List<Complaint> complaints, String sortBy) {
+        switch (sortBy.toLowerCase()) {
+            case "date posted":
+                // Sort by date posted
+                Collections.sort(complaints, Comparator.comparing(Complaint::getDatePosted));
+                break;
+            case "location":
+                // Sort by location
+                Collections.sort(complaints, Comparator.comparing(Complaint::getLocation));
+                break;
+            case "status":
+                // Sort by status
+                Collections.sort(complaints, Comparator.comparing(Complaint::getStatus));
+                break;
+
+        }
+    }
 }
+

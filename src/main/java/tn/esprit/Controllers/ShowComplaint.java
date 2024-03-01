@@ -10,15 +10,17 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import tn.esprit.entities.Complaint;
 import tn.esprit.services.ComplaintService;
-
+import javafx.scene.control.ComboBox;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ShowComplaint {
 
@@ -45,6 +47,17 @@ public class ShowComplaint {
 
     @FXML
     private TableView<Complaint> tableView;
+    @FXML
+    private TextField titleSearchField;
+
+    @FXML
+    private TextField locationSearchField;
+
+    @FXML
+    private TextField statusSearchField;
+    @FXML
+    private ComboBox<String> sortComboBox;
+
 
     private final ComplaintService complaintService = new ComplaintService();
 
@@ -135,6 +148,31 @@ public class ShowComplaint {
         }
     }
 
+    @FXML
+    private void handleSearch(ActionEvent event) {
+        String titleKeyword = titleSearchField.getText().trim();
+        String locationKeyword = locationSearchField.getText().trim();
+        String statusKeyword = statusSearchField.getText().trim();
+
+        try {
+            ComplaintService complaintService = new ComplaintService();
+            List<Complaint> complaints = complaintService.displayList(); // Get the list of all complaints
+
+            // Filter the list of complaints based on the provided criteria
+            List<Complaint> searchResults = complaints.stream()
+                    .filter(complaint -> titleKeyword.isEmpty() || complaint.getTitle().contains(titleKeyword))
+                    .filter(complaint -> locationKeyword.isEmpty() || complaint.getLocation().contains(locationKeyword))
+                    .filter(complaint -> statusKeyword.isEmpty() || complaint.getStatus().contains(statusKeyword))
+                    .collect(Collectors.toList());
+
+            ObservableList<Complaint> observableList = FXCollections.observableList(searchResults);
+            tableView.setItems(observableList);
+        } catch (SQLException e) {
+            showAlert("Error searching complaints: " + e.getMessage());
+        }
+    }
+
+
     // Method to navigate back to the previous page (AddComplaint.fxml)
     @FXML
     private void previousPage(ActionEvent event) throws IOException {
@@ -142,5 +180,23 @@ public class ShowComplaint {
         tableView.getScene().setRoot(root);
         System.out.println("Returned to the previous page (AddComplaint.fxml)");
     }
-}
 
+    @FXML
+    public void sortComboBox(ActionEvent actionEvent) {
+        String sortBy = sortComboBox.getValue();
+        if (sortBy != null) {
+            try {
+                ComplaintService complaintService = new ComplaintService();
+                List<Complaint> complaints = complaintService.displayList();
+
+                // Create an instance of ComplaintService and call the sort method on that instance
+                complaintService.sort(complaints, sortBy);
+
+                ObservableList<Complaint> observableList = FXCollections.observableList(complaints);
+                tableView.setItems(observableList);
+            } catch (SQLException e) {
+                showAlert("Error sorting complaints: " + e.getMessage());
+            }
+        }
+    }
+}

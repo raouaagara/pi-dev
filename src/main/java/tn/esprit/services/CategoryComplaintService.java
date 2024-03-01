@@ -77,4 +77,23 @@ public class CategoryComplaintService implements IService<CategoryComplaint> {
         }
         return null; // Return null if no category complaint with the given ID is found
     }
+    /*@Override
+    public List<CategoryComplaint> search(String keyword) throws SQLException {
+        String query = "SELECT * FROM `categorycomplaint` WHERE `nameCateg` LIKE ?";
+        PreparedStatement ps = con.prepareStatement(query);
+        ps.setString(1, "%" + keyword + "%");
+        ResultSet res = ps.executeQuery();
+
+        List<CategoryComplaint> searchResults = new ArrayList<>();
+        while (res.next()) {
+            CategoryComplaint cc = new CategoryComplaint(
+                    res.getInt("idCateg"),
+                    res.getString("nameCateg"),
+                    res.getInt("userid")
+            );
+            searchResults.add(cc);
+        }
+        return searchResults;
+    }*/
+
 }
