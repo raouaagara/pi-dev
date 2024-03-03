@@ -8,16 +8,13 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import tn.esprit.entities.Complaint;
 import tn.esprit.services.ComplaintService;
-import javafx.scene.control.ComboBox;
+
 import java.io.File;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
@@ -67,24 +64,20 @@ public class ShowComplaint {
     private ComboBox<String> sortComboBox;
 
     @FXML
-    private TextField SearchField;
-
-
-    @FXML
     private TableColumn<Complaint, ImageView> imageColumn;
 
+    @FXML
+    private Label averageScoreLabel;
 
     private final ComplaintService complaintService = new ComplaintService();
-
-   // private ComplaintIndexer complaintIndexer;
 
 
     @FXML
     void initialize() {
         loadComplaints();
+        showAverageScore();
     }
 
-    // Method to load complaints into TableView
     private void loadComplaints() {
         try {
             List<Complaint> complaints = complaintService.displayList();
@@ -311,6 +304,15 @@ public class ShowComplaint {
             alert.showAndWait();
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    private void showAverageScore() {
+        try {
+            double averageScore = complaintService.calculateAverageScore();
+            averageScoreLabel.setText("Average Score: " + averageScore);
+        } catch (SQLException e) {
+            showAlert("Error calculating average score: " + e.getMessage());
         }
     }
 }

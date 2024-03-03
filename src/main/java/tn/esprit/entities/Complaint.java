@@ -1,13 +1,6 @@
 package tn.esprit.entities;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
-
 public class Complaint {
 
     private int complaintId;
@@ -20,16 +13,9 @@ public class Complaint {
     private String user;
     private String imagePath;
 
+    private int score;
 
-  /*  public Complaint(String title, String description, String category, String location,String user){
-        this.title = title;
-        this.description = description;
-        this.category = category;
-        this.location = location;
-        this.status = status;
-        this.datePosted = datePosted;
-        this.user = user;
-    }*/
+
 
 
     public Complaint(String title, String description, String category, String location, String status, String user) {
@@ -65,6 +51,16 @@ public class Complaint {
 
     public Complaint() {
 
+    }
+
+    public Complaint(String title, String description, String category, String location, String status, String user, int score) {
+        this.title = title;
+        this.description = description;
+        this.category = category;
+        this.location = location;
+        this.status = status;
+        this.user = user;
+        this.score = score;
     }
 
 
@@ -136,14 +132,10 @@ public class Complaint {
 
     public void setImagePath(String imagePath) {this.imagePath = imagePath;}
 
-    /*public int getComplaintCreatorScore() {
-        return complaintCreatorScore;
-    }
+    public int getScore() {return score;}
 
-    public void setComplaintCreatorScore(int complaintCreatorScore) {
-        this.complaintCreatorScore = complaintCreatorScore;
-    }
-*/
+    public void setScore(int score) {this.score = score;}
+
     @Override
     public String toString() {
         return "Complaint{" +
@@ -156,7 +148,6 @@ public class Complaint {
                 ", datePosted=" + datePosted +
                 ", user='" + user + '\'' +
                 ", imagePath=" + imagePath +
-              //  ", complaintCreatorScore=" + complaintCreatorScore +
                 '}';
     }
 

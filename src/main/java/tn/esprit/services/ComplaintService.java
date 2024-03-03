@@ -152,7 +152,7 @@ public class ComplaintService implements IService<Complaint> {
                 String imagePath = resultSet.getString("imagePath");
 
 
-                Complaint complaint = new Complaint(complaintId, title, description, category, location, status, datePosted, user,imagePath);
+                Complaint complaint = new Complaint(complaintId, title, description, category, location, status, datePosted, user, imagePath);
                 searchResults.add(complaint);
             }
         } finally {
@@ -166,6 +166,7 @@ public class ComplaintService implements IService<Complaint> {
 
         return searchResults;
     }
+
     public void sort(List<Complaint> complaints, String sortBy) {
         switch (sortBy.toLowerCase()) {
             case "date posted":
@@ -182,6 +183,24 @@ public class ComplaintService implements IService<Complaint> {
                 break;
 
         }
+    }
+
+    public double calculateAverageScore() throws SQLException {
+        String query = "SELECT SUM(score) AS totalScore, COUNT(*) AS totalCount FROM complaint";
+        PreparedStatement ps = con.prepareStatement(query);
+        ResultSet res = ps.executeQuery();
+
+        if (res.next()) {
+            int totalScore = res.getInt("totalScore");
+            int totalCount = res.getInt("totalCount");
+
+            if (totalCount > 0) {
+                return (double) totalScore / totalCount;
+            } else {
+                return 0; // Return 0 if there are no complaints
+            }
+        }
+        return 0;
     }
 }
 
