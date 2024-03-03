@@ -1,4 +1,5 @@
 package tn.esprit.entities;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -17,9 +18,7 @@ public class Complaint {
     private String status;
    private Date datePosted;
     private String user;
-
     private String imagePath;
-    //private int complaintCreatorScore;
 
 
   /*  public Complaint(String title, String description, String category, String location,String user){

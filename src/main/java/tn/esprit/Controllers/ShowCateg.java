@@ -2,6 +2,7 @@ package tn.esprit.Controllers;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -9,9 +10,15 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.data.category.DefaultCategoryDataset;
 import tn.esprit.entities.Complaint;
 import tn.esprit.services.ComplaintService;
 
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.AnchorPane;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
@@ -44,11 +51,15 @@ public class ShowCateg {
     @FXML
     private TableView<Complaint> tableView;
 
+    @FXML
+    private AnchorPane chartAnchorPane;
+
     private final ComplaintService complaintService = new ComplaintService();
 
     @FXML
     void initialize() {
         loadComplaints();
+        //generateBarChart();
     }
 
     // Method to load complaints into TableView

@@ -42,9 +42,7 @@
             </image>
         </ImageView>
 
-
+        <!-- AnchorPane for displaying the chart -->
+        <AnchorPane fx:id="chartAnchorPane" layoutX="760.0" layoutY="187.0" prefHeight="399.0" prefWidth="200.0" />
     </children>
 </AnchorPane>
-
-
-

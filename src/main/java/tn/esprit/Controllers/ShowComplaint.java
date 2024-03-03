@@ -1,6 +1,5 @@
 package tn.esprit.Controllers;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -314,24 +313,4 @@ public class ShowComplaint {
             e.printStackTrace();
         }
     }
-
-   /* public void initialize() {
-        // Initialize the ComplaintIndexer
-        complaintIndexer = new ComplaintIndexer();
-    }
-    public void handleSearch2(ActionEvent actionEvent) {
-        // Get the search query from the search field
-        String query = SearchField.getText();
-
-        try {
-            // Perform the search using ComplaintIndexer
-            List<Complaint> searchResults = complaintIndexer.search(query);
-
-            // Update the table view with search results
-            tableView.getItems().setAll(searchResults);
-        } catch (IOException | ParseException e) {
-            e.printStackTrace();
-            // Handle exceptions
-        }
-    }*/
 }
