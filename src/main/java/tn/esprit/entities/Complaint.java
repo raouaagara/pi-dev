@@ -1,5 +1,4 @@
 package tn.esprit.entities;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -16,45 +15,23 @@ public class Complaint {
     private String category;
     private String location;
     private String status;
-    //private final InputStream image;
    private Date datePosted;
     private String user;
+
+    private String imagePath;
     //private int complaintCreatorScore;
 
 
-    public Complaint(String title, String description, String category, String location,String user){
+  /*  public Complaint(String title, String description, String category, String location,String user){
         this.title = title;
         this.description = description;
         this.category = category;
         this.location = location;
         this.status = status;
-        //this.datePosted = datePosted;
-        this.user = user;
-    }
-
-  /*  public Complaint(int complaintId,String title, String description, String category, String location,
-                     String status, InputStream image, Date datePosted, String user, int complaintCreatorScore) {
-        this.complaintId= complaintId;
-        this.title = title;
-        this.description = description;
-        this.category = category;
-        this.location = location;
-        this.status = status;
-       // this.image = image;
         this.datePosted = datePosted;
         this.user = user;
-        this.complaintCreatorScore = complaintCreatorScore;
     }*/
-  public Complaint(int complaintId,String title, String description, String category, String location, String status, Date datePosted, String user) {
-      this.complaintId = complaintId;
-      this.title = title;
-      this.description = description;
-      this.category = category;
-      this.location = location;
-      this.status = status;
-      this.datePosted = datePosted;
-      this.user = user;
-  }
+
 
     public Complaint(String title, String description, String category, String location, String status, String user) {
         this.title = title;
@@ -65,6 +42,31 @@ public class Complaint {
         this.user = user;
     }
 
+
+    public Complaint(int complaintId,String title, String description, String category, String location, String status,Date datePosted, String user, String imagePath) {
+       this.complaintId=complaintId;
+        this.title = title;
+        this.description = description;
+        this.category = category;
+        this.location = location;
+        this.status = status;
+        this.datePosted = datePosted;
+        this.user = user;
+        this.imagePath = imagePath;
+    }
+    public Complaint(String title, String description, String category, String location, String status,String user, String imagePath) {
+        this.title = title;
+        this.description = description;
+        this.category = category;
+        this.location = location;
+        this.status = status;
+        this.user = user;
+        this.imagePath = imagePath;
+    }
+
+    public Complaint() {
+
+    }
 
 
     public int getComplaintId() {
@@ -115,10 +117,6 @@ public class Complaint {
         this.status = status;
     }
 
-   /* public InputStream getImage() {
-        return image;
-    }
-*/
     public Date getDatePosted() {
         return datePosted;
     }
@@ -134,6 +132,10 @@ public class Complaint {
     public void setUser(String user) {
         this.user = user;
     }
+
+    public String getImagePath() {return imagePath;}
+
+    public void setImagePath(String imagePath) {this.imagePath = imagePath;}
 
     /*public int getComplaintCreatorScore() {
         return complaintCreatorScore;
@@ -152,11 +154,12 @@ public class Complaint {
                 ", category='" + category + '\'' +
                 ", location='" + location + '\'' +
                 ", status='" + status + '\'' +
-             //   ", image=" + image +
                 ", datePosted=" + datePosted +
                 ", user='" + user + '\'' +
+                ", imagePath=" + imagePath +
               //  ", complaintCreatorScore=" + complaintCreatorScore +
                 '}';
     }
-    }
+
+}
 

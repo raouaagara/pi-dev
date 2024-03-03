@@ -7,9 +7,14 @@ import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextArea;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import tn.esprit.entities.Complaint;
 import tn.esprit.services.ComplaintService;
 
+import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.regex.Pattern;
@@ -36,6 +41,9 @@ public class AddComplaint {
     @FXML
     private TextArea userTextArea;
 
+    @FXML
+    private ImageView uploadedImageView; // ImageView for displaying the uploaded image
+
     // Method to handle adding the complaint
     @FXML
     private void add(ActionEvent event) {
@@ -60,9 +68,9 @@ public class AddComplaint {
         }
 
         try {
-            // Create and save the complaint using the provided data
+            String imagePath = uploadedImageView.getImage() != null ? uploadedImageView.getImage().getUrl() : null;
 
-            Complaint newComplaint = new Complaint(title, description, category, location, status, user);
+            Complaint newComplaint = new Complaint(title, description, category, location, status,user,imagePath);
             complaintService.add(newComplaint);
 
             // Show confirmation message
@@ -74,14 +82,6 @@ public class AddComplaint {
             // Show error message if an error occurs
             showAlert("Error adding complaint: " + e.getMessage());
         }
-    }
-
-    // Method to navigate to the next page
-    @FXML
-    private void NextPage(ActionEvent event) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/ShowComplaint.fxml"));
-        titleTextArea.getScene().setRoot(root);
-        System.out.println("Moved to the next page");
     }
 
     // Method to show an alert with the given message
@@ -106,4 +106,30 @@ public class AddComplaint {
     private boolean isValidTitle(String title) {
         return Pattern.matches("[a-zA-Z0-9\\s]+", title);
     }
+
+    @FXML
+    void uploadImage(ActionEvent event) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg")
+        );
+        File selectedFile = fileChooser.showOpenDialog(((Stage) titleTextArea.getScene().getWindow()));
+        if (selectedFile != null) {
+            // Set the image path in your Complaint object
+            Complaint complaint = new Complaint();
+            complaint.setImagePath(selectedFile.toURI().toString());
+
+            // Display the selected image in the UI
+            Image image = new Image(selectedFile.toURI().toString());
+            uploadedImageView.setImage(image);
+        }
+    }
+
+    @FXML
+    private void NextPage(ActionEvent event) throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("/ShowComplaint.fxml"));
+        titleTextArea.getScene().setRoot(root);
+        System.out.println("Moved to the next page");
+    }
+
 }

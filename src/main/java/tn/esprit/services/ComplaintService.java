@@ -1,4 +1,5 @@
 package tn.esprit.services;
+import java.io.IOException;
 import java.sql.ResultSet;
 import tn.esprit.entities.Complaint;
 import tn.esprit.utils.MyDatabase;
@@ -10,7 +11,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.sql.*;
+
 
 public class ComplaintService implements IService<Complaint> {
 
@@ -33,13 +34,13 @@ public class ComplaintService implements IService<Complaint> {
             throw new IllegalArgumentException("Please fill in all fields");
         }
 
-        // Additional validation for description length (maximum length of 200 characters)
-        if (complaint.getDescription().length() > 200) {
-            throw new IllegalArgumentException("Description cannot exceed 200 characters");
+        if (complaint.getDescription().length() > 2000) {
+            throw new IllegalArgumentException("Description cannot exceed 2000 characters");
         }
 
         // Add the complaint to the database
-        String query = "INSERT INTO `complaint`(`title`, `description`, `category`, `location`, `status`, `user`) VALUES (?,?,?,?,?,?)";
+        Connection con = MyDatabase.getInstance().getCon(); // Access con from the instance
+        String query = "INSERT INTO `complaint`(`title`, `description`, `category`, `location`, `status`, `user`,`imagePath`) VALUES (?,?,?,?,?,?,?)";
         PreparedStatement ps = con.prepareStatement(query);
         ps.setString(1, complaint.getTitle());
         ps.setString(2, complaint.getDescription());
@@ -47,6 +48,7 @@ public class ComplaintService implements IService<Complaint> {
         ps.setString(4, complaint.getLocation());
         ps.setString(5, complaint.getStatus());
         ps.setString(6, complaint.getUser());
+        ps.setString(7, complaint.getImagePath());
         ps.executeUpdate();
         System.out.println("Complaint added!");
     }
@@ -54,7 +56,7 @@ public class ComplaintService implements IService<Complaint> {
 
     @Override
     public void update(Complaint complaint) throws SQLException {
-        String query = "UPDATE `complaint` SET `title`=?, `description`=?, `category`=?, `location`=?, `status`=?, `datePosted`=?, `user`=? WHERE `complaintId`=?";
+        String query = "UPDATE `complaint` SET `title`=?, `description`=?, `category`=?, `location`=?, `status`=?, `datePosted`=?, `user`=?,`imagePath`=? WHERE `complaintId`=?";
         PreparedStatement ps = con.prepareStatement(query);
         ps.setString(1, complaint.getTitle());
         ps.setString(2, complaint.getDescription());
@@ -63,7 +65,8 @@ public class ComplaintService implements IService<Complaint> {
         ps.setString(5, complaint.getStatus());
         ps.setDate(6, new java.sql.Date(complaint.getDatePosted().getTime()));
         ps.setString(7, complaint.getUser());
-        ps.setInt(8, complaint.getComplaintId());
+        ps.setString(8, complaint.getImagePath());
+        ps.setInt(9, complaint.getComplaintId());
         ps.executeUpdate();
         System.out.println("Complaint updated!");
     }
@@ -92,7 +95,8 @@ public class ComplaintService implements IService<Complaint> {
                     res.getString("location"),
                     res.getString("status"),
                     res.getDate("datePosted"),
-                    res.getString("user")
+                    res.getString("user"),
+                    res.getString("imagePath")
             );
             complaints.add(c);
         }
@@ -114,7 +118,8 @@ public class ComplaintService implements IService<Complaint> {
                     res.getString("location"),
                     res.getString("status"),
                     res.getDate("datePosted"),
-                    res.getString("user")
+                    res.getString("user"),
+                    res.getString("imagePath")
             );
         }
         return null; // Return null if no complaint with the given ID is found
@@ -144,8 +149,10 @@ public class ComplaintService implements IService<Complaint> {
                 String status = resultSet.getString("status");
                 java.util.Date datePosted = resultSet.getDate("date_posted");
                 String user = resultSet.getString("user");
+                String imagePath = resultSet.getString("imagePath");
 
-                Complaint complaint = new Complaint(complaintId, title, description, category, location, status, datePosted, user);
+
+                Complaint complaint = new Complaint(complaintId, title, description, category, location, status, datePosted, user,imagePath);
                 searchResults.add(complaint);
             }
         } finally {
