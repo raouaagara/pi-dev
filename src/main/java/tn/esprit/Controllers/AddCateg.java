@@ -55,4 +55,11 @@ public class AddCateg {
             e.printStackTrace();
         }
     }
+
+    public void showComplaints(ActionEvent actionEvent)throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("/ShowCateg.fxml"));
+        userIdTextField.getScene().setRoot(root);
+        System.out.println("Moved to the next page");
+    }
+
 }

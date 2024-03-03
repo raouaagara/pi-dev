@@ -48,6 +48,8 @@
 
     <Label layoutX="35.0" layoutY="451.0" styleClass="label" text="User:" />
     <TextArea fx:id="userTextArea" layoutX="162.0" layoutY="431.0" prefHeight="55.0" prefWidth="400.0" styleClass="text-area" />
+    <Button fx:id="uploadImageButton" layoutX="25.0" layoutY="525.0" onAction="#uploadImage" prefHeight="47.0" prefWidth="148.0" text="Upload Image" />
+    <ImageView fx:id="uploadedImageView" fitHeight="240.0" fitWidth="251.0" layoutX="627.0" layoutY="53.0" />
 
     <!-- Button for adding the complaint -->
     <Button layoutX="441.0" layoutY="541.0" mnemonicParsing="false" onAction="#add" text="Add Complaint" />

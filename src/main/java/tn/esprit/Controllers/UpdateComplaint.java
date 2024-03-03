@@ -1,12 +1,19 @@
 package tn.esprit.Controllers;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextArea;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import tn.esprit.entities.Complaint;
 import tn.esprit.services.ComplaintService;
+
+import java.io.File;
 import java.sql.SQLException;
 import java.util.regex.Pattern;
 
@@ -32,7 +39,11 @@ public class UpdateComplaint {
     @FXML
     private Button updateButton;
 
+    @FXML
+    private ImageView uploadedImageView;
+
     private Complaint selectedComplaint;
+
     private ComplaintService complaintService;
 
     public UpdateComplaint() {
@@ -48,6 +59,7 @@ public class UpdateComplaint {
         String location = locationTextArea.getText();
         String status = statusComboBox.getValue(); // Retrieve value from ComboBox
         String user = userTextArea.getText();
+        String imagePath = selectedComplaint.getImagePath();
 
         // Check if any of the fields are empty
         if (title.isEmpty() || description.isEmpty() || category == null || location.isEmpty() || status == null) {
@@ -67,9 +79,11 @@ public class UpdateComplaint {
                 selectedComplaint.setLocation(location);
                 selectedComplaint.setStatus(status);
                 selectedComplaint.setUser(user);
+                selectedComplaint.setImagePath(imagePath);
 
-                // Update the complaint in the database
+// Update the complaint in the database
                 complaintService.update(selectedComplaint);
+
 
                 // Close the update window after successful update
                 updateButton.getScene().getWindow().hide();
@@ -78,6 +92,7 @@ public class UpdateComplaint {
             }
         }
     }
+
 
     public void setComplaint(Complaint selectedComplaint) {
         this.selectedComplaint = selectedComplaint;
@@ -89,6 +104,11 @@ public class UpdateComplaint {
             locationTextArea.setText(selectedComplaint.getLocation());
             statusComboBox.setValue(selectedComplaint.getStatus());
             userTextArea.setText(selectedComplaint.getUser());
+
+            if (selectedComplaint.getImagePath() != null && !selectedComplaint.getImagePath().isEmpty()) {
+                Image image = new Image(selectedComplaint.getImagePath());
+                uploadedImageView.setImage(image);
+            }
         }
     }
 
@@ -103,5 +123,22 @@ public class UpdateComplaint {
         alert.setTitle("Error");
         alert.setContentText(message);
         alert.showAndWait();
+    }
+
+    public void uploadImage(ActionEvent actionEvent) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg")
+        );
+        File selectedFile = fileChooser.showOpenDialog(((Stage) titleTextArea.getScene().getWindow()));
+        if (selectedFile != null) {
+            // Set the image path in your Complaint object
+            Complaint complaint = new Complaint();
+            complaint.setImagePath(selectedFile.toURI().toString());
+
+            // Display the selected image in the UI
+            Image image = new Image(selectedFile.toURI().toString());
+            uploadedImageView.setImage(image);
+        }
     }
 }

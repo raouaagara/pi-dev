@@ -1,5 +1,7 @@
 package tn.esprit.Controllers;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -12,10 +14,16 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import tn.esprit.entities.Complaint;
 import tn.esprit.services.ComplaintService;
 import javafx.scene.control.ComboBox;
+import java.io.File;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Date;
@@ -55,11 +63,22 @@ public class ShowComplaint {
 
     @FXML
     private TextField statusSearchField;
+
     @FXML
     private ComboBox<String> sortComboBox;
 
+    @FXML
+    private TextField SearchField;
+
+
+    @FXML
+    private TableColumn<Complaint, ImageView> imageColumn;
+
 
     private final ComplaintService complaintService = new ComplaintService();
+
+   // private ComplaintIndexer complaintIndexer;
+
 
     @FXML
     void initialize() {
@@ -80,6 +99,7 @@ public class ShowComplaint {
             statusColumn.setCellValueFactory(new PropertyValueFactory<>("status"));
             userColumn.setCellValueFactory(new PropertyValueFactory<>("user"));
             datePostedColumn.setCellValueFactory(new PropertyValueFactory<>("datePosted"));
+            imageColumn.setCellValueFactory(new PropertyValueFactory<>("imagePath"));
         } catch (SQLException e) {
             showAlert("Error loading complaints: " + e.getMessage());
         }
@@ -199,4 +219,119 @@ public class ShowComplaint {
             }
         }
     }
+
+    public void generatePDF(ActionEvent actionEvent) {
+        // Get the list of complaints from your table view
+        List<Complaint> complaints = tableView.getItems();
+
+        // Create a new PDF document
+        try (PDDocument document = new PDDocument()) {
+            PDPage page = new PDPage();
+            document.addPage(page);
+
+            // Create a new content stream for adding content to the PDF
+            try (PDPageContentStream contentStream = new PDPageContentStream(document, page)) {
+                contentStream.setFont(PDType1Font.HELVETICA_BOLD, 4);
+                contentStream.beginText();
+                contentStream.newLineAtOffset(20, 800);
+                contentStream.showText("List of Complaints:");
+                contentStream.endText();
+
+                // Initialize table column positions
+                int xTitle = 20;
+                int xDescription = 80;
+                int xCategory = 140;
+                int xLocation = 200;
+                int xStatus = 260;
+                int xDatePosted = 320;
+                int xUser = 380;
+                int xImage = 440;
+
+                int y = 780; // Initial y-coordinate for complaint content
+
+                // Add table headers
+                contentStream.beginText();
+                contentStream.setFont(PDType1Font.HELVETICA_BOLD, 4);
+                contentStream.newLineAtOffset(xTitle, y);
+                contentStream.showText("Title");
+                contentStream.newLineAtOffset(xDescription - xTitle, 0);
+                contentStream.showText("Description");
+                contentStream.newLineAtOffset(xCategory - xDescription, 0);
+                contentStream.showText("Category");
+                contentStream.newLineAtOffset(xLocation - xCategory, 0);
+                contentStream.showText("Location");
+                contentStream.newLineAtOffset(xStatus - xLocation, 0);
+                contentStream.showText("Status");
+                contentStream.newLineAtOffset(xDatePosted - xStatus, 0);
+                contentStream.showText("Date Posted");
+                contentStream.newLineAtOffset(xUser - xDatePosted, 0);
+                contentStream.showText("User");
+                contentStream.newLineAtOffset(xImage - xUser, 0);
+                contentStream.showText("Image");
+                contentStream.endText();
+
+                y -= 10; // Adjust y-coordinate for the next complaint
+
+                // Add each complaint to the PDF table
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                for (Complaint complaint : complaints) {
+                    contentStream.beginText();
+                    contentStream.setFont(PDType1Font.HELVETICA, 4);
+                    contentStream.newLineAtOffset(xTitle, y);
+                    contentStream.showText(complaint.getTitle());
+                    contentStream.newLineAtOffset(xDescription - xTitle, 0);
+                    contentStream.showText(complaint.getDescription());
+                    contentStream.newLineAtOffset(xCategory - xDescription, 0);
+                    contentStream.showText(complaint.getCategory());
+                    contentStream.newLineAtOffset(xLocation - xCategory, 0);
+                    contentStream.showText(complaint.getLocation());
+                    contentStream.newLineAtOffset(xStatus - xLocation, 0);
+                    contentStream.showText(complaint.getStatus());
+                    contentStream.newLineAtOffset(xDatePosted - xStatus, 0);
+                    contentStream.showText(dateFormat.format(complaint.getDatePosted()));
+                    contentStream.newLineAtOffset(xUser - xDatePosted, 0);
+                    contentStream.showText(complaint.getUser());
+                    contentStream.newLineAtOffset(xImage - xUser, 0);
+                    contentStream.showText(complaint.getImagePath());
+                    contentStream.endText();
+
+                    y -= 10; // Adjust y-coordinate for the next complaint
+                }
+            }
+
+            // Save the PDF document to a file
+            File file = new File("complaints.pdf");
+            document.save(file);
+            System.out.println("PDF saved to: " + file.getAbsolutePath());
+
+            // Show alert
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("PDF Generated");
+            alert.setHeaderText(null);
+            alert.setContentText("PDF saved to: " + file.getAbsolutePath());
+            alert.showAndWait();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+   /* public void initialize() {
+        // Initialize the ComplaintIndexer
+        complaintIndexer = new ComplaintIndexer();
+    }
+    public void handleSearch2(ActionEvent actionEvent) {
+        // Get the search query from the search field
+        String query = SearchField.getText();
+
+        try {
+            // Perform the search using ComplaintIndexer
+            List<Complaint> searchResults = complaintIndexer.search(query);
+
+            // Update the table view with search results
+            tableView.getItems().setAll(searchResults);
+        } catch (IOException | ParseException e) {
+            e.printStackTrace();
+            // Handle exceptions
+        }
+    }*/
 }

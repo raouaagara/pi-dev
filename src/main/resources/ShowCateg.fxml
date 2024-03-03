@@ -1,25 +1,50 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.String?>
+<?import javafx.collections.FXCollections?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="450.0" prefWidth="600.0" stylesheets="@AddComplaint.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.Controllers.ShowComplaint">
+<AnchorPane prefHeight="608.0" prefWidth="970.0" stylesheets="@AddComplaint.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.Controllers.ShowComplaint">
     <children>
-        <!-- Buttons for delete and update -->
-        <Button layoutX="50.0" layoutY="20.0" mnemonicParsing="false" onAction="#deleteAction" text="Delete" />
+        <!-- Button with delete icon -->
+        <Button layoutX="203.0" layoutY="129.0" mnemonicParsing="false" onAction="#deleteAction" prefHeight="32.0" prefWidth="44.0" />
+
+        <!-- Buttons for update and previous page -->
+        <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#previousPage" prefHeight="32.0" prefWidth="50.0" />
+        <!-- <Button layoutX="960.0" layoutY="14.0" mnemonicParsing="false" onAction="#handleSearch2" text="Search" />-->
 
         <!-- TableView -->
-        <TableView fx:id="tableView" layoutX="50.0" layoutY="50.0" prefHeight="500.0" prefWidth="700.0">
+        <TableView fx:id="tableView" layoutX="39.0" layoutY="187.0" prefHeight="399.0" prefWidth="700.0">
             <columns>
-                <TableColumn fx:id="categoryNameColumn" prefWidth="200.0" text="Category Name" />
-                <TableColumn fx:id="categoryDescriptionColumn" prefWidth="200.0" text="Category Description" />
-                <TableColumn fx:id="userIdColumn" prefWidth="100.0" text="User ID" />
+                <TableColumn fx:id="titleColumn" prefWidth="200.0" text="Title" />
+                <TableColumn fx:id="descriptionColumn" prefWidth="200.0" text="Description" />
+                <TableColumn fx:id="categoryColumn" prefWidth="100.0" text="Category" />
+                <TableColumn fx:id="locationColumn" prefWidth="100.0" text="Location" />
+                <TableColumn fx:id="statusColumn" prefWidth="100.0" text="Status" />
+                <TableColumn fx:id="datePostedColumn" prefWidth="100.0" text="Date Posted" />
+                <TableColumn fx:id="userColumn" prefWidth="100.0" text="User" />
+                <TableColumn fx:id="imageColumn" prefWidth="100.0" text="Image" />
             </columns>
         </TableView>
-        <Button layoutX="153.0" layoutY="14.0" onAction="#updateSelectedComplaint" text="Update" />
+
+        <!-- Delete icon -->
+        <ImageView fitHeight="25.0" fitWidth="26.0" layoutX="212.0" layoutY="133.0">
+            <image>
+                <Image url="@delete.png" />
+            </image>
+        </ImageView>
+
+
     </children>
 </AnchorPane>
+
 
 

@@ -12,7 +12,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="600.0" prefWidth="956.0" stylesheets="@AddComplaint.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.Controllers.ShowComplaint">
+<AnchorPane prefHeight="608.0" prefWidth="970.0" stylesheets="@AddComplaint.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.Controllers.ShowComplaint">
     <children>
         <!-- Button with delete icon -->
         <Button layoutX="203.0" layoutY="129.0" mnemonicParsing="false" onAction="#deleteAction" prefHeight="32.0" prefWidth="44.0" />
@@ -20,11 +20,14 @@
         <!-- Buttons for update and previous page -->
         <Button layoutX="58.0" layoutY="129.0" mnemonicParsing="false" onAction="#updateSelectedComplaint" text="Update" />
         <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#previousPage" prefHeight="32.0" prefWidth="50.0" />
-
+        <Button fx:id="generatePDFButton" layoutX="723.0" layoutY="53.0" mnemonicParsing="false" onAction="#generatePDF" text="Generate PDF" />
+       <!-- <Button layoutX="960.0" layoutY="14.0" mnemonicParsing="false" onAction="#handleSearch2" text="Search" />-->
         <!-- Text fields for search -->
         <TextField fx:id="titleSearchField" layoutX="408.0" layoutY="131.0" prefHeight="45.0" prefWidth="157.0" promptText="Search by Title" />
         <TextField fx:id="locationSearchField" layoutX="408.0" layoutY="54.0" prefHeight="45.0" prefWidth="157.0" promptText="Search by Location" />
         <TextField fx:id="statusSearchField" layoutX="408.0" layoutY="92.0" prefHeight="45.0" prefWidth="157.0" promptText="Search by Status" />
+        <TextField fx:id="searchField" layoutX="408.0" layoutY="4.0" prefHeight="25.0" prefWidth="157.0" promptText="Search" />
+
 
         <!-- Sort icon -->
         <ImageView fitHeight="23.0" fitWidth="26.0" layoutX="593.0" layoutY="135.0">
@@ -43,6 +46,7 @@
                 <TableColumn fx:id="statusColumn" prefWidth="100.0" text="Status" />
                 <TableColumn fx:id="datePostedColumn" prefWidth="100.0" text="Date Posted" />
                 <TableColumn fx:id="userColumn" prefWidth="100.0" text="User" />
+                <TableColumn fx:id="imageColumn" prefWidth="100.0" text="Image" />
             </columns>
         </TableView>
 
@@ -77,5 +81,15 @@
               </image>
           </ImageView>
       <TextArea layoutX="86.0" layoutY="14.0" prefHeight="45.0" prefWidth="180.0" text="List of Complaints :" />
+      <ImageView fitHeight="45.0" fitWidth="36.0" layoutX="861.0" layoutY="54.0">
+         <image>
+            <Image url="@../../../../../Downloads/pdf.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="54.0" fitWidth="50.0" layoutX="861.0" layoutY="50.0">
+         <image>
+            <Image url="@pdf.png" />
+         </image>
+      </ImageView>
     </children>
 </AnchorPane>

@@ -6,6 +6,7 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextArea?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 
 <AnchorPane prefHeight="714.0" prefWidth="951.0" stylesheets="@AddComplaint.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.Controllers.UpdateComplaint">
@@ -45,6 +46,10 @@
 
     <Label layoutX="35.0" layoutY="520.0" styleClass="label" text="User:" />
     <TextArea fx:id="userTextArea" layoutX="159.0" layoutY="509.0" prefHeight="55.0" prefWidth="400.0" styleClass="text-area" />
+
+    <Button fx:id="uploadImageButton" layoutX="17.0" layoutY="642.0" onAction="#uploadImage" prefHeight="47.0" prefWidth="148.0" text="Upload Image" />
+    <ImageView fx:id="uploadedImageView" fitHeight="249.0" fitWidth="307.0" layoutX="627.0" layoutY="53.0" />
+
 
     <Button fx:id="updateButton" layoutX="323.0" layoutY="642.0" mnemonicParsing="false" onAction="#handleUpdateButtonAction" styleClass="button" text="Update" />
 
