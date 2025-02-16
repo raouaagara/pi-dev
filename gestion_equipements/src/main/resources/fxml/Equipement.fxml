@@ -1,0 +1,67 @@
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns:fx="http://javafx.com/javafx" fx:controller="main.controllers.Controllereq">
+
+    <!-- Contenu principal -->
+    <center>
+        <VBox alignment="CENTER" spacing="20">
+
+            <!-- Titre -->
+            <Label text="Gestion des équipements" style="-fx-font-size: 18px; -fx-text-fill: #014aad;"/>
+
+            <!-- TableView pour afficher la liste des équipements -->
+            <TableView fx:id="tableEquipements" prefHeight="200" prefWidth="600">
+                <columns>
+                    <TableColumn text="ID" fx:id="colId"/>
+                    <TableColumn text="Nom" fx:id="colNom"/>
+                    <TableColumn text="Catégorie" fx:id="colCategorie"/>
+                    <TableColumn text="Prix" fx:id="colPrix"/>
+                    <TableColumn text="Disponibilité" fx:id="colDisponibilite"/>
+                </columns>
+            </TableView>
+
+            <!-- Formulaire -->
+            <GridPane fx:id="gridPane" alignment="CENTER" hgap="15" vgap="15"
+                      style="-fx-padding: 25; -fx-background-color: #ffffff;
+                             -fx-border-color: #014aad; -fx-border-width: 3;">
+                <Label text="Nom :" GridPane.columnIndex="0" GridPane.rowIndex="0" style="-fx-text-fill: #014aad;"/>
+                <TextField fx:id="name" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+
+                <Label text="Description :" GridPane.columnIndex="0" GridPane.rowIndex="1" style="-fx-text-fill: #014aad;"/>
+                <TextField fx:id="description" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+
+                <Label text="Catégorie :" GridPane.columnIndex="0" GridPane.rowIndex="2" style="-fx-text-fill: #014aad;"/>
+                <ComboBox fx:id="categoryComboBox" promptText="Sélectionner une catégorie" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+
+                <Label text="Prix :" GridPane.columnIndex="0" GridPane.rowIndex="3" style="-fx-text-fill: #014aad;"/>
+                <TextField fx:id="price" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+
+                <Label text="Image URL :" GridPane.columnIndex="0" GridPane.rowIndex="4" style="-fx-text-fill: #014aad;"/>
+                <TextField fx:id="image" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
+
+                <Label text="Disponibilité :" GridPane.columnIndex="0" GridPane.rowIndex="5" style="-fx-text-fill: #014aad;"/>
+                <CheckBox fx:id="availability" GridPane.columnIndex="1" GridPane.rowIndex="5"/>
+
+                <Label text="Date d'ajout :" GridPane.columnIndex="0" GridPane.rowIndex="6" style="-fx-text-fill: #014aad;"/>
+                <DatePicker fx:id="dateAdded" GridPane.columnIndex="1" GridPane.rowIndex="6"/>
+
+                <Label text="ID Partenaire :" GridPane.columnIndex="0" GridPane.rowIndex="7" style="-fx-text-fill: #014aad;"/>
+                <TextField fx:id="partnerId" GridPane.columnIndex="1" GridPane.rowIndex="7"/>
+            </GridPane>
+
+            <!-- Boutons d'action -->
+            <HBox spacing="10">
+                <Button text="Ajouter" fx:id="saveButton" onAction="#handleAdd"/>
+                <Button fx:id="btnModifier" text="Modifier" onAction="#handleUpdate" />
+
+                <Button fx:id="btnSupprimer" text="Supprimer" onAction="#handleDelete" />
+                <Button text="Trier par Prix Descendant" onAction="#handleSortByPriceDesc"/>
+
+                <Button text="Actualiser" onAction="#loadEquipements"/>
+
+            </HBox>
+
+        </VBox>
+    </center>
+</BorderPane>
