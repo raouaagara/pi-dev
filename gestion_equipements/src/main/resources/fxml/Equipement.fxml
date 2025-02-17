@@ -1,29 +1,20 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane xmlns:fx="http://javafx.com/javafx" fx:controller="main.controllers.Controllereq">
+<BorderPane xmlns:fx="http://javafx.com/javafx" fx:controller="main.controllers.Controllereq" style="-fx-background-color: linear-gradient(to bottom, #00BFFF, #1E90FF, #0000FF);">
 
-    <!-- Contenu principal -->
+    <!-- Titre au centre -->
+    <top>
+        <Label text="Gestion des Équipements" style="-fx-font-size: 30px; -fx-font-family: 'Anton'; -fx-text-fill: #FFFFFF;" BorderPane.alignment="CENTER"/>
+    </top>
+
+    <!-- Conteneur principal en HBox -->
     <center>
-        <VBox alignment="CENTER" spacing="20">
+        <HBox spacing="30" alignment="CENTER" style="-fx-padding: 20px;">
 
-            <!-- Titre -->
-            <Label text="Gestion des équipements" style="-fx-font-size: 18px; -fx-text-fill: #014aad;"/>
-
-            <!-- TableView pour afficher la liste des équipements -->
-            <TableView fx:id="tableEquipements" prefHeight="200" prefWidth="600">
-                <columns>
-                    <TableColumn text="ID" fx:id="colId"/>
-                    <TableColumn text="Nom" fx:id="colNom"/>
-                    <TableColumn text="Catégorie" fx:id="colCategorie"/>
-                    <TableColumn text="Prix" fx:id="colPrix"/>
-                    <TableColumn text="Disponibilité" fx:id="colDisponibilite"/>
-                </columns>
-            </TableView>
-
-            <!-- Formulaire -->
-            <GridPane fx:id="gridPane" alignment="CENTER" hgap="15" vgap="15"
-                      style="-fx-padding: 25; -fx-background-color: #ffffff;
+            <!-- Formulaire à gauche -->
+            <GridPane fx:id="gridPane" hgap="15" vgap="15"
+                      style="-fx-padding: 20px; -fx-background-color: #ffffff;
                              -fx-border-color: #014aad; -fx-border-width: 3;">
                 <Label text="Nom :" GridPane.columnIndex="0" GridPane.rowIndex="0" style="-fx-text-fill: #014aad;"/>
                 <TextField fx:id="name" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
@@ -50,18 +41,33 @@
                 <TextField fx:id="partnerId" GridPane.columnIndex="1" GridPane.rowIndex="7"/>
             </GridPane>
 
-            <!-- Boutons d'action -->
-            <HBox spacing="10">
-                <Button text="Ajouter" fx:id="saveButton" onAction="#handleAdd"/>
-                <Button fx:id="btnModifier" text="Modifier" onAction="#handleUpdate" />
+            <!-- TableView à droite -->
+            <TableView fx:id="tableEquipements" prefHeight="300" prefWidth="600">
+                <columns>
+                    <TableColumn text="ID" fx:id="colId"/>
+                    <TableColumn text="Nom" fx:id="colNom"/>
+                    <TableColumn text="Catégorie" fx:id="colCategorie"/>
+                    <TableColumn text="Prix" fx:id="colPrix"/>
+                    <TableColumn text="Disponibilité" fx:id="colDisponibilite"/>
+                </columns>
+            </TableView>
 
-                <Button fx:id="btnSupprimer" text="Supprimer" onAction="#handleDelete" />
-                <Button text="Trier par Prix Descendant" onAction="#handleSortByPriceDesc"/>
-
-                <Button text="Actualiser" onAction="#loadEquipements"/>
-
-            </HBox>
-
-        </VBox>
+        </HBox>
     </center>
+
+    <!-- Boutons centrés -->
+    <bottom>
+        <HBox spacing="10" alignment="CENTER" style="-fx-padding: 20px;">
+            <Button text="Ajouter" fx:id="saveButton" onAction="#handleAdd" style="-fx-background-color: #D4FC2A; -fx-text-fill: black;"/>
+            <Button fx:id="btnModifier" text="Modifier" onAction="#handleUpdate" style="-fx-background-color: #014AAD; -fx-text-fill: white;"/>
+            <Button fx:id="btnSupprimer" text="Supprimer" onAction="#handleDelete" style="-fx-background-color: #00A859; -fx-text-fill: white;"/>
+            <Button text="Trier par Prix Descendant" onAction="#handleSortByPriceDesc" style="-fx-background-color: #FFFFFF; -fx-text-fill: black;"/>
+            <Button text="Actualiser" onAction="#loadEquipements" style="-fx-background-color: #000000; -fx-text-fill: white;"/>
+            <Button text="Ouvrir Catégories" onAction="#openCategoryView" />
+
+
+        </HBox>
+    </bottom>
+
 </BorderPane>
+

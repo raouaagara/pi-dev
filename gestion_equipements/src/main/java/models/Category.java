@@ -36,6 +36,15 @@ public class Category {
         return icon;
     }
 
+    // 🔹 Setters
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setIcon(String icon) {
+        this.icon = icon;
+    }
+
     // 🔹 Setter pour ID (nécessaire si on récupère l'ID auto-incrémenté)
     public void setId(int id) {
         this.id = id;

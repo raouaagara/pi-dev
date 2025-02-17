@@ -62,4 +62,20 @@ public class CategoryService {
             e.printStackTrace();
         }
     }
+    public void updateCategory(Category category) {
+        String query = "UPDATE category SET name = ?, icon = ? WHERE id = ?";
+
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setString(1, category.getName());
+            stmt.setString(2, category.getIcon());
+            stmt.setInt(3, category.getId());
+
+            int rowsUpdated = stmt.executeUpdate();
+            if (rowsUpdated > 0) {
+                System.out.println("Catégorie mise à jour avec succès !");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }
