@@ -3,8 +3,12 @@ package main.controllers;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
 import models.Category;
 import models.Equipement;
 import services.serviceEquipement;
@@ -197,6 +201,21 @@ public class Controllereq {
         Alert alert = new Alert(type, message, ButtonType.OK);
         alert.setTitle(title);
         alert.showAndWait();
+    }
+    @FXML
+    private void openCategoryView() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/CategoryView.fxml"));
+
+            Parent root = loader.load();
+
+            Stage stage = new Stage();
+            stage.setTitle("Gestion des Catégories");
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
 
