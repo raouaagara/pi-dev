@@ -53,7 +53,7 @@ public class ServiceReclamation {
         }
     }
 
-    public List<Reclamation> recuperer() throws SQLException {
+    public List<Reclamation> recupererAll() throws SQLException {
         String sql = "SELECT r.id, r.title, r.description, e.id as event_id, u.id as user_id FROM reclamation r " +
                 "INNER JOIN event e ON r.event_id = e.id " +
                 "INNER JOIN user u ON r.user_id = u.id";
@@ -80,4 +80,37 @@ public class ServiceReclamation {
         }
         return reclamations;
     }
+
+    public Reclamation recupererParId(int id) throws SQLException {
+        String sql = "SELECT id, title, description, event_id, user_id FROM reclamation WHERE id = ?";
+
+        PreparedStatement ste = cnx.prepareStatement(sql);
+        ste.setInt(1, id);
+        ResultSet rs = ste.executeQuery();
+
+        if (rs.next()) {
+            // Create a basic Reclamation object with only IDs for Event and User
+            Reclamation reclamation = new Reclamation();
+            reclamation.setId(rs.getInt("id"));
+            reclamation.setTitle(rs.getString("title"));
+            reclamation.setDescription(rs.getString("description"));
+
+            // Create minimal Event and User objects with only IDs
+            Event event = new Event();
+            event.setId(rs.getInt("event_id"));
+
+            User user = new User();
+            user.setId(rs.getInt("user_id"));
+
+            // Set the Event and User objects in the Reclamation
+            reclamation.setEvent(event);
+            reclamation.setUser(user);
+
+            return reclamation;
+        } else {
+            return null; // Return null if no reclamation is found with the given ID
+        }
+    }
+
+
 }

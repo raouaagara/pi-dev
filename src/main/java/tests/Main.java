@@ -36,7 +36,7 @@ public class Main {
             serviceReclamation.modifier(1, "Problème corrigé", "L'événement a été bien organisé finalement.");
 
             // Récupérer toutes les réclamations
-            List<Reclamation> reclamations = serviceReclamation.recuperer();
+            List<Reclamation> reclamations = serviceReclamation.recupererAll();
             for (Reclamation r : reclamations) {
                 System.out.println(r);
             }

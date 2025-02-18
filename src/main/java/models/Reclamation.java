@@ -7,12 +7,22 @@ public class Reclamation {
     private Event event;
     private User user;
 
+    public Reclamation(String title, String description, Event event, User user) {
+        this.title = title;
+        this.description = description;
+        this.event = event;
+        this.user = user;
+    }
     public Reclamation(int id, String title, String description, Event event, User user) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.event = event;
         this.user = user;
+    }
+
+    public Reclamation() {
+
     }
 
     public int getId() {
