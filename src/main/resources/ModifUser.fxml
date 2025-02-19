@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.Controllers.ModifierUser">
+    <children>
+        <AnchorPane layoutX="100.0" layoutY="5.0" prefHeight="500.0" prefWidth="400.0">
+            <children>
+                <Label layoutX="94.0" layoutY="110.0" prefHeight="54.0" prefWidth="231.0" text="Modifier User" textFill="#662d60">
+                    <font>
+                        <Font name="Berlin Sans FB" size="39.0" />
+                    </font>
+                </Label>
+                <TextField fx:id="firstname" layoutX="90.0" layoutY="170.0" prefHeight="28.0" prefWidth="220.0" promptText="FirstName..." styleClass="textfield-design">
+                    <font>
+                        <Font size="15.0" />
+                    </font>
+                </TextField>
+                <Button layoutX="159.0" layoutY="412.0" mnemonicParsing="false" onAction="#Update" prefHeight="24.0" prefWidth="83.0" styleClass="button-design" text="Modifier" textFill="WHITE">
+                    <font>
+                        <Font size="15.0" />
+                    </font>
+                </Button>
+                <TextField fx:id="email" layoutX="90.0" layoutY="245.0" prefHeight="28.0" prefWidth="220.0" promptText="Email..." styleClass="textfield-design">
+                    <font>
+                        <Font size="15.0" />
+                    </font>
+                </TextField>
+                <TextField fx:id="idUser" disable="true" layoutX="90.0" layoutY="360.0" prefHeight="28.0" prefWidth="220.0" promptText="ID User ..." styleClass="textfield-design">
+                    <font>
+                        <Font size="15.0" />
+                    </font>
+                </TextField>
+                <TextField fx:id="lastname" layoutX="90.0" layoutY="208.0" prefHeight="28.0" prefWidth="220.0" promptText="LastName ..." styleClass="textfield-design">
+                    <font>
+                        <Font size="15.0" />
+                    </font>
+                </TextField>
+                <TextField fx:id="password" layoutX="91.0" layoutY="283.0" prefHeight="28.0" prefWidth="220.0" promptText="Password..." styleClass="textfield-design">
+                    <font>
+                        <Font size="15.0" />
+                    </font>
+                </TextField>
+                <TextField fx:id="role" layoutX="90.0" layoutY="321.0" prefHeight="28.0" prefWidth="220.0" promptText="Role (ADMIN / CLIENT / PARTNER)..." styleClass="textfield-design">
+                    <font>
+                        <Font size="15.0" />
+                    </font>
+                </TextField>
+                <ImageView fx:id="avatarImageView" fitHeight="100.0" fitWidth="100.0" layoutX="286.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" />
+                <Button fx:id="uploadAvatarButton" layoutX="151.0" layoutY="49.0" onAction="#handleAvatarUpload" text="Choisir Avatar" />
+                <Button fx:id="backButton" layoutX="300.0" layoutY="412.0" mnemonicParsing="false" onAction="#goBack" prefHeight="24.0" prefWidth="83.0" styleClass="button-design" text="Retour" textFill="WHITE">
+                    <font>
+                        <Font size="15.0" />
+                    </font>
+                </Button>
+            </children>
+        </AnchorPane>
+    </children>
+</AnchorPane>
