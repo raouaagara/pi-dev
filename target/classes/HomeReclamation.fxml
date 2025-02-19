@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane prefHeight="800.0" prefWidth="1250.0"
+            xmlns="http://javafx.com/javafx/23.0.1"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="controllers.HomeReclamationController">
+
+    <left>
+        <VBox spacing="20" style="-fx-background-color: #2E3B4E; -fx-padding: 20; -fx-alignment: center;">
+            <ImageView fitHeight="135.0" fitWidth="135.0">
+                <image>
+                    <Image url="@assets/ECO SPORT LOGO.png"/>
+                </image>
+                <VBox.margin>
+                    <Insets bottom="40.0"/>
+                </VBox.margin>
+            </ImageView>
+
+            <Button onAction="#loadAjouterReclamation" prefHeight="50.0" prefWidth="200.0"
+                    style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-size: 14px;"
+                    text="Ajouter Réclamation" />
+
+            <Button onAction="#loadAfficherReclamation" prefHeight="50.0" prefWidth="200.0"
+                    style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-size: 14px;"
+                    text="Mes Réclamations" />
+        </VBox>
+    </left>
+
+    <center>
+        <BorderPane fx:id="contentArea" />
+    </center>
+
+</BorderPane>
