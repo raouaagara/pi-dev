@@ -10,7 +10,7 @@
     <children>
         <Text layoutX="82.0" layoutY="142.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Mes Réclamations" wrappingWidth="550.6731719970703">
             <font>
-                <Font size="21.0" />
+                <Font name="Arial Black" size="21.0" />
             </font>
         </Text>
         <TableView fx:id="reclamationTable" layoutX="82.0" layoutY="190.0" prefHeight="438.0" prefWidth="804.0">
@@ -24,4 +24,3 @@
         </TableView>
     </children>
 </AnchorPane>
-

@@ -23,12 +23,12 @@
         <ComboBox fx:id="eventTF" layoutX="90.0" layoutY="273.0" prefHeight="26.0" prefWidth="732.0" />
 
         <!-- Button to Modify Reclamation -->
-        <Button layoutX="89.0" layoutY="471.0" mnemonicParsing="false" onAction="#modifyReclamation" prefHeight="30.0" prefWidth="741.0" text="Modifier" />
+        <Button layoutX="89.0" layoutY="471.0" mnemonicParsing="false" onAction="#modifyReclamation" prefHeight="30.0" prefWidth="741.0" style="-fx-background-color: green; -fx-text-fill: white;" text="Modifier" />
 
         <!-- Main Title Text -->
         <Text layoutX="89.0" layoutY="109.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Modifier une réclamation" wrappingWidth="740.0">
             <font>
-                <Font size="21.0" />
+                <Font name="Arial Black" size="21.0" />
             </font>
         </Text>
     </children>

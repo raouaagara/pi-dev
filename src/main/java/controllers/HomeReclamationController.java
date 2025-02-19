@@ -7,7 +7,7 @@ import tests.MainFX;
 public class HomeReclamationController {
 
     @FXML
-    private BorderPane contentArea; // Assurez-vous qu'il correspond à l'ID dans HomeReclamation.fxml
+    private BorderPane contentArea;
 
     @FXML
     private void loadAjouterReclamation() {

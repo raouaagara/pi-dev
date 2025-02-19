@@ -33,7 +33,7 @@ public class Main {
             serviceReclamation.ajouter(reclamation);
 
             // Modifier une réclamation
-          //  serviceReclamation.modifier(1, "Problème corrigé", "L'événement a été bien organisé finalement.");
+            // serviceReclamation.modifier(1, "Problème corrigé", "L'événement a été bien organisé finalement.");
 
             // Récupérer toutes les réclamations
             List<Reclamation> reclamations = serviceReclamation.recupererAll();

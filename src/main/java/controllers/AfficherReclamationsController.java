@@ -35,28 +35,35 @@ public class AfficherReclamationsController {
 
     private ServiceReclamation serviceReclamation = new ServiceReclamation();
 
+    /**
+     * Initialise le tableau des réclamations avec les colonnes et les données.
+     * Configure également les boutons de modification et de suppression.
+     */
     public void initialize() {
+        // Configuration des colonnes
         idCol.setCellValueFactory(new PropertyValueFactory<>("id"));
         titleCol.setCellValueFactory(new PropertyValueFactory<>("title"));
+
+        // Récupération et affichage du titre de l'événement associé à chaque réclamation
         eventCol.setCellValueFactory(param -> {
-            Event event = param.getValue().getEvent();  // Get the Event object from the Reclamation
+            Event event = param.getValue().getEvent();
             if (event != null && event.getTitle() != null) {
                 return new SimpleStringProperty(event.getTitle());
             } else {
-                return new SimpleStringProperty("No event");  // Default text when event is null or has no title
+                return new SimpleStringProperty("Aucun événement");
             }
         });
 
-
-
+        // Chargement des réclamations depuis la base de données
         try {
             reclamationTable.getItems().addAll(serviceReclamation.recupererAll());
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
+        // Configuration des boutons de modification
         modifyCol.setCellFactory(param -> new TableCell<>() {
-            private final Button modifyButton = new Button("Modify");
+            private final Button modifyButton = new Button("Modifier");
 
             {
                 modifyButton.setOnAction(event -> {
@@ -72,8 +79,9 @@ public class AfficherReclamationsController {
             }
         });
 
+        // Configuration des boutons de suppression
         deleteCol.setCellFactory(param -> new TableCell<>() {
-            private final Button deleteButton = new Button("Delete");
+            private final Button deleteButton = new Button("Supprimer");
 
             {
                 deleteButton.setOnAction(event -> {
@@ -95,6 +103,9 @@ public class AfficherReclamationsController {
         });
     }
 
+    /**
+     * Charge l'interface de modification d'une réclamation sélectionnée.
+     */
     private void loadModifyView(Reclamation reclamation) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/ModifierReclamation.fxml"));

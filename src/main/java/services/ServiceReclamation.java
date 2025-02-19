@@ -9,7 +9,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ServiceReclamation {
+public class ServiceReclamation implements IServices<Reclamation> {
     private Connection cnx;
 
     public ServiceReclamation() {

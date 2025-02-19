@@ -5,6 +5,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 import models.Reclamation;
 import models.Event;
@@ -34,52 +36,83 @@ public class ModifierReclamationController {
     private ServiceEvent serviceEvent = new ServiceEvent();
 
     private Reclamation currentReclamation;
-    private Map<String, Integer> eventMap = new HashMap<>(); // Map to store event titles and their IDs
+    private Map<String, Integer> eventMap = new HashMap<>(); // Stocke les titres d'événements et leurs IDs
 
-    // Initialize the eventMap and ComboBox
+    /**
+     * Initialise le contrôleur en récupérant les événements de la base de données.
+     * Remplit la ComboBox avec les titres des événements disponibles.
+     */
     public void initialize() {
         List<Event> events = serviceEvent.fetchAllEvents();
         for (Event event : events) {
-            eventTF.getItems().add(event.getTitle()); // Add event titles to ComboBox
-            eventMap.put(event.getTitle(), event.getId()); // Store event title -> ID mapping
+            eventTF.getItems().add(event.getTitle()); // Ajoute les titres d'événements à la ComboBox
+            eventMap.put(event.getTitle(), event.getId()); // Associe les titres aux IDs des événements
         }
     }
 
-    // Initialize the form with the data from the current Reclamation object
+    /**
+     * Initialise le formulaire avec les données de la réclamation actuelle.
+     */
     public void initData(Reclamation reclamation) {
         this.currentReclamation = reclamation;
-        titleTF.setText(reclamation.getTitle());
-        descriptionTF.setText(reclamation.getDescription());
-        eventTF.setValue(reclamation.getEvent().getTitle()); // Set the current event title in ComboBox
+        titleTF.setText(reclamation.getTitle()); // Remplit le champ titre
+        descriptionTF.setText(reclamation.getDescription()); // Remplit la description
+        eventTF.setValue(reclamation.getEvent().getTitle()); // Sélectionne l'événement associé
     }
 
-    // Modify the current Reclamation based on the updated form data
+    /**
+     * Modifie la réclamation actuelle avec les nouvelles données saisies après validation.
+     */
     @FXML
     private void modifyReclamation() {
         if (currentReclamation != null) {
             try {
-                // Get the event ID from the ComboBox selection
-                String selectedEventTitle = eventTF.getValue();
-                int eventId = eventMap.get(selectedEventTitle); // Get event ID using eventMap
+                String title = titleTF.getText().trim();
+                String description = descriptionTF.getText().trim();
+                String selectedTitle = eventTF.getValue();
 
-                // Update the Reclamation object
+                // Vérification des champs obligatoires
+                if (title.isEmpty() || title.length() <= 5) {
+                    throw new IllegalArgumentException("Le titre doit contenir plus de 5 caractères !");
+                }
+                if (description.isEmpty() || description.length() <= 5) {
+                    throw new IllegalArgumentException("La description doit contenir plus de 5 caractères !");
+                }
+                if (selectedTitle == null) {
+                    throw new IllegalArgumentException("Veuillez sélectionner un événement !");
+                }
+
+                int eventId = eventMap.get(selectedTitle); // Récupère l'ID de l'événement sélectionné
                 Event updatedEvent = new Event();
                 updatedEvent.setId(eventId);
-                currentReclamation.setTitle(titleTF.getText());
-                currentReclamation.setDescription(descriptionTF.getText());
-                currentReclamation.setEvent(updatedEvent); // Set the updated event
 
-                // Call the service to update the reclamation in the database
+                currentReclamation.setTitle(title);
+                currentReclamation.setDescription(description);
+                currentReclamation.setEvent(updatedEvent); // Met à jour l'événement associé
+
+                // Appelle le service pour mettre à jour la réclamation en base de données
                 serviceReclamation.modifier(currentReclamation);
-                closeWindow();
+                showAlert(AlertType.INFORMATION, "Succès", "Réclamation modifiée avec succès !");
+            } catch (IllegalArgumentException e) {
+                showAlert(AlertType.ERROR, "Erreur de saisie", e.getMessage());
             } catch (SQLException e) {
-                e.printStackTrace();
+                showAlert(AlertType.ERROR, "Erreur de base de données", "Erreur lors de la modification de la réclamation !");
+            } catch (Exception e) {
+                e.printStackTrace(); // Debug
+                showAlert(AlertType.ERROR, "Erreur inattendue", "Une erreur inattendue s'est produite.");
             }
         }
     }
 
-    private void closeWindow() {
-        Stage stage = (Stage) modifyButton.getScene().getWindow();
-        stage.close();
+
+    /**
+     * Affiche une alerte à l'utilisateur.
+     */
+    private void showAlert(AlertType type, String title, String message) {
+        Alert alert = new Alert(type);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 }
