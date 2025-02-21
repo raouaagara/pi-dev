@@ -4,6 +4,7 @@ import tools.MyDataBase;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import models.Category;
 
 public class serviceEquipement {
     private final Connection con;
@@ -19,10 +20,10 @@ public class serviceEquipement {
         try (PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setString(1, e.getName());
             ps.setString(2, e.getDescription());
-            ps.setInt(3, e.getCategoryId()); // Correction ici
+            ps.setInt(3, e.getCategory().getId()); // Correction ici
             ps.setFloat(4, e.getPrice());
             ps.setString(5, e.getImage());
-            ps.setBoolean(6, e.getAvailability());
+            ps.setBoolean(6, e.isAvailable()); // Correction ici
             ps.setDate(7, Date.valueOf(e.getDateAdded()));
             ps.setInt(8, e.getPartnerId());
 
@@ -37,6 +38,8 @@ public class serviceEquipement {
         }
     }
 
+
+
     // Modifier un équipement
     public void modifier(Equipement e) {
         String sql = "UPDATE equipement SET name=?, description=?, categoryId=?, price=?, image=?, availability=?, dateAdded=?, partnerId=? WHERE id=?";
@@ -44,10 +47,10 @@ public class serviceEquipement {
         try (PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setString(1, e.getName());
             ps.setString(2, e.getDescription());
-            ps.setInt(3, e.getCategoryId()); // Correction ici
+            ps.setInt(3, e.getCategory().getId()); // Correction ici
             ps.setFloat(4, e.getPrice());
             ps.setString(5, e.getImage());
-            ps.setBoolean(6, e.getAvailability());
+            ps.setBoolean(6, e.isAvailable());
             ps.setDate(7, Date.valueOf(e.getDateAdded()));
             ps.setInt(8, e.getPartnerId());
             ps.setInt(9, e.getId());
@@ -91,17 +94,20 @@ public class serviceEquipement {
             ResultSet rs = ps.executeQuery();
 
             if (rs.next()) {
+                // Création de l'objet Category
+                Category category = new Category(rs.getInt("categoryId"), rs.getString("categoryName"));
+
+                // Création de l'objet Equipement avec la catégorie
                 equipement = new Equipement(
                         rs.getInt("id"),
                         rs.getString("name"),
                         rs.getString("description"),
-                        rs.getInt("categoryId"),
+                        category, // Correction ici : on passe un objet Category au lieu de categoryId seul
                         rs.getFloat("price"),
                         rs.getString("image"),
                         rs.getBoolean("availability"),
                         rs.getDate("dateAdded").toLocalDate(),
-                        rs.getInt("partnerId"),
-                        rs.getString("categoryName") // Correction ici
+                        rs.getInt("partnerId")
                 );
             }
         } catch (SQLException ex) {
@@ -122,18 +128,22 @@ public class serviceEquipement {
              ResultSet rs = statement.executeQuery()) {
 
             while (rs.next()) {
+                // ✅ Créer un objet Category avec les données récupérées
+                Category category = new Category(rs.getInt("categoryId"), rs.getString("categoryName"));
+
+                // ✅ Créer un objet Equipement avec l'objet Category
                 Equipement equipement = new Equipement(
                         rs.getInt("id"),
                         rs.getString("name"),
                         rs.getString("description"),
-                        rs.getInt("categoryId"), // Correction ici
+                        category, // Ici on passe un objet Category, pas un ID et un nom séparés
                         rs.getFloat("price"),
                         rs.getString("image"),
                         rs.getBoolean("availability"),
                         rs.getDate("dateAdded").toLocalDate(),
-                        rs.getInt("partnerId"),
-                        rs.getString("categoryName") // Correction ici
+                        rs.getInt("partnerId")
                 );
+
                 equipements.add(equipement);
             }
 
@@ -143,6 +153,7 @@ public class serviceEquipement {
 
         return equipements;
     }
+
     public List<Equipement> getEquipementsSortedByPriceDesc() {
         List<Equipement> equipements = new ArrayList<>();
         String sql = "SELECT e.id, e.name, e.description, e.categoryId, e.price, e.image, e.availability, e.dateAdded, e.partnerId, c.name AS categoryName " +
@@ -154,18 +165,22 @@ public class serviceEquipement {
              ResultSet rs = statement.executeQuery()) {
 
             while (rs.next()) {
+                // ✅ Créer un objet Category à partir des données de la base de données
+                Category category = new Category(rs.getInt("categoryId"), rs.getString("categoryName"));
+
+                // ✅ Utiliser l'objet Category pour instancier Equipement
                 Equipement equipement = new Equipement(
                         rs.getInt("id"),
                         rs.getString("name"),
                         rs.getString("description"),
-                        rs.getInt("categoryId"),
+                        category, // ✅ On passe un objet Category, pas un int !
                         rs.getFloat("price"),
                         rs.getString("image"),
                         rs.getBoolean("availability"),
                         rs.getDate("dateAdded").toLocalDate(),
-                        rs.getInt("partnerId"),
-                        rs.getString("categoryName")
+                        rs.getInt("partnerId")
                 );
+
                 equipements.add(equipement);
             }
         } catch (SQLException e) {
@@ -174,5 +189,7 @@ public class serviceEquipement {
 
         return equipements;
     }
+
+
 
 }
