@@ -1,4 +1,5 @@
 package main.controllers;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -7,6 +8,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+
 import javafx.stage.Stage;
 import models.Category;
 import models.Equipement;
@@ -17,45 +19,22 @@ import javafx.scene.control.TableView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import java.sql.*;
-import java.time.LocalDate;
 import javafx.scene.control.TableCell;
-import javafx.scene.control.TableColumn;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
+
 import javafx.util.Callback;
 import javafx.beans.property.SimpleStringProperty;
+
+import java.util.List;
 import java.util.Properties;
 import javax.mail.*;
 import javax.mail.internet.*;
-import javafx.application.Platform;
-import javafx.util.Duration;
-import javafx.geometry.Pos;
-
-import javafx.beans.property.SimpleStringProperty;
-import javafx.scene.control.TableCell;
-import javafx.scene.control.TableColumn;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.util.Callback;
-
-import models.Notifications;
-import javafx.fxml.FXML;
-import java.io.FileOutputStream;
 import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
-
-
+import services.PDFGenerator;
 import java.net.URL;
 import java.util.Comparator;
-import models.Equipement;
 import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.Alert;
 
-
- // Vérifie que ce package correspond à la structure de ton projet
-
-import javafx.event.ActionEvent;
-import javafx.scene.control.Alert;
 
 
 
@@ -85,7 +64,8 @@ public class Controllereq {
     @FXML
     private TableColumn<Equipement, Boolean> colDisponibilite;
     @FXML
-    private Button btnSupprimer, btnModifier, btnSortByPriceDesc;  // Ajout du bouton pour trier par prix décroissant
+    private Button btnSupprimer, btnModifier, btnSortByPriceDesc,btnExportPDF;
+    // Ajout du bouton pour trier par prix décroissant
     @FXML
     private TableColumn<Equipement, String> imageColumn;
     @FXML
@@ -147,7 +127,7 @@ public class Controllereq {
             showAlert(Alert.AlertType.ERROR, "Erreur", "La description ne peut pas être vide.");
             return;
         }
-            // Vérifier que le prix est valide
+            
         // Vérification du prix (ne doit pas être vide et doit être un nombre positif)
         if (price.getText().trim().isEmpty()) {
             showAlert(Alert.AlertType.ERROR, "Erreur", "Le prix ne peut pas être vide.");
@@ -483,5 +463,19 @@ public class Controllereq {
             e.printStackTrace();
         }
     }
-}
+    @FXML
+    private void handleExportPDF(ActionEvent event) {
+        // Récupérer la scène à partir du bouton cliqué
+        Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
 
+        // Remplace ceci par la vraie liste d'équipements que tu veux exporter
+        List<Equipement> equipements = service.getAll();
+
+        // Appeler la méthode d'exportation
+        PDFGenerator pdfGenerator = new PDFGenerator();
+        pdfGenerator.handleExportPDF(stage, equipements);
+
+    }
+
+
+}
