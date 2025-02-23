@@ -61,11 +61,14 @@
             <Button text="Ajouter" fx:id="saveButton" onAction="#handleAdd" style="-fx-background-color: #D4FC2A; -fx-text-fill: black;"/>
             <Button fx:id="btnModifier" text="Modifier" onAction="#handleUpdate" style="-fx-background-color: #014AAD; -fx-text-fill: white;"/>
             <Button fx:id="btnSupprimer" text="Supprimer" onAction="#handleDelete" style="-fx-background-color: #00A859; -fx-text-fill: white;"/>
-            <Button text="Trier par Prix Descendant" onAction="#handleSortByPriceDesc" style="-fx-background-color: #FFFFFF; -fx-text-fill: black;"/>
+            <Button onAction="#handleSortByPriceDesc" style="-fx-background-color: #FFFFFF; -fx-text-fill: black;" text="Prix Le plus Haut" />
+            <Button onAction="#trierParPrixAscendant" style="-fx-background-color: #000000; -fx-text-fill: white;" text="Prix Le plus Bas" />
             <Button text="Actualiser" onAction="#loadEquipements" style="-fx-background-color: #000000; -fx-text-fill: white;"/>
             <Button text="Ouvrir Catégories" onAction="#openCategoryView" />
-
-
+            <HBox spacing="10">
+                <TextField fx:id="searchField" promptText="Rechercher..."/>
+                <Button text="Rechercher" onAction="#handleSearch"/>
+                <Button fx:id="btnExportPDF" text="Exporter en PDF" onAction="#handleExportPDF"/></HBox>
         </HBox>
     </bottom>
 
