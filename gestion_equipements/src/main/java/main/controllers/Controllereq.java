@@ -8,7 +8,21 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import java.io.InputStream;
+import com.google.zxing.LuminanceSource;
+import java.io.InputStream;
+import java.io.IOException;
+import javafx.stage.FileChooser;
 
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+
+
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.Base64;
 import javafx.stage.Stage;
 import models.Category;
 import models.Equipement;
@@ -25,18 +39,25 @@ import javafx.util.Callback;
 import javafx.beans.property.SimpleStringProperty;
 
 import java.util.List;
-import java.util.Properties;
-import javax.mail.*;
-import javax.mail.internet.*;
+import  javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import com.google.zxing.qrcode.QRCodeReader;
+import com.google.zxing.*;
+import com.google.zxing.common.*;
+
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import java.io.File;
+import java.io.FileInputStream;
+
+
+
 import javafx.event.ActionEvent;
 import services.PDFGenerator;
-import java.net.URL;
+
 import java.util.Comparator;
 import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.Alert;
-
-
-
 
 
 public class Controllereq {
@@ -49,6 +70,8 @@ public class Controllereq {
     private DatePicker dateAdded;
     @FXML
     private TextField emailField;
+    @FXML
+    private ImageView imageView;
 
     @FXML
     private ComboBox<Category> categoryComboBox;
@@ -127,7 +150,7 @@ public class Controllereq {
             showAlert(Alert.AlertType.ERROR, "Erreur", "La description ne peut pas être vide.");
             return;
         }
-            
+
         // Vérification du prix (ne doit pas être vide et doit être un nombre positif)
         if (price.getText().trim().isEmpty()) {
             showAlert(Alert.AlertType.ERROR, "Erreur", "Le prix ne peut pas être vide.");
@@ -369,37 +392,72 @@ public class Controllereq {
                         }
 
                         try {
-                            String fullPath = "/images/" + imagePath; // Correction du chemin
-                            URL imageUrl = getClass().getResource(fullPath);
-
-                            if (imageUrl != null) {
-                                imageView.setImage(new Image(imageUrl.toExternalForm()));
-                            } else {
-                                System.err.println("Image introuvable : " + fullPath);
-                                chargerImageParDefaut();
-                            }
+                            Image image = chargerImage(imagePath);
+                            imageView.setImage(image);
                         } catch (Exception e) {
                             System.err.println("Erreur lors du chargement de l'image : " + e.getMessage());
-                            chargerImageParDefaut();
+                            imageView.setImage(chargerImageParDefaut());
                         }
 
                         setGraphic(imageView);
                     }
 
-                    private void chargerImageParDefaut() {
-                        URL defaultImageUrl = getClass().getResource("/images/default.png");
-                        if (defaultImageUrl != null) {
-                            imageView.setImage(new Image(defaultImageUrl.toExternalForm()));
-                        } else {
+                    private Image chargerImage(String imagePath) {
+                        try {
+                            System.out.println("Tentative de chargement de l'image : " + imagePath);
+
+                            File file = new File(imagePath.replace("file:/", ""));
+                            if (file.exists() && file.isFile()) {
+                                System.out.println("Image trouvée : " + file.getAbsolutePath());
+                                return new Image(file.toURI().toString());
+                            }
+
+                            // Vérifier dans resources/images/
+                            URL imageUrl = getClass().getResource("/images/" + imagePath);
+                            if (imageUrl != null) {
+                                return new Image(imageUrl.toExternalForm());
+                            }
+
+                            System.err.println("Image non trouvée : " + imagePath);
+                        } catch (Exception e) {
+                            System.err.println("Erreur de chargement d'image : " + e.getMessage());
+                        }
+
+                        return chargerImageParDefaut();
+                    }
+
+                    private Image chargerImageParDefaut() {
+                        try {
+                            String defaultPath = "file:/C:/Users/Lenovo/Downloads/default.png";
+                            File defaultFile = new File(defaultPath.replace("file:/", ""));
+                            if (defaultFile.exists()) {
+                                System.out.println("Image par défaut trouvée !");
+                                return new Image(defaultFile.toURI().toString());
+                            }
+
+                            InputStream defaultImageStream = getClass().getResourceAsStream("/images/default.png");
+                            if (defaultImageStream != null) {
+                                System.out.println("Image par défaut chargée depuis resources !");
+                                return new Image(defaultImageStream);
+                            }
+
                             System.err.println("Image par défaut introuvable !");
+                            return new Image("https://via.placeholder.com/80"); // Image en ligne de secours
+
+                        } catch (Exception e) {
+                            System.err.println("Erreur de chargement de l'image par défaut : " + e.getMessage());
+                            return null;
                         }
                     }
                 };
             }
         });
-
-
     }
+
+
+
+
+
     @FXML
     private void trierParPrixAscendant() {
         tableEquipements.getItems().sort(Comparator.comparing(Equipement::getPrice));
@@ -424,45 +482,8 @@ public class Controllereq {
 
         tableEquipements.setItems(filteredList); // Met à jour la TableView
     }
-    @FXML
 
-    public void sendNotification() {
-        String recipient = emailField.getText();
 
-        if (recipient.isEmpty() || !recipient.contains("@")) {
-            System.out.println("Email invalide !");
-            return;
-        }
-
-        // ✅ Un seul compte expéditeur configuré
-        final String senderEmail = "ton_email@gmail.com";
-        final String senderPassword = "ton_mot_de_passe"; // Mot de passe d'application
-
-        Properties properties = new Properties();
-        properties.put("mail.smtp.auth", "true");
-        properties.put("mail.smtp.starttls.enable", "true");
-        properties.put("mail.smtp.host", "smtp.gmail.com");
-        properties.put("mail.smtp.port", "587");
-
-        Session session = Session.getInstance(properties, new Authenticator() {
-            protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication(senderEmail, senderPassword);
-            }
-        });
-
-        try {
-            Message message = new MimeMessage(session);
-            message.setFrom(new InternetAddress(senderEmail)); // Expéditeur fixe
-            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(recipient));
-            message.setSubject("Notification");
-            message.setText("Votre notification a été envoyée avec succès !");
-
-            Transport.send(message);
-            System.out.println("Email envoyé à " + recipient);
-        } catch (MessagingException e) {
-            e.printStackTrace();
-        }
-    }
     @FXML
     private void handleExportPDF(ActionEvent event) {
         // Récupérer la scène à partir du bouton cliqué
@@ -476,6 +497,42 @@ public class Controllereq {
         pdfGenerator.handleExportPDF(stage, equipements);
 
     }
+
+    public void handleUploadPhoto() {
+        // Créer un FileChooser
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.gif"));
+
+        // Ouvrir la fenêtre de sélection de fichier
+        File selectedFile = fileChooser.showOpenDialog(new Stage());
+
+        if (selectedFile != null) {
+            // Afficher l'image sélectionnée dans l'ImageView
+            Image img = new Image(selectedFile.toURI().toString());
+            imageView.setImage(img);
+
+            // Optionnel : Stocker le chemin du fichier dans le TextField 'image' (si vous en avez besoin pour la base de données)
+            image.setText(selectedFile.getAbsolutePath());
+        }
+    }
+
+    @FXML
+    private void handleUploadImage() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.getExtensionFilters().add(
+                new FileChooser.ExtensionFilter("Images", "*.png", "*.jpg", "*.jpeg", "*.gif")
+        );
+
+        File file = fileChooser.showOpenDialog(null);
+        if (file != null) {
+            image.setText(file.toURI().toString()); // Stocke le chemin de l'image dans le champ texte
+        }
+    }
+
+
+
+
+
 
 
 }
