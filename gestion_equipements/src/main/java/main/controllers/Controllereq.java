@@ -528,6 +528,71 @@ public class Controllereq {
             image.setText(file.toURI().toString()); // Stocke le chemin de l'image dans le champ texte
         }
     }
+    public void afficherStatistiques() {
+        Stage stage = new Stage();
+        stage.setTitle("Statistiques des Équipements");
+
+        PieChart pieChart = new PieChart();
+        pieChart.setTitle("Répartition des Équipements");
+
+        // Vérifier si le TableView n'est pas vide
+        ObservableList<Equipement> equipements = tableEquipements.getItems();
+        if (equipements.isEmpty()) {
+            System.out.println("Aucune donnée disponible.");
+            return;
+        }
+
+        // Compter les équipements disponibles et non disponibles
+        int nbDispo = 0;
+        int nbNonDispo = 0;
+        int total = equipements.size();
+
+        for (Equipement e : equipements) {
+            if (e.isAvailable()) {
+                nbDispo++;
+            } else {
+                nbNonDispo++;
+            }
+        }
+
+        // Calculer les pourcentages
+        double pourcentageDispo = (nbDispo * 100.0) / total;
+        double pourcentageNonDispo = (nbNonDispo * 100.0) / total;
+
+        // Ajouter les données au PieChart avec pourcentage
+        PieChart.Data dispo = new PieChart.Data("Disponible (" + String.format("%.1f", pourcentageDispo) + "%)", nbDispo);
+        PieChart.Data nonDispo = new PieChart.Data("Non Disponible (" + String.format("%.1f", pourcentageNonDispo) + "%)", nbNonDispo);
+
+        pieChart.getData().addAll(dispo, nonDispo);
+
+        // Appliquer les couleurs du graphique
+        String couleurDisponible = "#007bff"; // Bleu clair
+        String couleurNonDisponible = "#ff5555"; // Rouge clair
+
+        dispo.getNode().setStyle("-fx-pie-color: " + couleurDisponible + ";");
+        nonDispo.getNode().setStyle("-fx-pie-color: " + couleurNonDisponible + ";");
+
+        // Appliquer une animation d'apparition progressive
+        SequentialTransition sequentialTransition = new SequentialTransition();
+        for (PieChart.Data data : pieChart.getData()) {
+            ScaleTransition st = new ScaleTransition(Duration.millis(800), data.getNode());
+            st.setFromX(0);
+            st.setFromY(0);
+            st.setToX(1);
+            st.setToY(1);
+            st.setInterpolator(Interpolator.EASE_BOTH);
+            sequentialTransition.getChildren().add(st);
+        }
+
+        sequentialTransition.play(); // Lancer l'animation
+
+        VBox root = new VBox(pieChart);
+        Scene scene = new Scene(root, 500, 400);
+        stage.setScene(scene);
+        stage.show();
+    }
+
+
 
 
 
