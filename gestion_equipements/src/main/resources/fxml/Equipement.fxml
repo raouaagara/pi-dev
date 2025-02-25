@@ -117,6 +117,8 @@
                 <TextField fx:id="searchField" promptText="Rechercher..."/>
                 <Button text="Rechercher" onAction="#handleSearch"/>
                 <Button fx:id="btnExportPDF" text="Exporter en PDF" onAction="#handleExportPDF"/>
+                <Button text="Voir Statistiques" onAction="#afficherStatistiques" />
+            
 
 
             </HBox>
