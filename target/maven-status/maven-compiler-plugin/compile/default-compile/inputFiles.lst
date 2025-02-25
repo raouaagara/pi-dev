@@ -2,6 +2,7 @@ C:\Users\islem\IdeaProjects\ecosport\src\main\java\controllers\AfficherReclamati
 C:\Users\islem\IdeaProjects\ecosport\src\main\java\controllers\AjouterReclamationController.java
 C:\Users\islem\IdeaProjects\ecosport\src\main\java\controllers\HomeReclamationController.java
 C:\Users\islem\IdeaProjects\ecosport\src\main\java\controllers\ModifierReclamationController.java
+C:\Users\islem\IdeaProjects\ecosport\src\main\java\controllers\SuiviReclamationController.java
 C:\Users\islem\IdeaProjects\ecosport\src\main\java\models\Admin.java
 C:\Users\islem\IdeaProjects\ecosport\src\main\java\models\Article.java
 C:\Users\islem\IdeaProjects\ecosport\src\main\java\models\Category.java
@@ -12,6 +13,7 @@ C:\Users\islem\IdeaProjects\ecosport\src\main\java\models\Event.java
 C:\Users\islem\IdeaProjects\ecosport\src\main\java\models\Participant.java
 C:\Users\islem\IdeaProjects\ecosport\src\main\java\models\Partner.java
 C:\Users\islem\IdeaProjects\ecosport\src\main\java\models\Reclamation.java
+C:\Users\islem\IdeaProjects\ecosport\src\main\java\models\Status.java
 C:\Users\islem\IdeaProjects\ecosport\src\main\java\models\User.java
 C:\Users\islem\IdeaProjects\ecosport\src\main\java\services\IServices.java
 C:\Users\islem\IdeaProjects\ecosport\src\main\java\services\ServiceEvent.java

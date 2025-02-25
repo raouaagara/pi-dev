@@ -20,6 +20,7 @@
                 <TableColumn fx:id="eventCol" prefWidth="237.0" text="Evenement" />
                 <TableColumn fx:id="modifyCol" prefWidth="130.0" text="Modifier" />
                 <TableColumn fx:id="deleteCol" prefWidth="124.0" text="Supprimer" />
+                <TableColumn fx:id="suivreCol" prefWidth="130.0" text="Suivre" />
             </columns>
         </TableView>
     </children>

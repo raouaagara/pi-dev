@@ -1,5 +1,6 @@
 package services;
 
+import com.mysql.cj.xdevapi.JsonParser;
 import models.Reclamation;
 import models.Event;
 import models.User;
@@ -15,6 +16,19 @@ public class ServiceReclamation implements IServices<Reclamation> {
     public ServiceReclamation() {
         cnx = MyDataBase.getInstance().getCnx();
     }
+
+    public void modifierEtat(Reclamation reclamation, String etat, String answer) throws SQLException {
+        String sql ="UPDATE reclamation set status=?,answer=? where id=?";
+        PreparedStatement ste = cnx.prepareStatement(sql);
+        ste.setString(1, etat);
+        ste.setString(2, answer);
+
+        ste.setLong(3, reclamation.getId());
+        ste.executeUpdate();
+        System.out.println("Reclamation modified");
+
+    }
+
 
     public void ajouter(Reclamation reclamation) throws SQLException {
         String sql = "INSERT INTO reclamation (title, description, event_id, user_id) VALUES (?, ?, ?, ?)";

@@ -10,7 +10,7 @@
     <children>
         <Text layoutX="82.0" layoutY="142.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Mes Réclamations" wrappingWidth="550.6731719970703">
             <font>
-                <Font size="21.0" />
+                <Font name="Arial Black" size="21.0" />
             </font>
         </Text>
         <TableView fx:id="reclamationTable" layoutX="82.0" layoutY="190.0" prefHeight="438.0" prefWidth="804.0">
@@ -20,8 +20,8 @@
                 <TableColumn fx:id="eventCol" prefWidth="237.0" text="Evenement" />
                 <TableColumn fx:id="modifyCol" prefWidth="130.0" text="Modifier" />
                 <TableColumn fx:id="deleteCol" prefWidth="124.0" text="Supprimer" />
+                <TableColumn fx:id="suivreCol" prefWidth="130.0" text="Suivre" />
             </columns>
         </TableView>
     </children>
 </AnchorPane>
-

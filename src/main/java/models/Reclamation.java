@@ -4,8 +4,21 @@ public class Reclamation {
     private int id;
     private String title;
     private String description;
+    private Status status = Status.PENDING;
+    private String answer;
     private Event event;
     private User user;
+
+
+    public Reclamation(int id, String title, String description, Status status, String answer, Event event, User user) {
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.status = status;
+        this.answer = answer;
+        this.event = event;
+        this.user = user;
+    }
 
     public Reclamation(String title, String description, Event event, User user) {
         this.title = title;
@@ -63,6 +76,22 @@ public class Reclamation {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
+    public String getAnswer() {
+        return answer;
+    }
+
+    public void setAnswer(String answer) {
+        this.answer = answer;
     }
 
     @Override

@@ -1,5 +1,9 @@
+models\Status$1.class
 controllers\AfficherReclamationsController.class
+models\Status.class
 controllers\AfficherReclamationsController$2.class
+controllers\AfficherReclamationsController$3.class
+controllers\SuiviReclamationController.class
 controllers\AfficherReclamationsController$1.class
 controllers\HomeReclamationController.class
 controllers\ModifierReclamationController.class
