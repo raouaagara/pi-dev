@@ -1,83 +1,178 @@
-/* Style global */
-/* Styles généraux */
-.main-container {
-    -fx-padding: 20;
-    -fx-background-color: #F5F7FA;
+/* Importation d'une police moderne */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap');
+
+.root {
+    -fx-font-family: 'Roboto', sans-serif;
+    -fx-background-color: #f4f4f9;
 }
 
-/* Conteneur du formulaire */
-.form-container {
-    -fx-background-color: white;
-    -fx-padding: 20;
-    -fx-border-radius: 10;
-    -fx-background-radius: 10;
-    -fx-box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+/* Style général des labels */
+.label {
+    -fx-font-size: 14px;
+    -fx-text-fill: #333;
 }
 
-/* Titre du formulaire */
-.form-title {
-    -fx-font-size: 18px;
-    -fx-font-weight: bold;
-    -fx-text-fill: #003366; /* Bleu foncé */
-}
-
-/* Champs de texte */
-.input-field {
-    -fx-pref-width: 250px;
-    -fx-padding: 8px;
+/* Champs de saisie */
+.text-field, .combo-box, .date-picker {
+    -fx-pref-height: 35px;
+    -fx-background-radius: 8px;
+    -fx-border-radius: 8px;
     -fx-border-color: #ccc;
-    -fx-border-radius: 5;
+    -fx-padding: 5px;
 }
 
-/* Bouton Save */
-.submit-btn {
-    -fx-background-color: #A3E635; /* Vert citron */
-    -fx-text-fill: white;
-    -fx-padding: 10px 20px;
-    -fx-border-radius: 5;
+/* Checkbox */
+.check-box {
+    -fx-scale-x: 1.2;
+    -fx-scale-y: 1.2;
+}
+
+/* Boutons */
+.button {
+    -fx-background-radius: 8px;
+    -fx-border-radius: 8px;
+    -fx-font-size: 14px;
+    -fx-padding: 8px 15px;
+    -fx-cursor: hand;
+}
+/* TableView - Fond général */
+.table-view {
+    -fx-background-color: #ffffff;
+    -fx-border-radius: 10px;
+    -fx-border-color: #dddddd;
+    -fx-padding: 5px;
+}
+
+/* TableView - En-tête */
+.table-view .column-header-background {
+    -fx-background-color: linear-gradient(to bottom, #007bff, #0056b3);
+    -fx-background-radius: 10px 10px 0 0;
+}
+
+/* En-tête des colonnes */
+.table-view .column-header {
+    -fx-font-size: 14px;
     -fx-font-weight: bold;
-}
-.submit-btn:hover {
-    -fx-background-color: #85C51F; /* Vert citron plus foncé */
+    -fx-text-fill: white;
+    -fx-alignment: CENTER;
 }
 
-/* Table */
-.equipment-table {
+/* Cellules de la table */
+.table-row-cell {
     -fx-background-color: white;
-    -fx-border-radius: 10;
-    -fx-background-radius: 10;
+    -fx-border-color: #e0e0e0;
+    -fx-font-size: 13px;
 }
 
-/* Boutons dans le tableau */
-.table-button {
-    -fx-padding: 5px 10px;
-    -fx-border-radius: 5;
+/* Alternance des couleurs pour les lignes */
+.table-row-cell:odd {
+    -fx-background-color: #f9f9f9;
+}
+
+.table-row-cell:even {
+    -fx-background-color: #ffffff;
+}
+
+/* Effet survol */
+.table-row-cell:hover {
+    -fx-background-color: #cce5ff;
+    -fx-text-fill: black;
+}
+
+/* Sélection d'une ligne */
+.table-row-cell:selected {
+    -fx-background-color: #007bff;
+    -fx-text-fill: white;
     -fx-font-weight: bold;
 }
 
-/* Bouton Edit */
-.edit-btn {
-    -fx-background-color: #003366; /* Bleu foncé */
-    -fx-text-fill: white;
-}
-.edit-btn:hover {
-    -fx-background-color: #001F4D; /* Bleu foncé plus intense */
+/* Scrollbar */
+.scroll-bar {
+    -fx-background-color: transparent;
 }
 
-/* Bouton Delete */
-.delete-btn {
-    -fx-background-color: #FF4D4D; /* Rouge pour la suppression */
-    -fx-text-fill: white;
+.scroll-bar .thumb {
+    -fx-background-color: #b0c4de;
+    -fx-background-radius: 5px;
 }
-.delete-btn:hover {
-    -fx-background-color: #CC0000;
+.bounce-button {
+    -fx-transition: all 0.2s ease-in-out;
 }
 
-/* Bouton View */
-.view-btn {
-    -fx-background-color: #A3E635; /* Vert citron */
+.bounce-button:hover {
+    -fx-translate-y: -5px;
+}
+
+
+/* Style pour chaque bouton spécifique */
+.button-ajouter {
+    -fx-background-color: #4CAF50;
     -fx-text-fill: white;
 }
-.view-btn:hover {
-    -fx-background-color: #85C51F; /* Vert citron plus foncé */
+
+.button-modifier {
+    -fx-background-color: #007BFF;
+    -fx-text-fill: white;
+}
+
+.button-supprimer {
+    -fx-background-color: #FF3B30;
+    -fx-text-fill: white;
+}
+
+/* TableView */
+.table-view {
+    -fx-background-color: white;
+    -fx-border-radius: 8px;
+    -fx-border-color: #ddd;
+    -fx-padding: 5px;
+}
+
+/* Style des titres */
+.title {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #0056b3; /* Bleu plus doux */
+}
+
+/* Recherche */
+.text-field.recherche {
+    -fx-pref-width: 200px;
+}
+
+/* Style des boutons en bas */
+.button-footer {
+    -fx-font-size: 13px;
+    -fx-background-color: #17a2b8;
+    -fx-text-fill: white;
+}
+
+
+
+
+
+.label {
+    -fx-font-size: 14px;
+    -fx-text-fill: #333333;
+    -fx-font-weight: bold;
+}
+
+.text-field, .combo-box, .date-picker, .check-box {
+    -fx-background-color: #F8F8F8;
+    -fx-border-color: #DDDDDD;
+    -fx-border-radius: 5px;
+    -fx-padding: 5px;
+    -fx-font-size: 14px;
+}
+
+.button {
+    -fx-background-color: linear-gradient(to right, #1E90FF, #00BFFF, #00FF7F);
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 5px;
+    -fx-border-radius: 5px;
+}
+
+.button:hover {
+    -fx-background-color: linear-gradient(to right, #00BFFF, #1E90FF, #00FF7F);
 }
