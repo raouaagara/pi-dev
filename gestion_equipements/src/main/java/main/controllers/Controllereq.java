@@ -1,4 +1,5 @@
-package main.controllers;
+package controllers;
+
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -13,11 +14,19 @@ import com.google.zxing.LuminanceSource;
 import java.io.InputStream;
 import java.io.IOException;
 import javafx.stage.FileChooser;
+import javafx.scene.Scene;
+import javafx.scene.layout.StackPane;
+import javafx.stage.Stage;
+
+import javax.sound.sampled.*;
+import java.io.IOException;
+import java.net.URL;
 
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+
 
 
 import java.net.HttpURLConnection;
@@ -58,6 +67,24 @@ import services.PDFGenerator;
 import java.util.Comparator;
 import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.Alert;
+import javafx.scene.layout.VBox;
+import javafx.animation.Interpolator;
+import java.io.BufferedInputStream;
+import javafx.scene.layout.StackPane;
+import javafx.stage.Stage;
+import javazoom.jl.decoder.JavaLayerException;
+import javazoom.jl.player.Player;
+import java.time.LocalDate;
+import javafx.stage.FileChooser;
+import javafx.scene.chart.PieChart;
+import javafx.animation.SequentialTransition;
+import javafx.animation.ScaleTransition;
+import javafx.util.Duration;
+import javafx.animation.TranslateTransition;
+import javafx.fxml.FXML;
+import javafx.scene.image.ImageView;
+import javafx.util.Duration;
+
 
 
 public class Controllereq {
@@ -72,6 +99,10 @@ public class Controllereq {
     private TextField emailField;
     @FXML
     private ImageView imageView;
+    @FXML
+    private ComboBox<Category> categoryFilter;
+    @FXML
+    private ImageView runnerImage;
 
     @FXML
     private ComboBox<Category> categoryComboBox;
@@ -119,7 +150,7 @@ public class Controllereq {
         setupTable();
         tableEquipements.getColumns().setAll( colNom, colCategorie, colPrix, colDisponibilite, colDescription, imageColumn);
 
-
+        dateAdded.setValue(LocalDate.now());
         loadEquipements();
         loadCategories();
         searchField.textProperty().addListener((observable, oldValue, newValue) -> handleSearch());
@@ -135,21 +166,22 @@ public class Controllereq {
 
     @FXML
     private void handleAdd() {
+
+
+        // Vérifier que le nom n'est pas vide
+        if (name.getText().trim().isEmpty()) {
+            showAlert(Alert.AlertType.ERROR, "Erreur", "Le nom ne peut pas être vide.");
+            return;
+        }
+        if (description.getText().trim().isEmpty()) {
+            showAlert(Alert.AlertType.ERROR, "Erreur", "La description ne peut pas être vide.");
+            return;
+        }
         if (categoryComboBox.getSelectionModel().getSelectedItem() == null) {
             showAlert(Alert.AlertType.ERROR, "Erreur", "Veuillez sélectionner une catégorie.");
             return;
         }
 
-
-            // Vérifier que le nom n'est pas vide
-        if (name.getText().trim().isEmpty()) {
-                showAlert(Alert.AlertType.ERROR, "Erreur", "Le nom ne peut pas être vide.");
-                return;
-            }
-        if (description.getText().trim().isEmpty()) {
-            showAlert(Alert.AlertType.ERROR, "Erreur", "La description ne peut pas être vide.");
-            return;
-        }
 
         // Vérification du prix (ne doit pas être vide et doit être un nombre positif)
         if (price.getText().trim().isEmpty()) {
@@ -173,13 +205,10 @@ public class Controllereq {
 
         // Vérifier que l'image est renseignée
         if (image.getText().trim().isEmpty()) {
-                showAlert(Alert.AlertType.ERROR, "Erreur", "Veuillez sélectionner une image.");
-                return;
-            }
-        if (dateAdded.getValue() == null) {
-            showAlert(Alert.AlertType.ERROR, "Erreur", "Veuillez sélectionner une date d'ajout.");
+            showAlert(Alert.AlertType.ERROR, "Erreur", "Veuillez sélectionner une image.");
             return;
         }
+
 
         // Vérification de l'ID partenaire (doit être un entier positif)
         int partnerIdValue;
@@ -592,12 +621,90 @@ public class Controllereq {
         stage.show();
     }
 
+    @FXML
+    private ComboBox<Integer> equipementIdComboBox;  // ComboBox pour les IDs des équipements
+    private Category getCategoryById(int categoryId) {
+        Category category = null;
+        String sql = "SELECT * FROM category WHERE id = ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, categoryId);
+            ResultSet resultSet = statement.executeQuery();
 
+            if (resultSet.next()) {
+                category = new Category(
+                        resultSet.getInt("id"),
+                        resultSet.getString("name")
+                );
+            }
+        } catch (SQLException e) {
+            showAlert(Alert.AlertType.ERROR, "Erreur", "Impossible de récupérer la catégorie : " + e.getMessage());
+        }
+        return category;
+    }
 
+    @FXML
+    private void handleFilterById(ActionEvent Event ) {
+        Integer selectedEquipementId = equipementIdComboBox.getSelectionModel().getSelectedItem();
 
+        if (selectedEquipementId == null) {
+            showAlert(Alert.AlertType.WARNING, "Avertissement", "Veuillez sélectionner un ID d'équipement.");
+            return;
+        }
 
+        ObservableList<Equipement> filteredEquipements = FXCollections.observableArrayList();
 
+        String sql = "SELECT * FROM equipement WHERE id = ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, selectedEquipementId);  // Passer l'ID sélectionné comme paramètre
+            ResultSet resultSet = statement.executeQuery();
+
+            // Si aucun résultat n'est trouvé, afficher une alerte
+            if (!resultSet.next()) {
+                showAlert(Alert.AlertType.WARNING, "Avertissement", "Aucun équipement trouvé avec cet ID.");
+                return;
+            }
+
+            // Créer l'objet Equipement avec les résultats de la requête
+            Equipement equipement = new Equipement(
+                    resultSet.getInt("id"),
+                    resultSet.getString("name"),
+                    resultSet.getString("description"),
+                    getCategoryById(resultSet.getInt("categoryId")),  // Récupérer l'objet Category
+                    resultSet.getFloat("price"),
+                    resultSet.getString("image"),
+                    resultSet.getBoolean("availability"),
+                    resultSet.getDate("dateAdded").toLocalDate(),
+                    resultSet.getInt("partnerId")
+            );
+
+            filteredEquipements.add(equipement);  // Ajouter l'équipement trouvé à la liste
+
+            tableEquipements.setItems(filteredEquipements);  // Mettre à jour la table avec les équipements filtrés
+
+        } catch (SQLException e) {
+            showAlert(Alert.AlertType.ERROR, "Erreur", "Impossible de filtrer l'équipement : " + e.getMessage());
+        }
+    }
+    private void runAnimation() {
+        TranslateTransition run = new TranslateTransition(Duration.seconds(3), runnerImage);
+        run.setByX(600);  // Déplacement horizontal de 600px
+        run.setCycleCount(TranslateTransition.INDEFINITE); // Animation en boucle
+        run.setAutoReverse(true); // Repart en arrière après l'aller
+
+        run.play(); // Démarrer l'animation
+    }
 
 
 
 }
+
+
+
+
+
+
+
+
+
+
+
