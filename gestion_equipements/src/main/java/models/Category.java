@@ -1,4 +1,5 @@
 package models;
+package models;
 
 public class Category {
     private int id;
@@ -55,3 +56,4 @@ public class Category {
         return name; // Affichage correct dans la ComboBox
     }
 }
+
