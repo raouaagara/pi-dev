@@ -1,3 +1,5 @@
+package controllers;
+
 package main.controllers;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -11,6 +13,31 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import java.io.File;
+
+import java.sql.*;
+import java.time.LocalDate;
+import javafx.scene.control.TableCell;
+import javafx.scene.control.TableColumn;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.util.Callback;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.scene.control.TableCell;
+import javafx.scene.control.TableColumn;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.util.Callback;
+
+import java.net.URL;
 
 
 public class CategoryController {
@@ -55,10 +82,54 @@ public class CategoryController {
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
         iconColumn.setCellValueFactory(new PropertyValueFactory<>("icon"));
 
+        // Affichage des icônes dans le TableView
+        iconColumn.setCellFactory(column -> new TableCell<>() {
+            private final ImageView imageView = new ImageView();
+
+            {
+                imageView.setFitWidth(30); // Taille de l'icône
+                imageView.setFitHeight(30);
+            }
+
+            @Override
+            protected void updateItem(String iconPath, boolean empty) {
+                super.updateItem(iconPath, empty);
+
+                if (empty || iconPath == null || iconPath.trim().isEmpty()) {
+                    setGraphic(null);
+                    return;
+                }
+
+                try {
+                    String fullPath = "/images/" + iconPath; // Chemin correct des images
+                    URL imageUrl = getClass().getResource(fullPath);
+
+                    if (imageUrl != null) {
+                        imageView.setImage(new Image(imageUrl.toExternalForm()));
+                    } else {
+                        System.err.println("Icône introuvable : " + fullPath);
+                        chargerIconeParDefaut();
+                    }
+                } catch (Exception e) {
+                    System.err.println("Erreur de chargement d'icône : " + e.getMessage());
+                    chargerIconeParDefaut();
+                }
+
+                setGraphic(imageView);
+            }
+
+            private void chargerIconeParDefaut() {
+                URL defaultImageUrl = getClass().getResource("/images/default.png"); // Assurez-vous que cette image existe
+                if (defaultImageUrl != null) {
+                    imageView.setImage(new Image(defaultImageUrl.toExternalForm()));
+                } else {
+                    System.err.println("Icône par défaut introuvable !");
+                }
+            }
+        });
+
         // Charger les catégories
         loadCategories();
-
-
 
         // Gestion de la sélection dans le tableau
         categoryTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
@@ -156,3 +227,4 @@ public class CategoryController {
     }
 
 }
+
