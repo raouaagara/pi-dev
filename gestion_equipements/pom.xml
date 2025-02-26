@@ -51,6 +51,59 @@
             <artifactId>javafx-fxml</artifactId>
             <version>20</version>
         </dependency>
+              <dependency>
+            <groupId>com.itextpdf</groupId>
+            <artifactId>kernel</artifactId>
+            <version>8.0.2</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.itextpdf</groupId>
+            <artifactId>layout</artifactId>
+            <version>8.0.2</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.itextpdf</groupId>
+            <artifactId>io</artifactId>
+            <version>8.0.2</version>
+        </dependency>
+
+
+
+        <dependency>
+            <groupId>org.controlsfx</groupId>
+            <artifactId>controlsfx</artifactId>
+            <version>11.2.1</version> <!-- Vérifie la dernière version sur Maven Central -->
+        </dependency>
+        <dependency>
+            <groupId>org.apache.httpcomponents.client5</groupId>
+            <artifactId>httpclient5</artifactId>
+            <version>5.2.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.zxing</groupId>
+            <artifactId>core</artifactId>
+            <version>3.5.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.sun.mail</groupId>
+            <artifactId>javax.mail</artifactId>
+            <version>1.6.2</version>
+        </dependency>
+            <dependency>
+                <groupId>de.jensd</groupId>
+                <artifactId>fontawesomefx-fontawesome</artifactId>
+                <version>4.7.0-9.1.2</version>
+            </dependency>
+            <dependency>
+                <groupId>javazoom</groupId>
+                <artifactId>jlayer</artifactId>
+                <version>1.0.1</version>
+            </dependency>
+            <!-- ou une version plus récente -->
+    </dependencies>
+
     </dependencies>
 
     <build>
