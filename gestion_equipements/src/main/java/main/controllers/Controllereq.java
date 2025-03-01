@@ -1,6 +1,4 @@
-package controllers;
-
-
+package main.controllers;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -10,81 +8,120 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import java.io.InputStream;
-import com.google.zxing.LuminanceSource;
-import java.io.InputStream;
-import java.io.IOException;
-import javafx.stage.FileChooser;
+import javafx.animation.FadeTransition;
+import javafx.application.Platform;
 import javafx.scene.Scene;
-import javafx.scene.layout.StackPane;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.util.Duration;
+import javafx.geometry.Pos;
 
-import javax.sound.sampled.*;
+import java.io.File;
+import com.itextpdf.io.image.ImageData;
+import com.itextpdf.io.image.ImageDataFactory;
+import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.layout.Document;
+import com.itextpdf.layout.element.Paragraph;
+
+import javafx.stage.FileChooser;
+import java.io.File;
+
+
+import javafx.scene.image.ImageView;
+import com.google.zxing.WriterException;
+import javafx.animation.FadeTransition;
+import javafx.event.ActionEvent;
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
+import javafx.util.Duration;
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
+
+import javafx.stage.FileChooser;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import javafx.scene.control.Label;
+import java.net.HttpURLConnection;
 import java.net.URL;
+import java.io.InputStreamReader;
+import java.io.BufferedReader;
+import com.itextpdf.io.image.ImageData;
+import com.itextpdf.io.image.ImageDataFactory;
+import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.layout.Document;
+
+import com.itextpdf.layout.element.Paragraph;
+
+
+
+import javafx.application.Platform;
+
+
+import javafx.stage.Stage;
+import java.util.ArrayList;  // Ajouter cet import en haut du fichier
+import java.util.List;        // Si tu utilises List au lieu de ArrayList
 
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
 
+import services.*;
+import javafx.geometry.Insets;
 
+import com.itextpdf.io.image.ImageData;
+import com.itextpdf.io.image.ImageDataFactory;
+import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.layout.Document;
+import com.itextpdf.layout.element.Paragraph;
+import javafx.stage.FileChooser;
+import java.io.File;
+import models.QRCodeGenerator;
 
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.Base64;
-import javafx.stage.Stage;
 import models.Category;
 import models.Equipement;
-import services.serviceEquipement;
 import tools.MyDataBase;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
+
 import java.sql.*;
 import javafx.scene.control.TableCell;
 
 import javafx.util.Callback;
 import javafx.beans.property.SimpleStringProperty;
 
-import java.util.List;
-import  javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import com.google.zxing.qrcode.QRCodeReader;
-import com.google.zxing.*;
-import com.google.zxing.common.*;
 
 import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
-import java.io.File;
-import java.io.FileInputStream;
-
+import java.io.IOException;
 
 
 import javafx.event.ActionEvent;
-import services.PDFGenerator;
 
 import java.util.Comparator;
 import javafx.scene.control.cell.CheckBoxTableCell;
-import javafx.scene.control.Alert;
 import javafx.scene.layout.VBox;
 import javafx.animation.Interpolator;
-import java.io.BufferedInputStream;
-import javafx.scene.layout.StackPane;
-import javafx.stage.Stage;
-import javazoom.jl.decoder.JavaLayerException;
-import javazoom.jl.player.Player;
+
 import java.time.LocalDate;
-import javafx.stage.FileChooser;
+
 import javafx.scene.chart.PieChart;
 import javafx.animation.SequentialTransition;
 import javafx.animation.ScaleTransition;
 import javafx.util.Duration;
 import javafx.animation.TranslateTransition;
-import javafx.fxml.FXML;
-import javafx.scene.image.ImageView;
-import javafx.util.Duration;
-
 
 
 public class Controllereq {
@@ -108,6 +145,21 @@ public class Controllereq {
     private ComboBox<Category> categoryComboBox;
     @FXML
     private TableView<Equipement> tableEquipements;
+    private static final String API_KEY = "9a86d831a9694cec8ed30bf5ccf70878";
+
+
+    @FXML
+    private Label temperatureLabel;
+    @FXML
+    private Label cityLabel;
+    @FXML
+    private TextField temperatureField;
+    @FXML
+    private TextField weatherDescriptionField;
+    @FXML
+    private ImageView weatherIcon;
+    @FXML
+    private ImageView qrCodeImageView;
 
     @FXML
     private TableColumn<Equipement, String> colNom;
@@ -118,20 +170,20 @@ public class Controllereq {
     @FXML
     private TableColumn<Equipement, Boolean> colDisponibilite;
     @FXML
-    private Button btnSupprimer, btnModifier, btnSortByPriceDesc,btnExportPDF;
-    // Ajout du bouton pour trier par prix décroissant
+    private Button btnSupprimer, btnModifier, btnSortByPriceDesc, btnExportPDF,generateQRCodeButton;;
+    // Ajout du bouton pour trier par prix décroissant,
     @FXML
     private TableColumn<Equipement, String> imageColumn;
     @FXML
     private TableColumn<Equipement, String> colDescription;
 
+    // Label pour la température
 
     @FXML
     private TextField searchField;
 
     @FXML
     private ListView<String> resultList;
-
 
 
     private Connection connection;
@@ -143,12 +195,13 @@ public class Controllereq {
     public Controllereq() {
         this.connection = MyDataBase.getInstance().getConnection();
         this.service = new serviceEquipement();
+
     }
 
     @FXML
     private void initialize() {
         setupTable();
-        tableEquipements.getColumns().setAll( colNom, colCategorie, colPrix, colDisponibilite, colDescription, imageColumn);
+        tableEquipements.getColumns().setAll(colNom, colCategorie, colPrix, colDisponibilite, colDescription, imageColumn);
 
         dateAdded.setValue(LocalDate.now());
         loadEquipements();
@@ -161,14 +214,15 @@ public class Controllereq {
                 populateFields(equipementSelectionne);
             }
             afficherImagesDansTable();
+
+
         });
     }
 
+
     @FXML
     private void handleAdd() {
-
-
-        // Vérifier que le nom n'est pas vide
+        // Vérification des champs requis
         if (name.getText().trim().isEmpty()) {
             showAlert(Alert.AlertType.ERROR, "Erreur", "Le nom ne peut pas être vide.");
             return;
@@ -182,16 +236,15 @@ public class Controllereq {
             return;
         }
 
-
-        // Vérification du prix (ne doit pas être vide et doit être un nombre positif)
+        // Vérification du prix
         if (price.getText().trim().isEmpty()) {
             showAlert(Alert.AlertType.ERROR, "Erreur", "Le prix ne peut pas être vide.");
             return;
         }
 
-        float priceValue; // Déclaration de la variable priceValue
+        float priceValue;
         try {
-            priceValue = Float.parseFloat(price.getText().trim()); // Convertit le texte en float
+            priceValue = Float.parseFloat(price.getText().trim());
             if (priceValue <= 0) {
                 showAlert(Alert.AlertType.ERROR, "Erreur", "Le prix doit être un nombre positif.");
                 return;
@@ -201,16 +254,13 @@ public class Controllereq {
             return;
         }
 
-
-
-        // Vérifier que l'image est renseignée
+        // Vérification de l'image
         if (image.getText().trim().isEmpty()) {
             showAlert(Alert.AlertType.ERROR, "Erreur", "Veuillez sélectionner une image.");
             return;
         }
 
-
-        // Vérification de l'ID partenaire (doit être un entier positif)
+        // Vérification de l'ID partenaire
         int partnerIdValue;
         try {
             partnerIdValue = Integer.parseInt(partnerId.getText());
@@ -223,27 +273,36 @@ public class Controllereq {
             return;
         }
 
+        // Préparer la requête d'ajout à la base de données
         int categoryId = categoryComboBox.getSelectionModel().getSelectedItem().getId();
         String sql = "INSERT INTO equipement (name, description, categoryId, price, image, availability, dateAdded, partnerId) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+        try (PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, name.getText());
             statement.setString(2, description.getText());
             statement.setInt(3, categoryId);
             statement.setFloat(4, Float.parseFloat(price.getText()));
             statement.setString(5, image.getText());
             statement.setBoolean(6, availability.isSelected());
-            statement.setDate(7, Date.valueOf(dateAdded.getValue()));
+            statement.setDate(7, new java.sql.Date(System.currentTimeMillis()));
             statement.setInt(8, Integer.parseInt(partnerId.getText()));
 
+            // Exécution de la requête d'ajout
             statement.executeUpdate();
+
+            // Récupérer l'ID généré pour l'équipement
+
+
+            // Afficher un message de succès et réinitialiser les champs
             showAlert(Alert.AlertType.INFORMATION, "Succès", "Équipement ajouté avec succès !");
             clearFields();
-            loadEquipements();
+            loadEquipements();  // Rafraîchir la liste des équipements
+
         } catch (SQLException | NumberFormatException e) {
             showAlert(Alert.AlertType.ERROR, "Erreur", "Problème : " + e.getMessage());
         }
     }
+
 
     @FXML
     private void handleUpdate() {
@@ -352,6 +411,23 @@ public class Controllereq {
             showAlert(Alert.AlertType.ERROR, "Erreur", "Impossible de charger les catégories : " + e.getMessage());
         }
     }
+
+    private List<String> getUtilisateursEmails() {
+        List<String> emails = new ArrayList<>();
+        String sql = "SELECT email FROM user"; // Assurez-vous que la colonne 'email' existe bien
+
+        try (PreparedStatement statement = connection.prepareStatement(sql);
+             ResultSet resultSet = statement.executeQuery()) {
+
+            while (resultSet.next()) {
+                emails.add(resultSet.getString("email"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return emails;
+    }
+
 
     private void populateFields(Equipement equipement) {
         name.setText(equipement.getName());
@@ -484,13 +560,11 @@ public class Controllereq {
     }
 
 
-
-
-
     @FXML
     private void trierParPrixAscendant() {
         tableEquipements.getItems().sort(Comparator.comparing(Equipement::getPrice));
     }
+
     @FXML
     private void handleSearch() {
         String searchText = searchField.getText().toLowerCase().trim(); // Récupère et nettoie le texte
@@ -557,6 +631,7 @@ public class Controllereq {
             image.setText(file.toURI().toString()); // Stocke le chemin de l'image dans le champ texte
         }
     }
+
     public void afficherStatistiques() {
         Stage stage = new Stage();
         stage.setTitle("Statistiques des Équipements");
@@ -623,6 +698,7 @@ public class Controllereq {
 
     @FXML
     private ComboBox<Integer> equipementIdComboBox;  // ComboBox pour les IDs des équipements
+
     private Category getCategoryById(int categoryId) {
         Category category = null;
         String sql = "SELECT * FROM category WHERE id = ?";
@@ -643,7 +719,7 @@ public class Controllereq {
     }
 
     @FXML
-    private void handleFilterById(ActionEvent Event ) {
+    private void handleFilterById(ActionEvent Event) {
         Integer selectedEquipementId = equipementIdComboBox.getSelectionModel().getSelectedItem();
 
         if (selectedEquipementId == null) {
@@ -685,6 +761,7 @@ public class Controllereq {
             showAlert(Alert.AlertType.ERROR, "Erreur", "Impossible de filtrer l'équipement : " + e.getMessage());
         }
     }
+
     private void runAnimation() {
         TranslateTransition run = new TranslateTransition(Duration.seconds(3), runnerImage);
         run.setByX(600);  // Déplacement horizontal de 600px
@@ -695,8 +772,156 @@ public class Controllereq {
     }
 
 
+    public void getWeather(String city) {
+        System.out.println("Fetching weather data for " + city);
+        try {
+            String apiKey = "9a86d831a9694cec8ed30bf5ccf70878";  // Remplace par ta clé API
+            String urlString = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + apiKey + "&units=metric";
+            URL url = new URL(urlString);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("GET");
+
+            BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            StringBuilder response = new StringBuilder();
+            String line;
+            while ((line = reader.readLine()) != null) {
+                response.append(line);
+            }
+            reader.close();
+
+            // Utilisation de Jackson pour parser le JSON
+            ObjectMapper mapper = new ObjectMapper();
+            JsonNode jsonResponse = mapper.readTree(response.toString());
+
+            // Extraction des informations météo
+            JsonNode weather = jsonResponse.get("weather").get(0);
+            String weatherDescription = weather.get("description").asText();
+            JsonNode main = jsonResponse.get("main");
+            double temperature = main.get("temp").asDouble();
+
+            // Récupération de l'icône météo
+            String iconCode = weather.get("icon").asText();
+            String iconUrl;
+
+            // Déterminer l'icône selon l'état de la météo
+            if (iconCode.equals("01d")) {
+                // Ciel clair (ensoleillé)
+                iconUrl = "http://openweathermap.org/img/wn/01d@2x.png";
+            } else if (iconCode.equals("02d") || iconCode.equals("03d") || iconCode.equals("04d")) {
+                // Quelques nuages
+                iconUrl = "http://openweathermap.org/img/wn/02d@2x.png";
+            } else if (iconCode.equals("09d") || iconCode.equals("10d")) {
+                // Pluie
+                iconUrl = "http://openweathermap.org/img/wn/10d@2x.png";
+            } else {
+                // Par défaut pour d'autres types d'icônes
+                iconUrl = "http://openweathermap.org/img/wn/01d@2x.png";
+            }
+
+            // Mise à jour des labels dans le thread JavaFX
+            Platform.runLater(() -> {
+                temperatureField.setText("Température : " + temperature + "°C");
+                weatherDescriptionField.setText("Condition : " + weatherDescription);
+
+                // Mettre à jour l'icône météo
+                Image icon = new Image(iconUrl);
+                weatherIcon.setImage(icon);
+            });
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Error retrieving weather data");
+        }
+    }
+    public void handleGetWeather(ActionEvent event) {
+        // Récupérer la ville saisie dans le champ
+        String city = cityLabel.getText().trim();  // Enlever les espaces superflus
+        if (city.isEmpty()) {
+            temperatureField.setText("Veuillez entrer une ville");
+            weatherDescriptionField.setText("");
+            return;
+        }
+
+        // Vérifie et retire un préfixe comme "Ville : " s'il existe
+        if (city.startsWith("Ville : ")) {
+            city = city.substring(7).trim();  // Retirer le préfixe "Ville : " (7 caractères)
+        }
+
+        // Appeler la méthode getWeather pour récupérer et afficher les données
+        getWeather(city);
+    }
+
+    @FXML
+    public void handleGenerateQRCode(ActionEvent event) {
+        // Vérifier si un équipement est sélectionné
+        Equipement selectedEquipement = tableEquipements.getSelectionModel().getSelectedItem();
+        if (selectedEquipement == null) {
+            showAlert(Alert.AlertType.ERROR, "Erreur", "Veuillez sélectionner un équipement.");
+            return;
+        }
+
+        // 🔹 Utiliser le nom du produit pour générer l'URL
+        String equipementName = selectedEquipement.getName();
+        String qrData = QRCodeGenerator.generateProductUrl(equipementName);
+
+        // Définir le chemin du fichier QR Code
+        String qrPath = "qrcodes/equipment_" + equipementName.replaceAll("\\s+", "_") + ".png";
+
+        try {
+            // Générer le QR Code
+            QRCodeGenerator.generateQRCode(qrData, qrPath, 300, 300);
+
+            // Charger et afficher l'image du QR Code
+            File qrCodeFile = new File(qrPath);
+            if (qrCodeFile.exists()) {
+                Image qrCodeImage = new Image(qrCodeFile.toURI().toString());
+                ImageView qrCodeImageView = new ImageView(qrCodeImage);
+                qrCodeImageView.setFitWidth(300);
+                qrCodeImageView.setFitHeight(300);
+
+                // Créer un VBox pour afficher l'image du QR Code
+                VBox vbox = new VBox(qrCodeImageView);
+                vbox.setAlignment(javafx.geometry.Pos.CENTER);
+
+                // Créer une nouvelle fenêtre pour afficher le QR Code
+                Stage qrStage = new Stage();
+                qrStage.setTitle("QR Code de l'Équipement");
+                qrStage.setScene(new Scene(vbox, 350, 350));
+                qrStage.show();
+
+                // 🔹 Effet d'apparition du QR Code
+                FadeTransition fadeTransition = new FadeTransition(Duration.seconds(2), qrCodeImageView);
+                fadeTransition.setFromValue(0);
+                fadeTransition.setToValue(1);
+                fadeTransition.play();
+
+            } else {
+                showAlert(Alert.AlertType.ERROR, "Erreur", "Le QR code n'a pas pu être généré.");
+            }
+        } catch (Exception e) {
+            showAlert(Alert.AlertType.ERROR, "Erreur", "Une erreur est survenue lors de la génération du QR code : " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
