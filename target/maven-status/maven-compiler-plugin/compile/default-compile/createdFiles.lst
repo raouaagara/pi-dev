@@ -1,9 +1,11 @@
-models\Status$1.class
-controllers\AfficherReclamationsController.class
+controllers\AfficherReclamationsAdminController.class
 models\Status.class
-controllers\AfficherReclamationsController$2.class
-controllers\AfficherReclamationsController$3.class
+controllers\AfficherReclamationsAdminController$1.class
 controllers\SuiviReclamationController.class
-controllers\AfficherReclamationsController$1.class
+controllers\AfficherReclamationsAdminController$2.class
+controllers\AfficherReclamationsClientController$1.class
+controllers\AfficherReclamationsClientController.class
 controllers\HomeReclamationController.class
+controllers\AfficherReclamationsAdminController$3.class
 controllers\ModifierReclamationController.class
+controllers\AfficherReclamationController.class

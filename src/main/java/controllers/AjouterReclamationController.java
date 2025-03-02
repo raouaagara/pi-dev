@@ -69,7 +69,7 @@ public class AjouterReclamationController {
         } catch (IllegalArgumentException e) {
             showAlert(AlertType.ERROR, "Erreur de saisie", e.getMessage());
         } catch (SQLException e) {
-            showAlert(AlertType.ERROR, "Erreur de base de données", "Erreur lors de l'ajout de la réclamation !");
+            showAlert(AlertType.ERROR, "Erreur de base de données", e.getMessage());
         } catch (Exception e) {
             showAlert(AlertType.ERROR, "Erreur inattendue", "Une erreur inattendue s'est produite.");
         }

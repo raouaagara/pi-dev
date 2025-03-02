@@ -1,15 +1,18 @@
 package models;
 
 public enum Status {
-    PENDING, IN_PROGRESS, RESOLVED, REJECTED;
+    EN_ATTENTE("En Attente"),
+    EN_COURS("En Cours"),
+    RESOLU("Résolu");
 
-    // Méthode pour afficher les statuts en français
-    public String getFrenchLabel() {
-        return switch (this) {
-            case PENDING -> "En attente";
-            case IN_PROGRESS -> "En cours";
-            case RESOLVED -> "Résolue";
-            case REJECTED -> "Rejetée";
-        };
+    private final String displayName;
+
+    Status(String displayName) {
+        this.displayName = displayName;
+    }
+
+    @Override
+    public String toString() {
+        return displayName;
     }
 }

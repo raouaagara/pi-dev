@@ -19,7 +19,5 @@
             <Font name="Arial Black" size="21.0" />
          </font>
       </Text>
-      <Label layoutX="99.0" layoutY="363.0" text="Réponse" wrapText="true" />
-      <ComboBox fx:id="etatTF" layoutX="99.0" layoutY="550.0" prefHeight="26.0" prefWidth="732.0" />
    </children>
 </AnchorPane>

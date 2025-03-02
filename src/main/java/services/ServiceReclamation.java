@@ -3,6 +3,7 @@ package services;
 import com.mysql.cj.xdevapi.JsonParser;
 import models.Reclamation;
 import models.Event;
+import models.Status;
 import models.User;
 import tools.MyDataBase;
 
@@ -17,13 +18,12 @@ public class ServiceReclamation implements IServices<Reclamation> {
         cnx = MyDataBase.getInstance().getCnx();
     }
 
-    public void modifierEtat(Reclamation reclamation, String etat, String answer) throws SQLException {
-        String sql ="UPDATE reclamation set status=?,answer=? where id=?";
+    public void modifierEtat(Reclamation reclamation, String answer) throws SQLException {
+        String sql ="UPDATE reclamation set status='RESOLU',answer=? where id=?";
         PreparedStatement ste = cnx.prepareStatement(sql);
-        ste.setString(1, etat);
-        ste.setString(2, answer);
+        ste.setString(1, answer);
 
-        ste.setLong(3, reclamation.getId());
+        ste.setLong(2, reclamation.getId());
         ste.executeUpdate();
         System.out.println("Reclamation modified");
 
@@ -80,7 +80,8 @@ public class ServiceReclamation implements IServices<Reclamation> {
     }
 
     public List<Reclamation> recupererAll() throws SQLException {
-        String sql = "SELECT r.id, r.title, r.description, e.id as event_id, e.title as event_title, u.id as user_id FROM reclamation r " +
+        String sql = "SELECT r.id, r.title, r.description, r.status, r.answer, e.id as event_id, e.title as event_title, u.id as user_id " +
+                "FROM reclamation r " +
                 "LEFT JOIN event e ON r.event_id = e.id " +
                 "LEFT JOIN user u ON r.user_id = u.id";
         Statement ste = cnx.createStatement();
@@ -88,6 +89,9 @@ public class ServiceReclamation implements IServices<Reclamation> {
 
         List<Reclamation> reclamations = new ArrayList<>();
         while (rs.next()) {
+            // Retrieving the status from the result set
+            Status status = Status.valueOf(rs.getString("status"));
+
             Event event = new Event();
             event.setId(rs.getInt("event_id"));
             event.setTitle(rs.getString("event_title")); // Set the event title
@@ -95,10 +99,15 @@ public class ServiceReclamation implements IServices<Reclamation> {
             User user = new User();
             user.setId(rs.getInt("user_id"));
 
+            // Retrieving the answer from the result set
+            String answer = rs.getString("answer");
+
             Reclamation reclamation = new Reclamation(
                     rs.getInt("id"),
                     rs.getString("title"),
                     rs.getString("description"),
+                    status,  // Set the status here
+                    answer,  // Set the answer here
                     event,
                     user
             );
@@ -108,28 +117,35 @@ public class ServiceReclamation implements IServices<Reclamation> {
         return reclamations;
     }
 
+
+
     public Reclamation recupererParId(int id) throws SQLException {
-        String sql = "SELECT id, title, description, event_id, user_id FROM reclamation WHERE id = ?";
+        String sql = "SELECT id, title, description, status, answer, event_id, user_id FROM reclamation WHERE id = ?";
 
         PreparedStatement ste = cnx.prepareStatement(sql);
         ste.setInt(1, id);
         ResultSet rs = ste.executeQuery();
 
         if (rs.next()) {
-            // Create a basic Reclamation object with only IDs for Event and User
+            // Retrieving the status from the result set
+            Status status = Status.valueOf(rs.getString("status"));
+
+            // Retrieving the answer from the result set
+            String answer = rs.getString("answer");
+
             Reclamation reclamation = new Reclamation();
             reclamation.setId(rs.getInt("id"));
             reclamation.setTitle(rs.getString("title"));
             reclamation.setDescription(rs.getString("description"));
+            reclamation.setStatus(status);  // Set the status here
+            reclamation.setAnswer(answer);  // Set the answer here
 
-            // Create minimal Event and User objects with only IDs
             Event event = new Event();
             event.setId(rs.getInt("event_id"));
 
             User user = new User();
             user.setId(rs.getInt("user_id"));
 
-            // Set the Event and User objects in the Reclamation
             reclamation.setEvent(event);
             reclamation.setUser(user);
 
@@ -140,4 +156,20 @@ public class ServiceReclamation implements IServices<Reclamation> {
     }
 
 
+
+
+    public void mettreAJourStatut(Reclamation reclamation) throws SQLException {
+        String sql = "UPDATE reclamation SET status = 'EN_COURS' WHERE id = ?";
+        PreparedStatement ste = cnx.prepareStatement(sql);
+        ste.setInt(1, reclamation.getId());
+        int rowsUpdated = ste.executeUpdate();
+        if (rowsUpdated > 0) {
+            System.out.println("Reclamation mettre ajour de statut");
+        }
+        else {
+            System.out.println("Reclamation introuvable !");
+
+        }
+
+    }
 }

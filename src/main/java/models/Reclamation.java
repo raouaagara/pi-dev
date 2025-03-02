@@ -4,7 +4,7 @@ public class Reclamation {
     private int id;
     private String title;
     private String description;
-    private Status status = Status.PENDING;
+    private Status status = Status.EN_ATTENTE;
     private String answer;
     private Event event;
     private User user;
@@ -100,6 +100,8 @@ public class Reclamation {
                 "id=" + id +
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
+                ", status=" + status +
+                ", answer='" + answer + '\'' +
                 ", event=" + event +
                 ", user=" + user +
                 '}';

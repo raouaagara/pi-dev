@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane prefHeight="716.0" prefWidth="1131.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AfficherReclamationController">
+    <children>
+        <Text layoutX="154.0" layoutY="140.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Titre" wrappingWidth="102.267578125">
+            <font>
+                <Font size="20.0" />
+            </font>
+        </Text>
+        <Text fx:id="titreId" layoutX="154.0" layoutY="177.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text">
+            <font>
+                <Font size="18.0" />
+            </font>
+        </Text>
+        <Text layoutX="154.0" layoutY="225.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Description" wrappingWidth="102.267578125">
+            <font>
+                <Font size="20.0" />
+            </font>
+        </Text>
+        <Text fx:id="descId" layoutX="154.0" layoutY="269.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="847.205078125">
+            <font>
+                <Font size="18.0" />
+            </font>
+        </Text>
+        <Text layoutX="154.0" layoutY="403.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Evenement" wrappingWidth="102.267578125">
+            <font>
+                <Font size="20.0" />
+            </font>
+        </Text>
+        <Text fx:id="eventId" layoutX="154.0" layoutY="440.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text">
+            <font>
+                <Font size="18.0" />
+            </font>
+        </Text>
+    </children>
+</AnchorPane>
