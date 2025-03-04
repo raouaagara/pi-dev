@@ -42,13 +42,7 @@ public class AfficherReclamationsClientController {
     private TableColumn<Reclamation, Void> deleteCol;
 
     @FXML
-    private TableColumn<Reclamation, Void> suivreCol;
-
-    @FXML
-    private TableColumn<Reclamation, Void> suivreCol1;
-
-    @FXML
-    private TableColumn<Reclamation, Void> suivreCol11;
+    private TableColumn<Reclamation, Void> infoCol;
 
     private User user;
 
@@ -59,23 +53,18 @@ public class AfficherReclamationsClientController {
         user.setId(1);
         loadNotifications(user);
 
-
         // Lier les colonnes aux attributs de Reclamation
-        titleCol.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getTitle()));  // Title column binds to getTitle()
-        eventCol.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getEvent().getTitle()));  // Event column binds to event title
-        statusCol.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getStatus().toString()));  // Status column binds to getStatus()
+        titleCol.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getTitle()));
+        eventCol.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getEvent().getTitle()));
+        statusCol.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getStatus().toString()));
 
         loadReclamations();
 
         // Ajouter des boutons dans les colonnes
         addButtonToTable(modifyCol, "Modifier", this::loadModifyView);
         addButtonToTable(deleteCol, "Supprimer", this::supprimerReclamation);
-        addButtonToTable(suivreCol, "Suivre", this::suivreReclamation);
-        addButtonToTable(suivreCol1, "En cours", this::mettreEnCours);
-        addButtonToTable(suivreCol11, "Informations", this::visualiserReclamation);
+        addButtonToTable(infoCol, "Informations", this::visualiserReclamation);
     }
-
-
 
     private void loadReclamations() {
         try {
@@ -88,17 +77,6 @@ public class AfficherReclamationsClientController {
             }
 
             reclamationTable.getItems().setAll(reclamations);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void mettreEnCours(Reclamation reclamation) {
-        try {
-            serviceReclamation.mettreAJourStatut(reclamation); // Assuming this method changes the status in the DB
-            reclamation.setStatus(Status.EN_COURS); // Local update of status
-            reclamationTable.refresh(); // Refresh the table to show the updated status
-            loadReclamations(); // Reload the table to ensure all rows are updated
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -140,36 +118,17 @@ public class AfficherReclamationsClientController {
 
     private void loadModifyView(Reclamation reclamation) {
         try {
-            // Fetch the latest status from the database using the reclamation ID
             Reclamation latestReclamation = serviceReclamation.recupererParId(reclamation.getId());
-            System.out.println(latestReclamation);
 
-            // Check if the status is EN_COURS or RESOLU before opening the modify view
-            if (latestReclamation.getStatus() == Status.EN_COURS) {
-                // Show alert if the status is EN_COURS
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Information");
-                alert.setHeaderText("Modification Impossible");
-                alert.setContentText("Cette réclamation ne peut pas être modifiée car elle est en cours de traitement.");
-                alert.showAndWait();
-                return;  // Prevent opening the modify view
+            if (latestReclamation.getStatus() == Status.EN_COURS || latestReclamation.getStatus() == Status.RESOLU) {
+                showAlert(Alert.AlertType.INFORMATION, "Modification Impossible", "Cette réclamation ne peut pas être modifiée car elle est en cours de traitement ou résolue.");
+                return;
             }
 
-            if (latestReclamation.getStatus() == Status.RESOLU) {
-                // Show alert if the status is RESOLU
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Information");
-                alert.setHeaderText("Modification Impossible");
-                alert.setContentText("Cette réclamation ne peut pas être modifiée car elle est résolue.");
-                alert.showAndWait();
-                return;  // Prevent opening the modify view
-            }
-
-            // If the status is EN_ATTENTE (or other statuses), open the modify view as usual
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/ModifierReclamation.fxml"));
             Parent root = loader.load();
             ModifierReclamationController controller = loader.getController();
-            controller.initData(latestReclamation);  // Use the latestReclamation to pass to the controller
+            controller.initData(latestReclamation);
             Stage stage = new Stage();
             stage.setScene(new Scene(root));
             stage.setTitle("Modifier Réclamation");
@@ -179,27 +138,7 @@ public class AfficherReclamationsClientController {
         }
     }
 
-
-
-    private void suivreReclamation(Reclamation reclamation) {
-        System.out.println("Suivi de la réclamation : " + reclamation.getTitle());
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/SuiviReclamation.fxml"));
-            Parent root = loader.load();
-            SuiviReclamationController controller = loader.getController();
-            controller.initData(reclamation);  // Assuming you need to pass the Reclamation data
-            Stage stage = new Stage();
-            stage.setScene(new Scene(root));
-            stage.setTitle("Suivi de la Réclamation");
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    // Action to open the "Informations" view
     private void visualiserReclamation(Reclamation reclamation) {
-        System.out.println("Visualiser la réclamation : " + reclamation.getTitle());
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/AfficherReclamation.fxml"));
             Parent root = loader.load();
@@ -231,4 +170,11 @@ public class AfficherReclamationsClientController {
         }
     }
 
+    private void showAlert(Alert.AlertType type, String title, String message) {
+        Alert alert = new Alert(type);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
 }

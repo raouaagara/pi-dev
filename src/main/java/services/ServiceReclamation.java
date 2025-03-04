@@ -18,11 +18,11 @@ public class ServiceReclamation implements IServices<Reclamation> {
         cnx = MyDataBase.getInstance().getCnx();
     }
 
-    public void modifierEtat(Reclamation reclamation, String answer) throws SQLException {
+    public void modifierEtat(Reclamation reclamation, String answer) throws Exception {
         String sql ="UPDATE reclamation set status='RESOLU',answer=? where id=?";
         PreparedStatement ste = cnx.prepareStatement(sql);
         ste.setString(1, answer);
-
+        reclamation.setAnswer(answer);
         ste.setLong(2, reclamation.getId());
         ste.executeUpdate();
         String notificationSql = "INSERT INTO notification (title, type, onClicked, user_id) VALUES (?, ?, ?, ?)";
@@ -33,6 +33,10 @@ public class ServiceReclamation implements IServices<Reclamation> {
         notifSte.setInt(4, reclamation.getUser().getId());
         notifSte.executeUpdate();
         SMSService smsService = new SMSService();
+        String toEmail=reclamation.getUser().getEmail();
+        String subject="ECOSPORT - Reclamation Resolu";
+        String content="<p>Nous avons le plaisir de vous informer que votre réclamation sous le nom " + reclamation.getTitle() + " et la réponse est:\n"+answer+"</p>";
+        BrevoEmailService.sendEmail(toEmail,subject,content);
         smsService.sendSMS("+21690102922",answer);
         System.out.println("Reclamation modified");
 
@@ -167,7 +171,7 @@ public class ServiceReclamation implements IServices<Reclamation> {
 
 
 
-    public void mettreAJourStatut(Reclamation reclamation) throws SQLException {
+    public void mettreAJourStatut(Reclamation reclamation) throws Exception {
         String sql = "UPDATE reclamation SET status = 'EN_COURS' WHERE id = ?";
         PreparedStatement ste = cnx.prepareStatement(sql);
         ste.setInt(1, reclamation.getId());
@@ -181,6 +185,10 @@ public class ServiceReclamation implements IServices<Reclamation> {
             notifSte.setBoolean(3, false);
             notifSte.setInt(4, reclamation.getUser().getId());
             notifSte.executeUpdate();
+            String toEmail=reclamation.getUser().getEmail();
+            String subject="ECOSPORT - Reclamation est en cours de traitement";
+            String content="<p>Nous avons le plaisir de vous informer que votre réclamation sous le nom " + reclamation.getTitle() + " est en cours de traitement.</p>";
+            BrevoEmailService.sendEmail(toEmail,subject,content);
         }
         else {
             System.out.println("Reclamation introuvable !");

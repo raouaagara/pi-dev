@@ -27,9 +27,12 @@
                     style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-size: 14px;"
                     text="Ajouter Réclamation" />
 
-            <Button onAction="#loadAfficherReclamation" prefHeight="50.0" prefWidth="200.0"
+            <Button onAction="#loadAfficherReclamationsClient" prefHeight="50.0" prefWidth="200.0"
                     style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-size: 14px;"
                     text="Mes Réclamations" />
+            <Button onAction="#loadAfficherReclamationsAdmin" prefHeight="50.0" prefWidth="200.0"
+                    style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-size: 14px;"
+                    text="Réclamations" />
         </VBox>
     </left>
 

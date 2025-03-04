@@ -51,6 +51,8 @@ public class SuiviReclamationController {
                 System.out.println("Reclamation status updated successfully.");
             } catch (SQLException e) {
                 e.printStackTrace();
+            } catch (Exception e) {
+                throw new RuntimeException(e);
             }
 
     }
