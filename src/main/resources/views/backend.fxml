@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.cell.PropertyValueFactory?>
+
+<BorderPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.BackController" style="-fx-background-color: #f4f4f4;">
+    <left>
+        <VBox spacing="10" style="-fx-padding: 10; -fx-background-color: #fff; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);">
+            <Button text="Gestion Utilisateurs" style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-size: 14px; -fx-padding: 10 20;" />
+            <Button text="Gestion Réclamations" style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-size: 14px; -fx-padding: 10 20;" />
+            <Button text="Gestion Événements" style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-size: 14px; -fx-padding: 10 20;" />
+            <Button text="Gestion Équipements" style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-size: 14px; -fx-padding: 10 20;" />
+        </VBox>
+    </left>
+
+    <center>
+        <VBox spacing="10" style="-fx-padding: 20; -fx-background-color: #fff; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);">
+            <HBox spacing="10" alignment="CENTER_LEFT" style="-fx-padding: 0 0 20 0;">
+                <TextField fx:id="searchField" promptText="Rechercher par titre" style="-fx-padding: 10; -fx-border-color: #ddd; -fx-border-radius: 5;" />
+                <Button text="Rechercher" onAction="#handleSearch" style="-fx-background-color: #2196F3; -fx-text-fill: white; -fx-font-size: 14px; -fx-padding: 10 20;" />
+                <Button text="Trier par date" onAction="#handleSortByDate" style="-fx-background-color: #2196F3; -fx-text-fill: white; -fx-font-size: 14px; -fx-padding: 10 20;" />
+                <Button text="Nouvel Événement" onAction="#handleNewEvent" style="-fx-background-color: #FF9800; -fx-text-fill: white; -fx-font-size: 14px; -fx-padding: 10 20;" />
+            </HBox>
+
+            <TableView fx:id="eventsTable" style="-fx-border-color: #ddd; -fx-border-width: 1;">
+                <columns>
+                    <TableColumn fx:id="titleColumn" text="Titre" prefWidth="150">
+                        <cellValueFactory>
+                            <PropertyValueFactory property="title" />
+                        </cellValueFactory>
+                    </TableColumn>
+                    <TableColumn fx:id="descriptionColumn" text="Description" prefWidth="200">
+                        <cellValueFactory>
+                            <PropertyValueFactory property="description" />
+                        </cellValueFactory>
+                    </TableColumn>
+                    <TableColumn fx:id="locationColumn" text="Lieu" prefWidth="100">
+                        <cellValueFactory>
+                            <PropertyValueFactory property="location" />
+                        </cellValueFactory>
+                    </TableColumn>
+                    <TableColumn fx:id="startDateColumn" text="Date de début" prefWidth="100">
+                        <cellValueFactory>
+                            <PropertyValueFactory property="startDate" />
+                        </cellValueFactory>
+                    </TableColumn>
+                    <TableColumn fx:id="endDateColumn" text="Date de fin" prefWidth="100">
+                        <cellValueFactory>
+                            <PropertyValueFactory property="endDate" />
+                        </cellValueFactory>
+                    </TableColumn>
+                    <TableColumn fx:id="imageColumn" text="Image" prefWidth="100">
+                        <cellValueFactory>
+                            <PropertyValueFactory property="image" />
+                        </cellValueFactory>
+                    </TableColumn>
+                    <TableColumn fx:id="actionsColumn" text="Actions" prefWidth="100">
+                    </TableColumn>
+                </columns>
+            </TableView>
+        </VBox>
+    </center>
+</BorderPane>

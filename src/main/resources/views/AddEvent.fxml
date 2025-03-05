@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.text.*?>
+
+<VBox spacing="10" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AddEventController" style="-fx-padding: 20; -fx-background-color: #fff; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);">
+    <Label text="Ajouter un nouvel événement" style="-fx-font-size: 18px; -fx-font-weight: bold;" />
+
+    <GridPane hgap="10" vgap="10">
+        <!-- Champ Titre -->
+        <Label text="Titre:" GridPane.rowIndex="0" GridPane.columnIndex="0" />
+        <TextField fx:id="titleField" GridPane.rowIndex="0" GridPane.columnIndex="1" />
+
+        <!-- Champ Description -->
+        <Label text="Description:" GridPane.rowIndex="1" GridPane.columnIndex="0" />
+        <TextField fx:id="descriptionField" GridPane.rowIndex="1" GridPane.columnIndex="1" />
+
+        <!-- Champ Lieu -->
+        <Label text="Lieu:" GridPane.rowIndex="2" GridPane.columnIndex="0" />
+        <TextField fx:id="locationField" GridPane.rowIndex="2" GridPane.columnIndex="1" />
+
+        <!-- Champ Date de début -->
+        <Label text="Date de début:" GridPane.rowIndex="3" GridPane.columnIndex="0" />
+        <DatePicker fx:id="startDatePicker" GridPane.rowIndex="3" GridPane.columnIndex="1" />
+
+        <!-- Champ Date de fin -->
+        <Label text="Date de fin:" GridPane.rowIndex="4" GridPane.columnIndex="0" />
+        <DatePicker fx:id="endDatePicker" GridPane.rowIndex="4" GridPane.columnIndex="1" />
+
+        <!-- Champ Image -->
+        <Label text="Image:" GridPane.rowIndex="5" GridPane.columnIndex="0" />
+        <Button text="Choisir une image" onAction="#handleChooseImage" GridPane.rowIndex="5" GridPane.columnIndex="1" />
+        <ImageView fx:id="imageView" fitWidth="100" fitHeight="100" GridPane.rowIndex="6" GridPane.columnIndex="1" />
+    </GridPane>
+
+    <!-- Boutons Ajouter et Annuler -->
+    <HBox spacing="10" style="-fx-padding: 10 0 0 0;">
+        <Button text="Ajouter" onAction="#handleAddEvent" style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-size: 14px; -fx-padding: 10 20;" />
+        <Button text="Annuler" onAction="#handleCancel" style="-fx-background-color: #dc3545; -fx-text-fill: white; -fx-font-size: 14px; -fx-padding: 10 20;" />
+    </HBox>
+</VBox>
