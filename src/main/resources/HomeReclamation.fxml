@@ -10,7 +10,8 @@
 <BorderPane prefHeight="800.0" prefWidth="1250.0"
             xmlns="http://javafx.com/javafx/23.0.1"
             xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="controllers.HomeReclamationController">
+            fx:controller="controllers.HomeReclamationController"
+            stylesheets="styles.css">
 
     <left>
         <VBox spacing="20" style="-fx-background-color: #2E3B4E; -fx-padding: 20; -fx-alignment: center;">

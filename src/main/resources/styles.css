@@ -1,0 +1,119 @@
+/* Root style */
+.root {
+    -fx-font-family: 'Lato', sans-serif;
+    -fx-font-size: 12px;
+    -fx-background-color: #f4f4f4;
+}
+
+Label, Text{
+    -fx-fill: #014aad; /* Updated color */
+    -fx-font-size: 20px;
+    -fx-font-family: 'Lato', sans-serif;
+}
+
+/* General Text styles */
+Text, TextArea {
+    -fx-fill: #014aad; /* Updated color */
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-font-family: 'Lato', sans-serif;
+}
+
+/* General Button styles */
+Button, MenuButton, ToggleButton, RadioButton, CheckBox {
+    -fx-background-color: #014aad; /* Primary color */
+    -fx-text-fill: white;
+    -fx-font-size: 10px;
+    -fx-font-weight: bold;
+    -fx-padding: 10px 20px;
+    -fx-background-radius: 5px;
+    -fx-border-radius: 5px;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 5, 0, 0, 3);
+}
+
+Button:hover, MenuButton:hover, ToggleButton:hover, RadioButton:hover, CheckBox:hover {
+    -fx-background-color: #00bf63; /* Secondary color */
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 10, 0, 0, 5);
+}
+
+Button:pressed, MenuButton:pressed, ToggleButton:pressed, RadioButton:pressed, CheckBox:pressed {
+    -fx-background-color: #000000; /* Dark color */
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 15, 0, 0, 7);
+}
+
+/* General TableView styles */
+TableView {
+    -fx-background-color: white;
+    -fx-border-color: #ddd;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 10, 0, 0, 5);
+    -fx-padding: 10px;
+}
+
+/* TableView Header */
+TableView .column-header-background {
+    -fx-background-color: #ccf63b; /* Accent color */
+    -fx-background-radius: 10px 10px 0 0;
+    -fx-border-radius: 10px 10px 0 0;
+    -fx-padding: 10px 0;
+}
+
+TableView .column-header {
+    -fx-background-color: transparent;
+    -fx-text-fill: white;
+    -fx-font-size: 10px;
+    -fx-font-weight: bold;
+}
+
+/* TableView Rows */
+TableView .table-row-cell {
+    -fx-background-color: white;
+    -fx-border-color: #ddd;
+    -fx-border-width: 0 0 1px 0;
+}
+
+TableView .table-row-cell:odd {
+    -fx-background-color: #f9f9f9; /* Alternate row color */
+}
+
+TableView .table-row-cell:selected {
+    -fx-background-color: #00bf63; /* Green for selected row */
+    -fx-text-fill: white;
+}
+
+/* TableView Cells */
+TableView .table-cell {
+    -fx-padding: 10px 15px;
+    -fx-alignment: CENTER_LEFT;
+    -fx-font-size: 12px;
+    -fx-text-fill: #333333; /* Dark gray text */
+}
+
+/* General HBox and VBox styles */
+HBox, VBox {
+    -fx-spacing: 10px; /* Adjust spacing between children */
+    -fx-padding: 20px; /* Padding inside the container */
+}
+
+/* ImageView (Logo) styles */
+ImageView {
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5), 10, 0, 0, 5);
+    -fx-margin: 0 0 20px 0; /* Margin below the logo */
+}
+
+/* Scrollbar styles */
+TableView .scroll-bar:vertical {
+    -fx-background-color: transparent;
+}
+
+TableView .scroll-bar:vertical .thumb {
+    -fx-background-color: #00bf63; /* Green scrollbar thumb */
+    -fx-background-radius: 5px;
+}
+
+TableView .scroll-bar:vertical .track {
+    -fx-background-color: #f0f0f0; /* Light gray scrollbar track */
+    -fx-background-radius: 5px;
+}

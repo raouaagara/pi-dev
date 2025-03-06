@@ -7,12 +7,12 @@
 <?import javafx.scene.text.Text?>
 
 <?import javafx.scene.control.MenuButton?>
-<AnchorPane prefHeight="876.0" prefWidth="1363.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AfficherReclamationsAdminController">
+<AnchorPane prefHeight="876.0" prefWidth="1363.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AfficherReclamationsAdminController" stylesheets="styles.css">
     <children>
         <MenuButton fx:id="notificationIcon" layoutX="1000.0" layoutY="20.0" text="🔔 Notifications">
         </MenuButton>
 
-        <Text layoutX="82.0" layoutY="142.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Mes Réclamations" wrappingWidth="550.6731719970703">
+        <Text layoutX="82.0" layoutY="142.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Réclamations" wrappingWidth="550.6731719970703">
             <font>
                 <Font name="Arial Black" size="21.0" />
             </font>

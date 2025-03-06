@@ -8,19 +8,19 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="752.0" prefWidth="967.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AjouterReclamationController">
+<AnchorPane prefHeight="964.0" prefWidth="1435.0" stylesheets="styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AjouterReclamationController">
    <children>
-      <TextField fx:id="titleTF" layoutX="89.0" layoutY="187.0" prefHeight="26.0" prefWidth="741.0" />
-      <Text layoutX="89.0" layoutY="166.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Titre" wrappingWidth="740.6731719970703" />
-      <TextArea fx:id="descriptionTF" layoutX="89.0" layoutY="354.0" prefHeight="99.0" prefWidth="741.0" />
-      <Text layoutX="89.0" layoutY="318.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Description" wrappingWidth="740.6731719970703" />
-      <Text layoutX="89.0" layoutY="244.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Choisir un evenement" wrappingWidth="740.6731719970703" />
-      <Button layoutX="89.0" layoutY="471.0" mnemonicParsing="false" onAction="#ajouterReclamation" prefHeight="30.0" prefWidth="741.0" style="-fx-background-color: green; -fx-text-fill: white;" text="Réclamer" />
-      <Text layoutX="89.0" layoutY="109.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ajouter une réclamation" wrappingWidth="740.6731719970703">
+      <TextField fx:id="titleTF" layoutX="104.0" layoutY="376.0" prefHeight="26.0" prefWidth="1177.0" />
+      <Text layoutX="104.0" layoutY="355.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Titre" wrappingWidth="740.6731719970703" />
+      <TextArea fx:id="descriptionTF" layoutX="104.0" layoutY="543.0" prefHeight="99.0" prefWidth="1171.0" />
+      <Text layoutX="104.0" layoutY="507.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Description" wrappingWidth="740.6731719970703" />
+      <Text layoutX="104.0" layoutY="433.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Choisir un evenement" wrappingWidth="740.6731719970703" />
+      <Button layoutX="104.0" layoutY="660.0" mnemonicParsing="false" onAction="#ajouterReclamation" prefHeight="30.0" prefWidth="1171.0" style="-fx-background-color: green; -fx-text-fill: white;" text="Réclamer" />
+      <Text layoutX="104.0" layoutY="298.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ajouter une réclamation" wrappingWidth="740.6731719970703">
          <font>
             <Font name="Arial Black" size="21.0" />
          </font>
       </Text>
-      <ComboBox fx:id="eventTF" layoutX="90.0" layoutY="273.0" prefHeight="26.0" prefWidth="732.0" />
+      <ComboBox fx:id="eventTF" layoutX="105.0" layoutY="462.0" prefHeight="26.0" prefWidth="1171.0" />
    </children>
 </AnchorPane>
