@@ -9,7 +9,7 @@
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.Controllers.ModifierUser">
     <children>
-        <AnchorPane layoutX="100.0" layoutY="5.0" prefHeight="500.0" prefWidth="400.0">
+        <AnchorPane layoutX="100.0" layoutY="5.0" prefHeight="500.0" prefWidth="400.0" style="-fx-background-color: #dfd8d6;">
             <children>
                 <Label layoutX="94.0" layoutY="110.0" prefHeight="54.0" prefWidth="231.0" text="Modifier User" textFill="#662d60">
                     <font>
@@ -21,7 +21,7 @@
                         <Font size="15.0" />
                     </font>
                 </TextField>
-                <Button layoutX="159.0" layoutY="412.0" mnemonicParsing="false" onAction="#Update" prefHeight="24.0" prefWidth="83.0" styleClass="button-design" text="Modifier" textFill="WHITE">
+                <Button layoutX="159.0" layoutY="412.0" mnemonicParsing="false" onAction="#Update" prefHeight="24.0" prefWidth="83.0" style="-fx-background-color: #44bdf1;" styleClass="button-design" text="Modifier" textFill="WHITE">
                     <font>
                         <Font size="15.0" />
                     </font>
@@ -52,8 +52,8 @@
                     </font>
                 </TextField>
                 <ImageView fx:id="avatarImageView" fitHeight="100.0" fitWidth="100.0" layoutX="286.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" />
-                <Button fx:id="uploadAvatarButton" layoutX="151.0" layoutY="49.0" onAction="#handleAvatarUpload" text="Choisir Avatar" />
-                <Button fx:id="backButton" layoutX="300.0" layoutY="412.0" mnemonicParsing="false" onAction="#goBack" prefHeight="24.0" prefWidth="83.0" styleClass="button-design" text="Retour" textFill="WHITE">
+                <Button fx:id="uploadAvatarButton" layoutX="151.0" layoutY="49.0" onAction="#handleAvatarUpload" style="-fx-background-color: #0997e2;" text="Choisir Avatar" />
+                <Button fx:id="backButton" layoutX="300.0" layoutY="412.0" mnemonicParsing="false" onAction="#goBack" prefHeight="24.0" prefWidth="83.0" style="-fx-background-color: #bf4e24;" styleClass="button-design" text="Retour" textFill="WHITE">
                     <font>
                         <Font size="15.0" />
                     </font>

@@ -5,14 +5,10 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.TextField;
-import javafx.scene.control.Button;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.control.Label;
 import javafx.stage.FileChooser;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 import tn.esprit.services.UserService;
 import tn.esprit.Entity.User;
@@ -20,6 +16,7 @@ import tn.esprit.Entity.User;
 import java.io.File;
 import java.io.IOException;
 import java.util.Date;
+import java.util.regex.Pattern;
 
 public class AjoutUser {
     @FXML
@@ -31,14 +28,13 @@ public class AjoutUser {
     @FXML
     private TextField password;
     @FXML
-    private TextField role;
+    private ComboBox<String> roleComboBox;
     @FXML
     private Button ajout;
     @FXML
     private Button uploadAvatarButton;
     @FXML
     private ImageView avatarImageView;
-
     @FXML
     private Label firstnameError;
     @FXML
@@ -49,17 +45,21 @@ public class AjoutUser {
     private Label passwordError;
     @FXML
     private Label roleError;
+    @FXML
+    private Button backButton;
 
     private UserService userService = new UserService();
     private File avatarFile;
 
-
     @FXML
-    private Button backButton;
-
+    public void initialize() {
+        // Ajout des rôles disponibles dans le ComboBox
+        roleComboBox.getItems().addAll("ADMIN", "CLIENT", "PARTNER");
+    }
 
     @FXML
     public void ajouter(ActionEvent event) {
+        // Réinitialiser les erreurs
         firstnameError.setText("");
         lastnameError.setText("");
         emailError.setText("");
@@ -70,7 +70,7 @@ public class AjoutUser {
         String lastname = this.lastname.getText();
         String email = this.email.getText();
         String password = this.password.getText();
-        String role = this.role.getText();
+        String role = roleComboBox.getValue();
 
         if (firstname.isEmpty()) {
             firstnameError.setText("❌ Veuillez saisir un prénom.");
@@ -88,8 +88,8 @@ public class AjoutUser {
             passwordError.setText("❌ Veuillez saisir un mot de passe.");
             return;
         }
-        if (role.isEmpty()) {
-            roleError.setText("❌ Veuillez saisir un rôle.");
+        if (role == null || role.isEmpty()) {
+            roleError.setText("❌ Veuillez sélectionner un rôle.");
             return;
         }
 
@@ -103,29 +103,10 @@ public class AjoutUser {
             return;
         }
 
-        if (!role.equals("ADMIN") && !role.equals("CLIENT") && !role.equals("PARTNER")) {
-            roleError.setText("❌ Le rôle doit être 'ADMIN', 'CLIENT' ou 'PARTNER'.");
-            return;
-        }
-
-        User user = new User();
-        user.setFirstname(firstname);
-        user.setLastname(lastname);
-        user.setEmail(email);
-        user.setPassword(password);
-        user.setRole(role);
-        user.setJoinDate(new Date());
-
-        if (avatarFile != null) {
-            user.setAvatar(avatarFile.getAbsolutePath());
-        } else {
-            user.setAvatar("");
-        }
-
+        User user = new User(firstname, lastname, email, password, role, new Date(), avatarFile != null ? avatarFile.getAbsolutePath() : "");
         userService.addUser(user);
-        System.out.println("✅ L'utilisateur a été ajouté avec succès!");
 
-        Alert successAlert = new Alert(AlertType.INFORMATION);
+        Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
         successAlert.setTitle("Succès");
         successAlert.setHeaderText(null);
         successAlert.setContentText("Utilisateur ajouté avec succès!");
@@ -135,32 +116,20 @@ public class AjoutUser {
         this.lastname.clear();
         this.email.clear();
         this.password.clear();
-        this.role.clear();
+        roleComboBox.getSelectionModel().clearSelection();
         this.avatarImageView.setImage(null);
     }
 
     @FXML
     public void handleAvatarUpload(ActionEvent event) {
         FileChooser fileChooser = new FileChooser();
-        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg"));
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Images", ".png", ".jpg", "*.jpeg"));
         File selectedFile = fileChooser.showOpenDialog(null);
 
         if (selectedFile != null) {
             avatarFile = selectedFile;
-            Image avatarImage = new Image(selectedFile.toURI().toString());
-            avatarImageView.setImage(avatarImage);
+            avatarImageView.setImage(new Image(selectedFile.toURI().toString()));
         }
-    }
-
-    private boolean isValidEmail(String email) {
-        return email.matches("^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$");
-    }
-
-    private boolean isStrongPassword(String password) {
-        return password.length() >= 8 &&
-                password.matches(".*[A-Z].*") &&
-                password.matches(".*[0-9].*") &&
-                password.matches(".*[!@#$%^&*(),.?\":{}|<>].*");
     }
 
     public void goBack(ActionEvent actionEvent) {
@@ -168,17 +137,25 @@ public class AjoutUser {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/ListeUser.fxml"));
             Parent root = loader.load();
             Stage stage = (Stage) backButton.getScene().getWindow();
-            Scene scene = new Scene(root);
-
-            stage.setScene(scene);
+            stage.setScene(new Scene(root));
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
-            Alert errorAlert = new Alert(AlertType.ERROR);
-            errorAlert.setTitle("Erreur");
-            errorAlert.setHeaderText("Problème de navigation");
-            errorAlert.setContentText("Une erreur est survenue lors du changement de scène.");
-            errorAlert.showAndWait();
+            new Alert(Alert.AlertType.ERROR, "Erreur lors du changement de scène.").showAndWait();
         }
     }
+
+
+
+    private boolean isValidEmail(String email) {
+        String emailRegex = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
+        return Pattern.matches(emailRegex, email);
+    }
+
+    private boolean isStrongPassword(String password) {
+        // Au moins 8 caractères, une majuscule, un chiffre et un symbole
+        String passwordRegex = "^(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$";
+        return Pattern.matches(passwordRegex, password);
+    }
+
 }

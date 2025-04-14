@@ -42,6 +42,16 @@ public class User {
         this.role = role;
     }
 
+    public User(String firstname, String lastname, String email, String password, String role, Date joinDate, String avatar) {
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.email = email;
+        this.password = password;
+        this.role = role;
+        this.joinDate = joinDate != null ? joinDate : new Date();
+        this.avatar = avatar;
+    }
+
     public static User getCurrent_User() {
         return Current_User;
     }
@@ -119,5 +129,3 @@ public class User {
         return "User{" + "id=" + id + ", firstname=" + firstname + ", lastname=" + lastname + ", email=" + email + ", joinDate=" + joinDate + ", avatar=" + avatar + ", role=" + role + '}';
     }
 }
-
-

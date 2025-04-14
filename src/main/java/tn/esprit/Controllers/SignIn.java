@@ -49,6 +49,7 @@ public class SignIn {
         }
 
         User user = userService.authenticateUser(email, password);
+        System.out.println(user.getRole());
         if (user != null) {
             showAlert(Alert.AlertType.INFORMATION, "Succès", "Connexion réussie !");
             loadDashboard(user);
@@ -62,6 +63,24 @@ public class SignIn {
         loadPage("/SignUp.fxml", "Créer un compte");
     }
 
+//    @FXML
+//    public void sendPaswword_btn(ActionEvent actionEvent) {
+//        String email = email_signin.getText();
+//
+//        if (email.isEmpty() || !email.matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
+//            showAlert(Alert.AlertType.ERROR, "Erreur", "Veuillez entrer un email valide !");
+//            return;
+//        }
+//
+//        boolean emailSent = userService.resetPassword(email);
+//        if (emailSent) {
+//            showAlert(Alert.AlertType.INFORMATION, "Succès", "Un email de récupération a été envoyé !");
+//        } else {
+//            showAlert(Alert.AlertType.ERROR, "Erreur", "Cet email n'existe pas !");
+//        }
+//    }
+
+
     @FXML
     public void sendPaswword_btn(ActionEvent actionEvent) {
         String email = email_signin.getText();
@@ -73,11 +92,12 @@ public class SignIn {
 
         boolean emailSent = userService.resetPassword(email);
         if (emailSent) {
-            showAlert(Alert.AlertType.INFORMATION, "Succès", "Un email de récupération a été envoyé !");
+            showAlert(Alert.AlertType.INFORMATION, "Succès", "Un email avec un nouveau mot de passe a été envoyé !");
         } else {
             showAlert(Alert.AlertType.ERROR, "Erreur", "Cet email n'existe pas !");
         }
     }
+
 
     @FXML
     public void exit(ActionEvent actionEvent) {
@@ -109,6 +129,7 @@ public class SignIn {
 
     private void loadDashboard(User user) {
         String role = user.getRole();
+        System.out.println(user.getRole());
 
         if ("ADMIN".equalsIgnoreCase(role)) {
             loadPage("/ListeUser.fxml", "Tableau de bord Admin");

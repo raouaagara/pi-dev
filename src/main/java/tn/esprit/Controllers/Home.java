@@ -7,9 +7,11 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.chart.PieChart;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import tn.esprit.Entity.User;
@@ -17,9 +19,17 @@ import tn.esprit.services.UserService;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
+
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.font.PDType1Font;
+
+import java.io.File;
+
 
 public class Home {
-
     @FXML
     private TableView<User> tableviewUser;
     @FXML
@@ -43,6 +53,15 @@ public class Home {
     @FXML
     private Button logOut;
 
+    @FXML
+    private ChoiceBox<String> TrierFirstNameLastname;
+    @FXML
+    private ChoiceBox<String> TrierRole;
+
+
+
+
+
     private final UserService userService = new UserService();
     private ObservableList<User> userList;
 
@@ -50,6 +69,8 @@ public class Home {
     public void initialize() {
         afficherUtilisateurs();
         setupSearchFilter();
+        setupChoiceBoxes();
+
     }
 
     private void afficherUtilisateurs() {
@@ -236,4 +257,117 @@ public class Home {
         alert.setContentText(message);
         alert.showAndWait();
     }
+
+    private void setupChoiceBoxes() {
+        TrierFirstNameLastname.setItems(FXCollections.observableArrayList("FirstName", "LastName"));
+        TrierFirstNameLastname.setValue("FirstName");
+        TrierFirstNameLastname.setOnAction(event -> trierUtilisateurs());
+
+        TrierRole.setItems(FXCollections.observableArrayList("Tous", "Admin", "Client", "Partner"));
+        TrierRole.setValue("Tous"); // Valeur par défaut
+        TrierRole.setOnAction(event -> trierUtilisateurs());
+    }
+
+    private void trierUtilisateurs() {
+        String selectedSort = TrierFirstNameLastname.getValue();
+        String selectedRole = TrierRole.getValue();
+
+        List<User> users = userService.getAllUsers();
+
+        if (!selectedRole.equals("Tous")) {
+            users.removeIf(user -> !user.getRole().equalsIgnoreCase(selectedRole));
+        }
+
+        users.sort((u1, u2) -> {
+            if (selectedSort.equals("FirstName")) {
+                return u1.getFirstname().compareToIgnoreCase(u2.getFirstname());
+            } else {
+                return u1.getLastname().compareToIgnoreCase(u2.getLastname());
+            }
+        });
+
+        userList.setAll(users);
+    }
+
+    @FXML
+    private void statistique(ActionEvent event) {
+        Map<String, Integer> stats = userService.getUserStatisticsByRole();
+
+        int totalUsers = stats.values().stream().mapToInt(Integer::intValue).sum();
+
+        ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList();
+        for (Map.Entry<String, Integer> entry : stats.entrySet()) {
+            pieChartData.add(new PieChart.Data(entry.getKey() + " (" + entry.getValue() + ")", entry.getValue()));
+        }
+
+        PieChart pieChart = new PieChart(pieChartData);
+        pieChart.setTitle("Répartition des rôles des utilisateurs\nTotal utilisateurs: " + totalUsers);
+
+        Stage stage = new Stage();
+        Scene scene = new Scene(pieChart, 500, 400);
+        stage.setScene(scene);
+        stage.setTitle("Statistiques des utilisateurs");
+        stage.show();
+    }
+
+
+    @FXML
+    private void pdf(ActionEvent event) {
+        List<User> users = userService.getAllUsers();
+
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Enregistrer le PDF");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Fichiers PDF", "*.pdf"));
+        File file = fileChooser.showSaveDialog(null);
+
+        if (file != null) {
+            try (PDDocument document = new PDDocument()) {
+                PDPage page = new PDPage();
+                document.addPage(page);
+
+                try (PDPageContentStream contentStream = new PDPageContentStream(document, page)) {
+
+
+                    contentStream.setFont(PDType1Font.HELVETICA_BOLD, 16);
+                    contentStream.beginText();
+                    contentStream.newLineAtOffset(50, 750);
+                    contentStream.showText("Liste des Utilisateurs : ");
+                    contentStream.endText();
+
+                    float yPosition = 720;
+                    contentStream.setFont(PDType1Font.HELVETICA_BOLD, 14);
+
+                    String[] roles = {"Admin", "Client", "Partner"};
+                    for (String role : roles) {
+                        contentStream.beginText();
+                        contentStream.newLineAtOffset(50, yPosition);
+                        contentStream.showText(role + "s");
+                        contentStream.endText();
+                        yPosition -= 20;
+
+                        contentStream.setFont(PDType1Font.HELVETICA, 12);
+                        for (User user : users) {
+                            if (user.getRole().equalsIgnoreCase(role)) {
+                                contentStream.beginText();
+                                contentStream.newLineAtOffset(50, yPosition);
+                                contentStream.showText(user.getId() + " - " + user.getFirstname() + " " + user.getLastname() + " - " + user.getEmail());
+                                contentStream.endText();
+                                yPosition -= 20;
+                            }
+                        }
+                        contentStream.setFont(PDType1Font.HELVETICA_BOLD, 14);
+                        yPosition -= 10; // Espace entre les rôles
+                    }
+                }
+
+                document.save(file);
+                showAlert(Alert.AlertType.INFORMATION, "Succès", "PDF généré avec succès");
+            } catch (IOException e) {
+                e.printStackTrace();
+                showAlert(Alert.AlertType.ERROR, "Erreur", "Impossible de générer le PDF");
+            }
+        }
+    }
+
+
 }

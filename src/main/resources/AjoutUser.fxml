@@ -7,9 +7,10 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
+<?import javafx.scene.control.ComboBox?>
 <AnchorPane prefHeight="500.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.Controllers.AjoutUser">
    <children>
-      <AnchorPane layoutX="100.0" layoutY="5.0" prefHeight="500.0" prefWidth="400.0">
+      <AnchorPane layoutX="100.0" prefHeight="569.0" prefWidth="400.0" style="-fx-background-color: #dfd8d6;">
          <children>
             <Label layoutX="94.0" layoutY="110.0" prefHeight="54.0" prefWidth="231.0" text="Ajouter User" textFill="#662d60">
                <font>
@@ -45,26 +46,23 @@
             </TextField>
             <Label fx:id="passwordError" layoutX="91.0" layoutY="440.0" textFill="red" />
 
-            <TextField fx:id="role" layoutX="90.0" layoutY="490.0" prefHeight="28.0" prefWidth="220.0" promptText="Role..." styleClass="textfield-design">
-               <font>
-                  <Font size="15.0" />
-               </font>
-            </TextField>
+            <ComboBox fx:id="roleComboBox" layoutX="90.0" layoutY="490.0" prefHeight="28.0" prefWidth="220.0" promptText="Sélectionner un rôle..." />
             <Label fx:id="roleError" layoutX="90.0" layoutY="520.0" textFill="red" />
+
 
             <!-- Avatar upload section -->
             <ImageView fx:id="avatarImageView" fitHeight="100.0" fitWidth="100.0" layoutX="286.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" />
-            <Button fx:id="uploadAvatarButton" layoutX="151.0" layoutY="49.0" onAction="#handleAvatarUpload" text="Choisir Avatar" />
+            <Button fx:id="uploadAvatarButton" layoutX="151.0" layoutY="49.0" onAction="#handleAvatarUpload" style="-fx-background-color: #0997e2;" text="Choisir Avatar" />
 
             <!-- Button to submit form -->
-            <Button layoutX="159.0" layoutY="540.0" mnemonicParsing="false" onAction="#ajouter" prefHeight="24.0" prefWidth="83.0" styleClass="button-design" text="Ajouter" textFill="WHITE">
+            <Button layoutX="159.0" layoutY="540.0" mnemonicParsing="false" onAction="#ajouter" prefHeight="24.0" prefWidth="83.0" style="-fx-background-color: #9dd8f1;" styleClass="button-design" text="Ajouter" textFill="WHITE">
                <font>
                   <Font size="15.0" />
                </font>
             </Button>
 
             <!-- Button Back -->
-            <Button fx:id="backButton" layoutX="6.0" layoutY="15.0" minWidth="50.0" mnemonicParsing="false" onAction="#goBack" prefHeight="24.0" prefWidth="69.0" styleClass="button-design" text="Retour" textFill="WHITE">
+            <Button fx:id="backButton" layoutX="6.0" layoutY="15.0" minWidth="50.0" mnemonicParsing="false" onAction="#goBack" prefHeight="24.0" prefWidth="69.0" style="-fx-background-color: #bf4e24;" styleClass="button-design" text="Retour" textFill="WHITE">
                <font>
                   <Font size="15.0" />
                </font>

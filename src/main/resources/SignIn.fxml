@@ -8,12 +8,11 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-
 <AnchorPane prefHeight="400.0" prefWidth="656.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.Controllers.SignIn">
    <children>
       <AnchorPane layoutX="-664.0" layoutY="5.0" prefHeight="428.0" prefWidth="966.0">
          <children>
-            <AnchorPane layoutX="642.0" prefHeight="428.0" prefWidth="403.0" style="-fx-background-color: #dfe3dc;">
+            <AnchorPane layoutX="642.0" prefHeight="428.0" prefWidth="403.0" style="-fx-background-color: #0997e2;">
                <children>
                   <Label fx:id="TravelMe" layoutX="109.0" layoutY="167.0" text="Eco Sport">
                      <font>
@@ -41,7 +40,7 @@
                   <Font size="15.0" />
                </font>
             </PasswordField>
-            <Button fx:id="login_btn" layoutX="165.0" layoutY="272.0" mnemonicParsing="false" onAction="#login" prefHeight="40.0" prefWidth="77.0" styleClass="button-design" stylesheets="@../../../../pidevproject%20-%20Copie/src/main/resources/design.css" text="Login" textFill="WHITE">
+            <Button fx:id="login_btn" layoutX="165.0" layoutY="272.0" mnemonicParsing="false" onAction="#login" prefHeight="40.0" prefWidth="77.0" style="-fx-background-color: #44bdf1;" styleClass="button-design" stylesheets="@../../../../pidevproject%20-%20Copie/src/main/resources/design.css" text="Login" textFill="WHITE">
                <font>
                   <Font size="15.0" />
                </font>
@@ -56,7 +55,7 @@
                   <Font name="Microsoft Sans Serif" size="15.0" />
                </font>
             </Hyperlink>
-            <Button fx:id="exit" layoutX="330.0" layoutY="14.0" mnemonicParsing="false" onAction="#exit" prefHeight="26.0" prefWidth="42.0" text="X" />
+            <Button fx:id="exit" layoutX="330.0" layoutY="14.0" mnemonicParsing="false" onAction="#exit" prefHeight="26.0" prefWidth="42.0" style="-fx-background-color: #bf4e24;" text="X" />
          </children>
       </AnchorPane>
    </children>

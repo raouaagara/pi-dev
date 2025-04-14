@@ -7,11 +7,11 @@
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.Controllers.Accueil">
    <children>
-      <AnchorPane layoutX="116.0" layoutY="3.0" prefHeight="400.0" prefWidth="355.0" style="-fx-background-color: dfe3dc;">
+      <AnchorPane layoutX="116.0" layoutY="3.0" prefHeight="400.0" prefWidth="355.0" style="-fx-background-color: #dfd8d6;">
          <children>
-            <Button layoutX="86.0" layoutY="143.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="182.0" text="Articles" />
-            <Button layoutX="86.0" layoutY="210.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="182.0" text="Evenements" />
-            <Button layoutX="86.0" layoutY="278.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="182.0" text="Equipements" />
+            <Button layoutX="86.0" layoutY="143.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="182.0" style="-fx-background-color: #44bdf1;" text="Articles" />
+            <Button layoutX="86.0" layoutY="210.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="182.0" style="-fx-background-color: #44bdf1;" text="Evenements" />
+            <Button layoutX="86.0" layoutY="278.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="182.0" style="-fx-background-color: #44bdf1;" text="Equipements" />
             <Label layoutX="118.0" layoutY="48.0" prefHeight="54.0" prefWidth="133.0" text="MENU" textAlignment="CENTER" textFill="#662d60">
                <font>
                   <Font name="Berlin Sans FB" size="40.0" />
@@ -19,6 +19,6 @@
             </Label>
          </children>
       </AnchorPane>
-      <Button fx:id="logOut" layoutX="510.0" layoutY="12.0" mnemonicParsing="false" onAction="#logOut" prefHeight="25.0" prefWidth="72.0" styleClass="exit" stylesheets="@../../../../pidevproject%20-%20Copie/src/main/resources/design.css" text="LogOut" />
+      <Button fx:id="logOut" layoutX="510.0" layoutY="12.0" mnemonicParsing="false" onAction="#logOut" prefHeight="25.0" prefWidth="72.0" style="-fx-background-color: #bf4e24;" styleClass="exit" stylesheets="@../../../../pidevproject%20-%20Copie/src/main/resources/design.css" text="LogOut" />
    </children>
 </AnchorPane>

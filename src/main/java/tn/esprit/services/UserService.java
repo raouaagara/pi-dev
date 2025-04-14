@@ -2,11 +2,13 @@ package tn.esprit.services;
 
 import tn.esprit.Entity.User;
 import tn.esprit.utils.MyDatabase;
-
+import jakarta.mail.*;
+import jakarta.mail.internet.InternetAddress;
+import jakarta.mail.internet.MimeMessage;
+import java.util.Properties;
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.sql.Date;
+import java.util.*;
 
 public class UserService {
 
@@ -136,23 +138,87 @@ public class UserService {
 
             if (rs.next()) {
                 String newPassword = generateTemporaryPassword();
-                String updateSql = "UPDATE user SET password = ? WHERE email = ?";
 
+                String updateSql = "UPDATE user SET password = ? WHERE email = ?";
                 try (PreparedStatement updateStmt = con.prepareStatement(updateSql)) {
                     updateStmt.setString(1, newPassword);
                     updateStmt.setString(2, email);
                     updateStmt.executeUpdate();
-
-                    System.out.println("📧 Un e-mail a été envoyé à " + email + " avec le nouveau mot de passe : " + newPassword);
-                    return true;
                 }
+
+                sendEmail(email, "Réinitialisation de votre mot de passe",
+                        "Votre nouveau mot de passe est : " + newPassword);
+
+                System.out.println("📧 Un e-mail a été envoyé à " + email + " avec le nouveau mot de passe.");
+                return true;
             }
         } catch (SQLException e) {
             System.err.println("🚨 Erreur lors de la réinitialisation du mot de passe !");
             e.printStackTrace();
         }
-
         return false;
+    }
+
+
+
+
+    private void sendEmail(String recipient, String subject, String newPassword) {
+        final String username = "amelacho3@gmail.com";
+        final String password = "oyrvejtfihnzdqsa";
+
+        Properties props = new Properties();
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.starttls.enable", "true");
+        props.put("mail.smtp.host", "smtp.gmail.com");
+        props.put("mail.smtp.port", "587");
+
+        Session session = Session.getInstance(props, new Authenticator() {
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication(username, password);
+            }
+        });
+
+        try {
+            Message message = new MimeMessage(session);
+            message.setFrom(new InternetAddress(username));
+            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(recipient));
+            message.setSubject(subject);
+
+            // Contenu HTML de l'email
+            String htmlContent = "<!DOCTYPE html>" +
+                    "<html>" +
+                    "<head>" +
+                    "<style>" +
+                    "body { font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 20px; }" +
+                    ".container { background-color: #ffffff; padding: 20px; border-radius: 8px; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); max-width: 600px; margin: auto; }" +
+                    "h2 { color: #333; }" +
+                    "p { font-size: 16px; color: #555; }" +
+                    ".password { font-weight: bold; color: #d9534f; font-size: 18px; }" +
+                    ".footer { margin-top: 20px; font-size: 14px; color: #777; }" +
+                    "</style>" +
+                    "</head>" +
+                    "<body>" +
+                    "<div class='container'>" +
+                    "<h2>🔐 Réinitialisation de votre mot de passe</h2>" +
+                    "<p>Bonjour,</p>" +
+                    "<p>Vous avez demandé la réinitialisation de votre mot de passe. Voici votre nouveau mot de passe temporaire :</p>" +
+                    "<p class='password'>" + newPassword + "</p>" +
+                    "<p>Nous vous recommandons de changer ce mot de passe dès que possible via les paramètres de votre compte.</p>" +
+                    "<p>Si vous n'avez pas demandé cette réinitialisation, veuillez ignorer cet e-mail ou contacter notre support.</p>" +
+                    "<p class='footer'>Merci,<br>📧 L'équipe de support</p>" +
+                    "</div>" +
+                    "</body>" +
+                    "</html>";
+
+            message.setContent(htmlContent, "text/html; charset=utf-8");
+
+            Transport.send(message);
+
+            System.out.println("✅ Email envoyé avec succès à " + recipient);
+        } catch (MessagingException e) {
+            e.printStackTrace();
+            System.err.println("🚨 Erreur lors de l'envoi de l'email !");
+        }
     }
 
     private String generateTemporaryPassword() {
@@ -165,5 +231,27 @@ public class UserService {
         }
         return password.toString();
     }
+
+
+
+    public Map<String, Integer> getUserStatisticsByRole() {
+        Map<String, Integer> stats = new HashMap<>();
+        String sql = "SELECT role, COUNT(*) as count FROM user GROUP BY role";
+
+        try (Statement stmt = con.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+
+            while (rs.next()) {
+                stats.put(rs.getString("role"), rs.getInt("count"));
+            }
+
+        } catch (SQLException e) {
+            System.err.println("🚨 Erreur lors de la récupération des statistiques !");
+            e.printStackTrace();
+        }
+
+        return stats;
+    }
+
 
 }
