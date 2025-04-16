@@ -1,0 +1,104 @@
+body {
+    display: flex;
+    margin: 0;
+    font-family: 'Lato', sans-serif;
+}
+
+.sidebar {
+    width: 220px;
+    height: 100vh;
+    background: linear-gradient(to bottom right, #002B5B, #005377, #008891);
+    color: white;
+    padding: 20px 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.logo-container {
+    margin-bottom: 30px;
+}
+
+.logo-container img {
+    max-width: 150px;
+    height: auto;
+}
+.btn-custom-blue {
+    background-color: #007bff;
+    color: white;
+}
+
+.btn-custom-green {
+    background-color: #28a745;
+    color: white;
+}
+
+.btn-custom-red {
+    background-color: #dc3545;
+    color: white;
+}
+.sidebar a {
+    display: block;
+    width: 100%;
+    padding: 10px 15px;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    transition: background 0.3s ease;
+    margin: 8px 0;
+}
+
+.sidebar a:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.content {
+    flex-grow: 1;
+    padding: 30px;
+}
+.reclamation-form-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 30px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.reclamation-form-container h2 {
+    margin-bottom: 20px;
+    font-size: 24px;
+    text-align: center;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    font-weight: bold;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    font-size: 16px;
+}
+
+.form-group button {
+    background-color: #005377;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.form-group button:hover {
+    background-color: #003d59;
+}
