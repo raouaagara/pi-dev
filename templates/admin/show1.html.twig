@@ -1,0 +1,48 @@
+{% extends 'back.html.twig' %}
+
+{% block title %}Détail de l'équipement{% endblock %}
+
+{% block body %}
+    <h1>Détail de l'équipement</h1>
+
+    <table class="table">
+        <tbody>
+        <tr>
+                <th>Nom</th>
+                <td>{{ equipement.name }}</td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>{{ equipement.description }}</td>
+            </tr>
+            <tr>
+                <th>Prix</th>
+                <td>{{ equipement.price }}</td>
+            </tr>
+            <tr>
+                <th>Image</th>
+                <td>
+                    {% if equipement.image %}
+                        <img src="{{ asset('uploads/images/' ~ equipement.image) }}" alt="Image de l'équipement" style="max-width: 200px;">
+                    {% else %}
+                        Aucune image
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <th>Disponible</th>
+                <td>{{ equipement.availability ? 'Oui' : 'Non' }}</td>
+            </tr>
+            <tr>
+                <th>Date d'ajout</th>
+                <td>{{ equipement.dateAdded ? equipement.dateAdded|date('Y-m-d H:i:s') : 'N/A' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_equipement_index') }}" class="btn btn-secondary">Retour à la liste</a>
+    <a href="{{ path('app_equipement_edit', {'id': equipement.id}) }}" class="btn btn-primary">Modifier</a>
+    <a href="{{ path('app_equipement_pdf', {'id': equipement.id}) }}" class="btn btn-danger">Télécharger en PDF</a>
+
+    {{ include('equipement/_delete_form.html.twig') }}
+{% endblock %}

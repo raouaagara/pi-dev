@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Liste des équipements</title>
+    <style>
+        body { font-family: Arial, sans-serif; font-size: 12px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #333; padding: 8px; text-align: left; }
+        th { background-color: #f0f0f0; }
+    </style>
+</head>
+<body>
+    <h2>Liste des équipements</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Nom</th>
+                <th>Description</th>
+                <th>Prix</th>
+                <th>Disponible</th>
+                <th>Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for equipement in equipements %}
+                <tr>
+                    <td>{{ equipement.name }}</td>
+                    <td>{{ equipement.description }}</td>
+                    <td>{{ equipement.price }}</td>
+                    <td>{{ equipement.availability ? 'Oui' : 'Non' }}</td>
+                    <td>{{ equipement.dateAdded ? equipement.dateAdded|date('Y-m-d') : 'N/A' }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

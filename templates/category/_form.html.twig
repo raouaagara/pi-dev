@@ -1,0 +1,13 @@
+<form action="{{ path('app_equipement_index') }}" method="post" {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}>
+    {% for flash_message in app.session.flashBag.get('error') %}
+        <div class="alert alert-danger">{{ flash_message }}</div>
+    {% endfor %}
+
+    {{ form_widget(form) }}
+
+    <button class="btn">{{ button_label|default('Save') }}</button>
+
+    {{ form_end(form) }}
+</form>
+
+

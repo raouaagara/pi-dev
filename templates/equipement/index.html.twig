@@ -1,0 +1,68 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gestion des équipements{% endblock %}
+
+{% block body %}
+<h1 class="mb-4">Gestion des équipements</h1>
+
+{% for message in app.flashes('success') %}
+    <div class="alert alert-success">
+        {{ message }}
+    </div>
+{% endfor %}
+
+<div style="margin-bottom: 20px;">
+    <a href="{{ path('app_equipement_pdf') }}" class="btn btn-primary shadow-sm">
+        <i class="bi bi-file-earmark-pdf"></i> Télécharger la liste en PDF
+    </a>
+</div>
+
+<div style="display: flex; gap: 40px;">
+    <!-- Formulaire -->
+    <div style="flex: 1; background: #f9f9f9; padding: 20px; border-radius: 8px;">
+        <h4>Ajouter un équipement</h4>
+        {{ form_start(form) }}
+            {{ form_widget(form) }}
+            <button class="btn btn-success mt-3">Ajouter</button>
+        {{ form_end(form) }}
+    </div>
+
+    <!-- Liste -->
+    <div style="flex: 2;">
+        <h4>Liste des équipements</h4>
+        <table class="table table-bordered table-hover mt-3">
+            <thead>
+                <tr>
+                    <th>Nom</th>
+                    <th>Description</th>
+                    <th>Prix</th>
+                    <th>Disponible</th>
+                    <th>Date</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for equipement in equipements %}
+                    <tr>
+                        <td>{{ equipement.name }}</td>
+                        <td>{{ equipement.description }}</td>
+                        <td>{{ equipement.price }}</td>
+                        <td>{{ equipement.availability ? 'Oui' : 'Non' }}</td>
+                        <td>{{ equipement.dateAdded ? equipement.dateAdded|date('Y-m-d') : 'N/A' }}</td>
+                        <td>
+                            <a href="{{ path('app_equipement_show', {'id': equipement.id}) }}" class="btn btn-sm btn-info">Voir</a>
+                            <a href="{{ path('app_equipement_edit', {'id': equipement.id}) }}" class="btn btn-sm btn-primary">Modifier</a>
+                            <form method="post" action="{{ path('app_equipement_delete', {'id': equipement.id}) }}" style="display:inline-block;" onsubmit="return confirm('Confirmer la suppression ?');">
+                                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ equipement.id) }}">
+                                <button class="btn btn-sm btn-danger">Supprimer</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr><td colspan="7">Aucun équipement trouvé.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

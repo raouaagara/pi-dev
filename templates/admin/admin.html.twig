@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}BackOffice{% endblock %}</title>
+
+    {# Liens CSS #}
+    <link rel="stylesheet" href="{{asset('backoffice/vendors/mdi/css/materialdesignicons.min.css') }}">
+    <link rel="stylesheet" href="{{asset('backoffice/vendors/css/vendor.bundle.base.css') }}">
+    <link rel="stylesheet" href="{{asset('backoffice/css/style.css') }}">
+    <link rel="shortcut icon" href="{{asset('backoffice/images/favicon.png') }}" />
+
+    {% block stylesheets %}{% endblock %}
+</head>
+<body>
+    <div class="container-scroller">
+        {% block body %}{% endblock %}
+    </div>
+
+    {# Scripts JS #}
+    <script src="{{asset('backoffice/vendors/js/vendor.bundle.base.js') }}"></script>
+    <script src="{{asset('backoffice/js/off-canvas.js') }}"></script>
+    <script src="{{asset('backoffice/js/misc.js') }}"></script>
+    <script src="{{asset('backoffice/js/dashboard.js') }}"></script>
+
+    {% block javascripts %}{% endblock %}
+</body>
+</html>
+
