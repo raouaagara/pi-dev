@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}BackOffice{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Favicon et icône -->
+    <link rel="icon" type="image/x-icon" href="{{ asset('backoffice/images/logo.png') }}">
+    <link rel="shortcut icon" href="{{ asset('backoffice/images/logo.png') }}" />
+
+    <!-- Styles principaux -->
+    <link rel="stylesheet" href="{{asset('backoffice/vendors/mdi/css/materialdesignicons.min.css')}}">
+    <link rel="stylesheet" href="{{asset('backoffice/vendors/css/vendor.bundle.base.css')}}">
+    <link rel="stylesheet" href="{{asset('backoffice/css/style.css')}}">
+    <link rel="stylesheet" href="{{asset('backoffice/css/common.css')}}">
+
+    {% block stylesheets %}{% endblock %}
+</head>
+<body>
+<div class="container-scroller">
+
+    <!-- Navbar -->
+    <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
+        <div class="navbar-brand-wrapper d-flex justify-content-center">
+            <a class="navbar-brand brand-logo" href="#">
+                <img src="{{ asset('backoffice/images/logo.png') }}" alt="Logo" class="logo" />
+            </a>
+            <a class="navbar-brand brand-logo-mini" href="#">
+                <img src="{{ asset('backoffice/images/logo.png') }}" alt="Mini Logo" />
+            </a>
+        </div>
+        <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
+            <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
+                <span class="mdi mdi-menu"></span>
+            </button>
+            <ul class="navbar-nav navbar-nav-right">
+                <li class="nav-item">
+                    <a class="nav-link" href="#"><i class="mdi mdi-logout"></i> Déconnexion</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Wrapper -->
+    <div class="container-fluid page-body-wrapper">
+
+        <!-- Sidebar -->
+        <nav class="sidebar sidebar-offcanvas" id="sidebar">
+            <ul class="nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="{{path('admin_dashboard') }}">
+                        <i class="mdi mdi-view-dashboard menu-icon"></i>
+                        <span class="menu-title">Dashboard</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('app_equipement_index_admin') }}">
+
+                        <i class="mdi mdi-wrench menu-icon"></i>
+                        <span class="menu-title">Équipements</span>
+                    </a>
+                </li>
+                <li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('category') }}">
+                        <i class="mdi mdi-wrench menu-icon"></i>
+                        <span class="menu-title">category</span></a></li>
+                
+            </ul>
+        </nav>
+
+        <!-- Main -->
+        <div class="main-panel">
+            <div class="content-wrapper">
+
+                <!-- Exemple d'image de fond -->
+                <div class="bg-image" style="background-image: url('{{ asset('backoffice/images/dashboard/darkBG.png') }}'); height: 200px; background-size: cover; margin-bottom: 2rem;"></div>
+
+                <!-- Bloc principal -->
+                {% block body %}{% endblock %}
+
+            </div>
+            <footer class="footer">
+                <div class="d-sm-flex justify-content-center justify-content-sm-between">
+                    <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">
+                        © {{ "now"|date("Y") }} Mon BackOffice
+                    </span>
+                </div>
+            </footer>
+        </div>
+    </div>
+</div>
+
+<!-- Scripts -->
+<script src="{{asset('backoffice/vendors/js/vendor.bundle.base.js') }}"></script>
+<script src="{{asset('backoffice/js/off-canvas.js') }}"></script>
+<script src="{{asset('backoffice/js/misc.js') }}"></script>
+<script src="{{asset('backoffice/js/dashboard.js') }}"></script>
+
+{% block javascripts %}{% endblock %}
+</body>
+</html>

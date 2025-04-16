@@ -1,0 +1,66 @@
+{% extends 'back.html.twig' %}
+
+{% block title %}Gestion des Équipements{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+    <h1 class="mb-4">Liste des Équipements</h1>
+
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success">
+            {{ message }}
+        </div>
+    {% endfor %}
+
+    {% for message in app.flashes('error') %}
+        <div class="alert alert-danger">
+            {{ message }}
+        </div>
+    {% endfor %}
+
+    <div class="mb-4">
+        <h2>Ajouter un nouvel équipement</h2>
+        {{ form_start(form) }}
+            {{ form_widget(form) }}
+            <button type="submit" class="btn btn-primary mt-3">Ajouter</button>
+        {{ form_end(form) }}
+    </div>
+
+    <table class="table table-striped mt-4">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nom</th>
+                <th>Type</th>
+                <th>Marque</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for equipement in equipements %}
+            <tr>
+                <td>{{ equipement.id }}</td>
+                <td>{{ equipement.nom }}</td>
+                <td>{{ equipement.type }}</td>
+                <td>{{ equipement.marque }}</td>
+                <td>
+                    <a href="{{ path('app_equipement_show_admin', { id: equipement.id }) }}" class="btn btn-sm btn-info">Voir</a>
+                    <a href="{{ path('app_equipement_edit_admin', { id: equipement.id }) }}" class="btn btn-sm btn-warning">Modifier</a>
+                    <form method="post" action="{{ path('app_equipement_delete_admin', { id: equipement.id }) }}" style="display:inline-block;" onsubmit="return confirm('Voulez-vous vraiment supprimer cet équipement ?');">
+                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ equipement.id) }}">
+                        <button class="btn btn-sm btn-danger">Supprimer</button>
+                    </form>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">Aucun équipement trouvé.</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_equipement_pdf') }}" class="btn btn-outline-secondary">📄 Télécharger PDF</a>
+</div>
+{% endblock %}
+
